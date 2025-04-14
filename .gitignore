@@ -1,0 +1,11 @@
+**/build
+**/__pycache__
+venv/
+.vscode/
+.vs/
+.vim/
+.cache/
+compile_commands.json
+CMakeUserPresets.json
+error_diff.txt
+*.swp
