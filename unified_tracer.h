@@ -1,5 +1,5 @@
-#ifndef FTRACE_TOOLS_ONETRACE_UNIFIED_TRACER_H_
-#define FTRACE_TOOLS_ONETRACE_UNIFIED_TRACER_H_
+#ifndef FTRACE_TOOLS_FINETRACE_UNIFIED_TRACER_H_
+#define FTRACE_TOOLS_FINETRACE_UNIFIED_TRACER_H_
 
 #include <chrono>
 #include <cstdint>
@@ -19,7 +19,7 @@
 #include "ze_api_collector.h"
 #include "ze_kernel_collector.h"
 
-const char* kChromeTraceFileName = "onetrace";
+const char* kChromeTraceFileName = "finetrace";
 
 class UnifiedTracer {
  public:
@@ -1188,4 +1188,4 @@ class UnifiedTracer {
   Logger* chrome_logger_ = nullptr;
 };
 
-#endif // FTRACE_TOOLS_ONETRACE_UNIFIED_TRACER_H_
+#endif // FTRACE_TOOLS_FINETRACE_UNIFIED_TRACER_H_

@@ -7,7 +7,7 @@ static UnifiedTracer* tracer = nullptr;
 extern "C" FTRACE_EXPORT
 void Usage() {
   std::cout <<
-    "Usage: ./onetrace[.exe] [options] <application> <args>" <<
+    "Usage: ./finetrace[.exe] [options] <application> <args>" <<
     std::endl;
   std::cout << "Options:" << std::endl;
   std::cout <<
@@ -86,64 +86,64 @@ int ParseArgs(int argc, char* argv[]) {
   for (int i = 1; i < argc; ++i) {
     if (strcmp(argv[i], "--call-logging") == 0 ||
         strcmp(argv[i], "-c") == 0) {
-      utils::SetEnv("ONETRACE_CallLogging", "1");
+      utils::SetEnv("FINETRACE_CallLogging", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--host-timing") == 0 ||
                strcmp(argv[i], "-h") == 0) {
-      utils::SetEnv("ONETRACE_HostTiming", "1");
+      utils::SetEnv("FINETRACE_HostTiming", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--device-timing") == 0 ||
                strcmp(argv[i], "-d") == 0) {
-      utils::SetEnv("ONETRACE_DeviceTiming", "1");
+      utils::SetEnv("FINETRACE_DeviceTiming", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--kernel-submission") == 0 ||
                strcmp(argv[i], "-s") == 0) {
-      utils::SetEnv("ONETRACE_KernelSubmission", "1");
+      utils::SetEnv("FINETRACE_KernelSubmission", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--device-timeline") == 0 ||
                strcmp(argv[i], "-t") == 0) {
-      utils::SetEnv("ONETRACE_DeviceTimeline", "1");
+      utils::SetEnv("FINETRACE_DeviceTimeline", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--chrome-call-logging") == 0) {
-      utils::SetEnv("ONETRACE_ChromeCallLogging", "1");
+      utils::SetEnv("FINETRACE_ChromeCallLogging", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--chrome-device-timeline") == 0) {
-      utils::SetEnv("ONETRACE_ChromeDeviceTimeline", "1");
+      utils::SetEnv("FINETRACE_ChromeDeviceTimeline", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--chrome-kernel-timeline") == 0) {
-      utils::SetEnv("ONETRACE_ChromeKernelTimeline", "1");
+      utils::SetEnv("FINETRACE_ChromeKernelTimeline", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--chrome-device-stages") == 0) {
-      utils::SetEnv("ONETRACE_ChromeDeviceStages", "1");
+      utils::SetEnv("FINETRACE_ChromeDeviceStages", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--verbose") == 0 ||
                strcmp(argv[i], "-v") == 0) {
-      utils::SetEnv("ONETRACE_Verbose", "1");
+      utils::SetEnv("FINETRACE_Verbose", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--demangle") == 0) {
-      utils::SetEnv("ONETRACE_Demangle", "1");
+      utils::SetEnv("FINETRACE_Demangle", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--kernels-per-tile") == 0) {
-      utils::SetEnv("ONETRACE_KernelsPerTile", "1");
+      utils::SetEnv("FINETRACE_KernelsPerTile", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--tid") == 0) {
-      utils::SetEnv("ONETRACE_Tid", "1");
+      utils::SetEnv("FINETRACE_Tid", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--pid") == 0) {
-      utils::SetEnv("ONETRACE_Pid", "1");
+      utils::SetEnv("FINETRACE_Pid", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--output") == 0 ||
                strcmp(argv[i], "-o") == 0) {
-      utils::SetEnv("ONETRACE_LogToFile", "1");
+      utils::SetEnv("FINETRACE_LogToFile", "1");
       ++i;
       if (i >= argc) {
         std::cerr << "[ERROR] Log file name is not specified" << std::endl;
         return -1;
       }
-      utils::SetEnv("ONETRACE_LogFilename", argv[i]);
+      utils::SetEnv("FINETRACE_LogFilename", argv[i]);
       app_index += 2;
     } else if (strcmp(argv[i], "--conditional-collection") == 0) {
-      utils::SetEnv("ONETRACE_ConditionalCollection", "1");
+      utils::SetEnv("FINETRACE_ConditionalCollection", "1");
       ++app_index;
     } else if (strcmp(argv[i], "--version") == 0) {
 #ifdef FTRACE_VERSION
@@ -155,16 +155,16 @@ int ParseArgs(int argc, char* argv[]) {
     }
   }
 
-  if (utils::GetEnv("ONETRACE_ChromeDeviceTimeline") == "1" &&
-      utils::GetEnv("ONETRACE_ChromeDeviceStages") == "1") {
+  if (utils::GetEnv("FINETRACE_ChromeDeviceTimeline") == "1" &&
+      utils::GetEnv("FINETRACE_ChromeDeviceStages") == "1") {
     std::cerr <<
       "[ERROR] Options --chrome-device-timeline and " <<
       "--chrome-device-stages can't be used together, " <<
       "choose one of them" << std::endl;
     return -1;
   }
-  if (utils::GetEnv("ONETRACE_ChromeDeviceTimeline") == "1" &&
-      utils::GetEnv("ONETRACE_ChromeKernelTimeline") == "1") {
+  if (utils::GetEnv("FINETRACE_ChromeDeviceTimeline") == "1" &&
+      utils::GetEnv("FINETRACE_ChromeKernelTimeline") == "1") {
     std::cerr <<
       "[ERROR] Options --chrome-device-timeline and " <<
       "--chrome-kernel-timeline can't be used together, " <<
@@ -185,84 +185,84 @@ static TraceOptions ReadArgs() {
   uint32_t flags = 0;
   std::string log_file;
 
-  value = utils::GetEnv("ONETRACE_CallLogging");
+  value = utils::GetEnv("FINETRACE_CallLogging");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CALL_LOGGING);
   }
 
-  value = utils::GetEnv("ONETRACE_HostTiming");
+  value = utils::GetEnv("FINETRACE_HostTiming");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_HOST_TIMING);
   }
 
-  value = utils::GetEnv("ONETRACE_DeviceTiming");
+  value = utils::GetEnv("FINETRACE_DeviceTiming");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_DEVICE_TIMING);
   }
 
-  value = utils::GetEnv("ONETRACE_KernelSubmission");
+  value = utils::GetEnv("FINETRACE_KernelSubmission");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_KERNEL_SUBMITTING);
   }
 
-  value = utils::GetEnv("ONETRACE_DeviceTimeline");
+  value = utils::GetEnv("FINETRACE_DeviceTimeline");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_DEVICE_TIMELINE);
   }
 
-  value = utils::GetEnv("ONETRACE_ChromeCallLogging");
+  value = utils::GetEnv("FINETRACE_ChromeCallLogging");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CHROME_CALL_LOGGING);
   }
 
-  value = utils::GetEnv("ONETRACE_ChromeDeviceTimeline");
+  value = utils::GetEnv("FINETRACE_ChromeDeviceTimeline");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CHROME_DEVICE_TIMELINE);
   }
 
-  value = utils::GetEnv("ONETRACE_ChromeKernelTimeline");
+  value = utils::GetEnv("FINETRACE_ChromeKernelTimeline");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CHROME_KERNEL_TIMELINE);
   }
 
-  value = utils::GetEnv("ONETRACE_ChromeDeviceStages");
+  value = utils::GetEnv("FINETRACE_ChromeDeviceStages");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CHROME_DEVICE_STAGES);
   }
 
-  value = utils::GetEnv("ONETRACE_Verbose");
+  value = utils::GetEnv("FINETRACE_Verbose");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_VERBOSE);
   }
 
-  value = utils::GetEnv("ONETRACE_Demangle");
+  value = utils::GetEnv("FINETRACE_Demangle");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_DEMANGLE);
   }
 
-  value = utils::GetEnv("ONETRACE_KernelsPerTile");
+  value = utils::GetEnv("FINETRACE_KernelsPerTile");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_KERNELS_PER_TILE);
   }
 
-  value = utils::GetEnv("ONETRACE_Tid");
+  value = utils::GetEnv("FINETRACE_Tid");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_TID);
   }
 
-  value = utils::GetEnv("ONETRACE_Pid");
+  value = utils::GetEnv("FINETRACE_Pid");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_PID);
   }
 
-  value = utils::GetEnv("ONETRACE_LogToFile");
+  value = utils::GetEnv("FINETRACE_LogToFile");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_LOG_TO_FILE);
-    log_file = utils::GetEnv("ONETRACE_LogFilename");
+    log_file = utils::GetEnv("FINETRACE_LogFilename");
     FTRACE_ASSERT(!log_file.empty());
   }
 
-  value = utils::GetEnv("ONETRACE_ConditionalCollection");
+  value = utils::GetEnv("FINETRACE_ConditionalCollection");
   if (!value.empty() && value == "1") {
     flags |= (1 << TRACE_CONDITIONAL_COLLECTION);
   }
