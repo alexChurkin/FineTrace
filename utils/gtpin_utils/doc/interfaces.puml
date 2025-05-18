@@ -1,10 +1,10 @@
 @startuml
 
 
-title Simplified class diagram for PTI GTPin tool. Describes the interfaces and classes used by the PTI GTPin tool
+title Simplified class diagram for FineTrace GTPin tool. Describes the interfaces and classes used by the FineTrace GTPin tool
 
 package profiler {
-    package "pti gtpin tool (inst count)" {
+    package "finetrace gtpin tool (inst count)" {
         package "gtpin sdk" {
             interface WriterBase {
                 {abstract} +Write()
