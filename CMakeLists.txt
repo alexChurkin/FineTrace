@@ -10,7 +10,7 @@ SetBuildType()
 
 add_library(finetrace_tool SHARED
   "${PROJECT_SOURCE_DIR}/loader/init.cc"
-  "${PROJECT_SOURCE_DIR}/cl_tracer/cl_ext_collector.cc"
+  "${PROJECT_SOURCE_DIR}/collectors/cl_collector/cl_ext_collector.cc"
   "${PROJECT_SOURCE_DIR}/utils/correlator.cc"
   "${PROJECT_SOURCE_DIR}/utils/trace_guard.cc"
   tool.cc)
@@ -18,8 +18,8 @@ target_include_directories(finetrace_tool
   PRIVATE "${PROJECT_SOURCE_DIR}"
   PRIVATE "${PROJECT_SOURCE_DIR}/utils"
   PRIVATE "${PROJECT_SOURCE_DIR}/utils"
-  PRIVATE "${PROJECT_SOURCE_DIR}/cl_tracer"
-  PRIVATE "${PROJECT_SOURCE_DIR}/ze_tracer")
+  PRIVATE "${PROJECT_SOURCE_DIR}/collectors/cl_collector"
+  PRIVATE "${PROJECT_SOURCE_DIR}/collectors/ze_collector")
 target_compile_definitions(finetrace_tool PUBLIC FTRACE_LEVEL_ZERO=1)
 if(CMAKE_INCLUDE_PATH)
   target_include_directories(finetrace_tool
@@ -34,7 +34,7 @@ GetOpenCLTracingHeaders(finetrace_tool)
 FindL0Library(finetrace_tool)
 FindL0Headers(finetrace_tool)
 
-FindL0HeadersPath(finetrace_tool "${PROJECT_SOURCE_DIR}/ze_tracer/gen_tracing_callbacks.py")
+FindL0HeadersPath(finetrace_tool "${PROJECT_SOURCE_DIR}/collectors/ze_collector/gen_tracing_callbacks.py")
 
 # Loader
 
