@@ -1,0 +1,119 @@
+classDiagram
+    class UnifiedTracer {
+        -TraceOptions options_
+        -Correlator correlator_
+        -uint64_t total_execution_time_
+        -ZeApiCollector* ze_api_collector_
+        -ClApiCollector* cl_cpu_api_collector_
+        -ClApiCollector* cl_gpu_api_collector_
+        -ZeKernelCollector* ze_kernel_collector_
+        -ClKernelCollector* cl_cpu_kernel_collector_
+        -ClKernelCollector* cl_gpu_kernel_collector_
+        -std::string chrome_trace_file_name_
+        -Logger* chrome_logger_
+        +Create(TraceOptions options) UnifiedTracer*
+        +CheckOption(uint32_t option) bool
+        -Report()
+        -ReportTiming()
+        -ReportKernelSubmission()
+    }
+
+    class ClApiCollector {
+        -ClApiTracer* tracer_
+        -Correlator* correlator_
+        -ApiCollectorOptions options_
+        -cl_device_type device_type_
+        -OnClFunctionFinishCallback callback_
+        -void* callback_data_
+        -std::mutex lock_
+        -ClFunctionInfoMap function_info_map_
+        +Create() ClApiCollector*
+        +DisableTracing()
+        +GetFunctionInfoMap() ClFunctionInfoMap
+        +PrintFunctionsTable()
+    }
+
+    class ClKernelCollector {
+        -ClApiTracer* tracer_
+        -Correlator* correlator_
+        -KernelCollectorOptions options_
+        -std::atomic<uint64_t> kernel_id_
+        -cl_device_id device_
+        -OnClKernelFinishCallback callback_
+        -void* callback_data_
+        -std::mutex lock_
+        -ClKernelInfoMap kernel_info_map_
+        -ClKernelInstanceList kernel_instance_list_
+        +Create() ClKernelCollector*
+        +DisableTracing()
+        +GetKernelInfoMap() ClKernelInfoMap
+        +PrintKernelsTable()
+        +PrintSubmissionTable()
+    }
+
+    class ZeApiCollector {
+        -zel_tracer_handle_t tracer_
+        -ZeFunctionInfoMap function_info_map_
+        -std::mutex lock_
+        -Correlator* correlator_
+        -ApiCollectorOptions options_
+        -OnZeFunctionFinishCallback callback_
+        -void* callback_data_
+        +Create() ZeApiCollector*
+        +DisableTracing()
+        +GetFunctionInfoMap() ZeFunctionInfoMap
+        +PrintFunctionsTable()
+    }
+
+    class ZeKernelCollector {
+        -zel_tracer_handle_t tracer_
+        -KernelCollectorOptions options_
+        -Correlator* correlator_
+        -std::atomic<uint64_t> kernel_id_
+        -OnZeKernelFinishCallback callback_
+        -void* callback_data_
+        -std::mutex lock_
+        -ZeKernelInfoMap kernel_info_map_
+        -std::list<ZeKernelCall*> kernel_call_list_
+        -ZeCommandListMap command_list_map_
+        -ZeImageSizeMap image_size_map_
+        -ZeKernelGroupSizeMap kernel_group_size_map_
+        -ZeDeviceMap device_map_
+        -ZeEventCache event_cache_
+        +Create() ZeKernelCollector*
+        +DisableTracing()
+        +GetKernelInfoMap() ZeKernelInfoMap
+        +PrintKernelsTable()
+        +PrintSubmissionTable()
+    }
+
+    class Correlator {
+        <<friend>> UnifiedTracer
+        <<friend>> ClApiCollector
+        <<friend>> ClKernelCollector
+        <<friend>> ZeApiCollector
+        <<friend>> ZeKernelCollector
+    }
+
+    class Logger {
+        <<friend>> UnifiedTracer
+    }
+
+    class TraceOptions {
+        <<friend>> UnifiedTracer
+    }
+
+    UnifiedTracer --> ClApiCollector
+    UnifiedTracer --> ClKernelCollector
+    UnifiedTracer --> ZeApiCollector
+    UnifiedTracer --> ZeKernelCollector
+    UnifiedTracer --> Correlator
+    UnifiedTracer --> Logger
+    UnifiedTracer --> TraceOptions
+
+    ClApiCollector --> ClApiTracer
+    ClKernelCollector --> ClApiTracer
+
+    ZeApiCollector --> zel_tracer_handle_t
+    ZeKernelCollector --> zel_tracer_handle_t
+    ZeKernelCollector --> ZeEventCache
