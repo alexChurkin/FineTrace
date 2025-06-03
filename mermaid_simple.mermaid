@@ -1,0 +1,55 @@
+classDiagram
+    class UnifiedTracer {
+        -Correlator correlator_
+        -ZeApiCollector* ze_api_collector_
+        -ClApiCollector* cl_cpu_api_collector_
+        -ClApiCollector* cl_gpu_api_collector_
+        -ZeKernelCollector* ze_kernel_collector_
+        -ClKernelCollector* cl_cpu_kernel_collector_
+        -ClKernelCollector* cl_gpu_kernel_collector_
+        +Create() UnifiedTracer*
+        -Report()
+    }
+
+    class ClApiCollector {
+        -ClFunctionInfoMap function_info_map_
+        +Create() ClApiCollector*
+        +DisableTracing()
+        +GetFunctionInfoMap()
+    }
+
+    class ClKernelCollector {
+        -ClKernelInfoMap kernel_info_map_
+        +Create() ClKernelCollector*
+        +DisableTracing()
+        +GetKernelInfoMap()
+    }
+
+    class ZeApiCollector {
+        -ZeFunctionInfoMap function_info_map_
+        +Create() ZeApiCollector*
+        +DisableTracing()
+        +GetFunctionInfoMap()
+    }
+
+    class ZeKernelCollector {
+        -ZeKernelInfoMap kernel_info_map_
+        +Create() ZeKernelCollector*
+        +DisableTracing()
+        +GetKernelInfoMap()
+    }
+
+    class Correlator {
+    }
+
+    UnifiedTracer --> ClApiCollector
+    UnifiedTracer --> ClKernelCollector
+    UnifiedTracer --> ZeApiCollector
+    UnifiedTracer --> ZeKernelCollector
+    UnifiedTracer --> Correlator
+
+    ClApiCollector --> ClApiTracer
+    ClKernelCollector --> ClApiTracer
+
+    ZeApiCollector --> zel_tracer_handle_t
+    ZeKernelCollector --> zel_tracer_handle_t
