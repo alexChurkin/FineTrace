@@ -55,7 +55,7 @@ case "${1:-}" in
     echo "            rodinia benchmarks: runs 'make clean' in each."
     echo "  --help    Show this help message."
     echo ""
-    echo "Samples built:"
+    echo "Samples available:"
     echo "  samples/cl_gemm              (CMake)"
     echo "  samples/ze_gemm              (CMake)"
     echo "  samples/cl_rodinia_benchmarks/bench_b+tree"
