@@ -8,12 +8,14 @@ Usage: ./finetrace[.exe] [options] <application> <args>
 Options:
 --call-logging [-c]            Trace host API calls
 --host-timing  [-h]            Report host API execution time
---device-timing [-d]           Report kernels execution time
---kernel-submission [-s]       Report append (queued), submit and execute intervals for kernels
---device-timeline [-t]         Trace device activities
 --chrome-call-logging          Dump host API calls to JSON file
+
+--device-timeline [-t]         Trace device activities
+--device-timing [-d]           Report kernels execution time
 --chrome-device-timeline       Dump device activities to JSON file per command queue
 --chrome-kernel-timeline       Dump device activities to JSON file per kernel name
+
+--kernel-submission [-s]       Report append (queued), submit and execute intervals for kernels
 --chrome-device-stages         Dump device activities by stages to JSON file
 --verbose [-v]                 Enable verbose mode to show more kernel information
 --demangle                     Demangle DPC++ kernel names
