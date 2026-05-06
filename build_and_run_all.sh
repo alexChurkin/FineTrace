@@ -3,7 +3,7 @@ set -euo pipefail
 
 bash ./script_build_finetrace.sh
 bash ./script_build_samples.sh
-bash ./script_run_samples.sh
+python3 ./script_run_samples.py
 
 bash ./script_build_samples.sh --clean
 # rm -rf ./build
