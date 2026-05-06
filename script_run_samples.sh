@@ -12,7 +12,7 @@ RODINIA="$SAMPLES/cl_rodinia_benchmarks"
 # Path to the finetrace binary. Override via environment if needed.
 FINETRACE="${FINETRACE:-$ROOT_DIR/build/finetrace}"
 
-REPEATS=1
+REPEATS=10
 RUN_CPU=0
 RUN_GPU=0
 RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
