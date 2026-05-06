@@ -10,3 +10,4 @@ CMakeUserPresets.json
 error_diff.txt
 *.swp
 finetrace_overhead_stat.xlsx
+.~lock.finetrace_overhead_stat.xlsx#
