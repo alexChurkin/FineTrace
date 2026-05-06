@@ -14,7 +14,7 @@ MODE="cpu"
 RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
 
 usage() {
-  echo "Usage: $0 [--gpu] [-n N] [--data-dir DIR] [--help]"
+  echo "Usage: $0 [--gpu] [-n N] [--help]"
   echo ""
   echo "Run benchmark samples with per-run timing and average."
   echo ""
@@ -25,18 +25,19 @@ usage() {
   echo "  --help   Show this help."
   echo ""
   echo "CPU benchmarks: cl_gemm, bench_b+tree, bench_bfs, bench_gaussian, bench_nw"
-  echo "GPU benchmarks: same + ze_gemm"
+  echo "GPU benchmarks: CPU benchmarks + ze_gemm"
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --gpu)       MODE="gpu"; shift ;;
     -n)          REPEATS="$2"; shift 2 ;;
-    --data-dir)  RODINIA_DATA_DIR="$2"; shift 2 ;;
     --help|-h)   usage; exit 0 ;;
     *)           echo "Unknown option: $1"; usage; exit 1 ;;
   esac
 done
+
+clinfo -l
 
 # Resolve to absolute path so it works regardless of `cd` inside run_bench.
 RODINIA_DATA_DIR="$(cd "$RODINIA_DATA_DIR" && pwd)"
@@ -69,12 +70,12 @@ run_bench() {
 
 run_bench "cl_gemm ($MODE)" \
   "$SAMPLES/cl_gemm/build" \
-  ./cl_gemm "$MODE" 1024 1
+  ./cl_gemm "$MODE" 512 512
 
 if [[ $MODE == "gpu" ]]; then
   run_bench "ze_gemm" \
     "$SAMPLES/ze_gemm/build" \
-    ./ze_gemm 1024 1
+    ./ze_gemm 512 512
 fi
 
 run_bench "bench_b+tree" \
