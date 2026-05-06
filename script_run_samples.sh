@@ -20,7 +20,7 @@ RODINIA="$SAMPLES/cl_rodinia_benchmarks"
 FINETRACE="${FINETRACE:-$ROOT_DIR/build/finetrace}"
 RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
 
-REPEATS=3
+REPEATS=5
 RUN_CPU=0
 RUN_GPU=0
 
@@ -236,7 +236,7 @@ lookup_avg() {
 print_summary() {
   log ""
   log "########################################"
-  log "# Summary (average ms over $REPEATS runs)"
+  log "# Summary (average time in seconds over $REPEATS runs)"
   log "########################################"
 
   local modes=()
