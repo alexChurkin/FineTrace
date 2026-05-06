@@ -39,7 +39,7 @@ make
 ```
 Use this command line to run the application:
 ```sh
-./ze_gemm [cpu/gpu] [matrix_size] [repeats_count]
+./ze_gemm [matrix_size] [repeats_count]
 ```
 ### Windows
 Use Microsoft* Visual Studio x64 command prompt to run the following commands and build the sample:
@@ -52,5 +52,5 @@ nmake
 ```
 Use this command line to run the application:
 ```sh
-ze_gemm.exe [cpu/gpu] [matrix_size] [repeats_count]
+ze_gemm.exe [matrix_size] [repeats_count]
 ```

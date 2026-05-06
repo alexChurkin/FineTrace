@@ -86,34 +86,6 @@ inline std::vector<ze_device_handle_t> GetSubDeviceList(
   return sub_device_list;
 }
 
-inline ze_driver_handle_t GetCpuDriver() {
-  for (auto driver : GetDriverList()) {
-    for (auto device : GetDeviceList(driver)) {
-      ze_device_properties_t props{ZE_STRUCTURE_TYPE_DEVICE_PROPERTIES, };
-      ze_result_t status = zeDeviceGetProperties(device, &props);
-      FTRACE_ASSERT(status == ZE_RESULT_SUCCESS);
-      if (props.type == ZE_DEVICE_TYPE_CPU) {
-        return driver;
-      }
-    }
-  }
-  return nullptr;
-}
-
-inline ze_device_handle_t GetCpuDevice() {
-  for (auto driver : GetDriverList()) {
-    for (auto device : GetDeviceList(driver)) {
-      ze_device_properties_t props{ZE_STRUCTURE_TYPE_DEVICE_PROPERTIES, };
-      ze_result_t status = zeDeviceGetProperties(device, &props);
-      FTRACE_ASSERT(status == ZE_RESULT_SUCCESS);
-      if (props.type == ZE_DEVICE_TYPE_CPU) {
-        return device;
-      }
-    }
-  }
-  return nullptr;
-}
-
 inline ze_driver_handle_t GetGpuDriver() {
   std::vector<ze_driver_handle_t> driver_list;
 
