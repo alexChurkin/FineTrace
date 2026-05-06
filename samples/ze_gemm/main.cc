@@ -244,25 +244,33 @@ static void Compute(ze_device_handle_t device,
 }
 
 int main(int argc, char* argv[]) {
+  int arg_offset = 1;
+  bool use_gpu = true;
+
+  if (argc > 1 && (strcmp(argv[1], "cpu") == 0 || strcmp(argv[1], "gpu") == 0)) {
+    use_gpu = (strcmp(argv[1], "gpu") == 0);
+    arg_offset = 2;
+  }
+
   ze_result_t status = ZE_RESULT_SUCCESS;
-  status = zeInit(ZE_INIT_FLAG_GPU_ONLY);
+  status = zeInit(use_gpu ? ZE_INIT_FLAG_GPU_ONLY : 0);
   FTRACE_ASSERT(status == ZE_RESULT_SUCCESS);
 
-  ze_device_handle_t device = utils::ze::GetGpuDevice();
-  ze_driver_handle_t driver = utils::ze::GetGpuDriver();
+  ze_device_handle_t device = use_gpu ? utils::ze::GetGpuDevice() : utils::ze::GetCpuDevice();
+  ze_driver_handle_t driver = use_gpu ? utils::ze::GetGpuDriver() : utils::ze::GetCpuDriver();
   if (device == nullptr || driver == nullptr) {
-      std::cout << "Unable to find GPU device" << std::endl;
-      return 0;
+    std::cout << "Unable to find " << (use_gpu ? "GPU" : "CPU") << " device" << std::endl;
+    return 0;
   }
 
   unsigned size = 1024;
-  if (argc > 1) {
-    size = std::stoul(argv[1]);
+  if (argc > arg_offset) {
+    size = std::stoul(argv[arg_offset]);
   }
 
   unsigned repeat_count = 4;
-  if (argc > 2) {
-    repeat_count = std::stoul(argv[2]);
+  if (argc > arg_offset + 1) {
+    repeat_count = std::stoul(argv[arg_offset + 1]);
   }
 
   std::cout << "Level Zero Matrix Multiplication (matrix size: " << size <<
