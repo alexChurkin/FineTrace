@@ -40,10 +40,37 @@ build_all() {
   make -C "$RODINIA/bench_nw" KERNEL_DIM="-DRD_WG_SIZE_0=16"
 }
 
-if [[ "${1:-}" == "--clean" ]]; then
-  clean_all
-else
-  clean_all
-  build_all
-  echo "-- All samples built successfully"
-fi
+case "${1:-}" in
+  --clean)
+    clean_all
+    ;;
+  --help|-h)
+    echo "Usage: $0 [--clean | --help]"
+    echo ""
+    echo "Without arguments: clean and build all samples."
+    echo ""
+    echo "Options:"
+    echo "  --clean   Clean build artifacts only, do not build."
+    echo "            cmake samples (cl_gemm, ze_gemm): removes their build/ directory."
+    echo "            rodinia benchmarks: runs 'make clean' in each."
+    echo "  --help    Show this help message."
+    echo ""
+    echo "Samples built:"
+    echo "  samples/cl_gemm              (CMake)"
+    echo "  samples/ze_gemm              (CMake)"
+    echo "  samples/cl_rodinia_benchmarks/bench_b+tree"
+    echo "  samples/cl_rodinia_benchmarks/bench_bfs"
+    echo "  samples/cl_rodinia_benchmarks/bench_gaussian"
+    echo "  samples/cl_rodinia_benchmarks/bench_nw"
+    ;;
+  "")
+    clean_all
+    build_all
+    echo "-- All samples built successfully"
+    ;;
+  *)
+    echo "Unknown option: $1"
+    echo "Run '$0 --help' for usage."
+    exit 1
+    ;;
+esac
