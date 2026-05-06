@@ -18,7 +18,6 @@ To run application on target device and sub-device one can specify `FTRACE_DEVIC
 
 ## Supported OS
 - Linux
-- Windows (*under development*)
 
 ## Prerequisites
 - [CMake](https://cmake.org/) (version 3.12 and above)
@@ -40,17 +39,4 @@ make
 Use this command line to run the application:
 ```sh
 ./ze_gemm [matrix_size] [repeats_count]
-```
-### Windows
-Use Microsoft* Visual Studio x64 command prompt to run the following commands and build the sample:
-```sh
-cd <finetrace>\samples\ze_gemm
-mkdir build
-cd build
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=<level_zero_loader>\lib -DCMAKE_INCLUDE_PATH=<level_zero_loader>\include ..
-nmake
-```
-Use this command line to run the application:
-```sh
-ze_gemm.exe [matrix_size] [repeats_count]
 ```

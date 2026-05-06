@@ -16,7 +16,6 @@ Total execution time: 0.739879 sec
 ```
 ## Supported OS
 - Linux
-- Windows
 
 ## Prerequisites
 - [CMake](https://cmake.org/) (version 3.12 and above)
@@ -38,17 +37,4 @@ make
 Use this command line to run the application:
 ```sh
 ./cl_gemm [cpu|gpu] [matrix_size] [repeat_count]
-```
-### Windows
-Use Microsoft* Visual Studio x64 command prompt to run the following commands and build the sample:
-```sh
-cd <finetrace>\samples\cl_gemm
-mkdir build
-cd build
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=<opencl_icd_lib_path> ..
-nmake
-```
-Use this command line to run the application:
-```sh
-cl_gemm.exe [cpu|gpu] [matrix_size] [repeats_count]
 ```

@@ -8,7 +8,7 @@ SetBuildType()
 
 add_executable(ze_gemm main.cc)
 target_include_directories(ze_gemm
-  PRIVATE "${PROJECT_SOURCE_DIR}/../../utils")
+  PRIVATE "${PROJECT_SOURCE_DIR}/../../src/utils")
 if(CMAKE_INCLUDE_PATH)
   target_include_directories(ze_gemm
     PUBLIC "${CMAKE_INCLUDE_PATH}")

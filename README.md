@@ -4,7 +4,7 @@ This tool provides basic tracing and profiling capabilities for the compute appl
 
 The following capabilities are available:
 ```
-Usage: ./finetrace[.exe] [options] <application> <args>
+Usage: ./finetrace [options] <application> <args>
 Options:
 --call-logging [-c]            Trace host API calls
 --host-timing  [-h]            Report host API execution time
@@ -152,7 +152,6 @@ All the API calls and kernels, which submission happens while collection disable
 
 ## Supported OS
 - Linux
-- Windows (*under development*)
 
 ## Prerequisites
 - [CMake](https://cmake.org/) (version 3.12 and above)
@@ -181,22 +180,4 @@ One may use e.g. [dpc_gemm](../../samples/dpc_gemm) as target application, e.g.:
 ```sh
 ./finetrace -c -h ../../../samples/dpc_gemm/build/dpc_gemm cpu
 ./finetrace -c -h ../../../samples/dpc_gemm/build/dpc_gemm gpu
-```
-### Windows
-Use Microsoft* Visual Studio x64 command prompt to run the following commands and build the sample:
-```sh
-cd finetrace
-mkdir build
-cd build
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=<opencl_icd_lib_path> ..
-nmake
-```
-Use this command line to run the tool:
-```sh
-finetrace.exe [options] <target_application>
-```
-One may use e.g. [dpc_gemm](../../samples/dpc_gemm) as target application, e.g.:
-```sh
-finetrace.exe -c -h ..\..\..\samples\dpc_gemm\build\dpc_gemm.exe cpu
-finetrace.exe -c -h ..\..\..\samples\dpc_gemm\build\dpc_gemm.exe gpu
 ```
