@@ -7,7 +7,7 @@ static UnifiedTracer* tracer = nullptr;
 extern "C" FTRACE_EXPORT
 void Usage() {
   std::cout <<
-    "Usage: ./finetrace[.exe] [options] <application> <args>" <<
+    "Usage: ./finetrace [options] <application> <args>" <<
     std::endl;
   std::cout << "Options:" << std::endl;
   std::cout <<
@@ -19,20 +19,17 @@ void Usage() {
     "Report host API execution time" <<
     std::endl;
   std::cout <<
-    "--device-timing [-d]           " <<
-    "Report kernels execution time" <<
+    "--chrome-call-logging          " <<
+    "Dump host API calls to JSON file" <<
     std::endl;
-  std::cout <<
-    "--kernel-submission [-s]       " <<
-    "Report append (queued), submit and execute intervals for kernels" <<
-    std::endl;
+  std::cout << std::endl;
   std::cout <<
     "--device-timeline [-t]         " <<
     "Trace device activities" <<
     std::endl;
   std::cout <<
-    "--chrome-call-logging          " <<
-    "Dump host API calls to JSON file" <<
+    "--device-timing [-d]           " <<
+    "Report kernels execution time" <<
     std::endl;
   std::cout <<
     "--chrome-device-timeline       " <<
@@ -42,10 +39,16 @@ void Usage() {
     "--chrome-kernel-timeline       " <<
     "Dump device activities to JSON file per kernel name" <<
     std::endl;
+  std::cout << std::endl;
+  std::cout <<
+    "--kernel-submission [-s]       " <<
+    "Report append (queued), submit and execute intervals for kernels" <<
+    std::endl;
   std::cout <<
     "--chrome-device-stages         " <<
     "Dump device activities by stages to JSON file" <<
     std::endl;
+  std::cout << std::endl;
   std::cout <<
     "--verbose [-v]                 " <<
     "Enable verbose mode to show more kernel information" <<

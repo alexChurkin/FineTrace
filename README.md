@@ -17,6 +17,7 @@ Options:
 
 --kernel-submission [-s]       Report append (queued), submit and execute intervals for kernels
 --chrome-device-stages         Dump device activities by stages to JSON file
+
 --verbose [-v]                 Enable verbose mode to show more kernel information
 --demangle                     Demangle DPC++ kernel names
 --kernels-per-tile             Dump kernel information per tile
