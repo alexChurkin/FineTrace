@@ -76,23 +76,21 @@ fi
 log()      { printf '%s\n' "$*"; }
 log_head() { printf '\n=== %s ===\n' "$*"; }
 
-# Milliseconds since epoch. Prefer bash 5's EPOCHREALTIME, fall back to
-# `date +%s%3N` (GNU date), then to python3. Works on macOS bash 3.2 as long
-# as one of the latter two is available.
-now_ms() {
+# Microseconds since epoch. Prefer bash 5's EPOCHREALTIME (strips dot → μs),
+# fall back to `date +%s%6N` (GNU date), then to python3.
+now_us() {
   if [[ -n "${EPOCHREALTIME:-}" ]]; then
-    # EPOCHREALTIME is "<seconds>.<microseconds>"; strip the dot, drop last 3.
-    local t="${EPOCHREALTIME/./}"
-    printf '%s\n' "${t:0:${#t}-3}"
-  elif [[ "$(date +%s%3N 2>/dev/null)" =~ ^[0-9]+$ ]]; then
-    date +%s%3N
+    # EPOCHREALTIME = "<seconds>.<microseconds>"; removing the dot gives integer μs.
+    printf '%s\n' "${EPOCHREALTIME/./}"
+  elif [[ "$(date +%s%6N 2>/dev/null)" =~ ^[0-9]+$ ]]; then
+    date +%s%6N
   else
-    python3 -c 'import time; print(int(time.time()*1000))'
+    python3 -c 'import time; print(int(time.time()*1000000))'
   fi
 }
 
-# Format milliseconds as seconds with 5 decimal places.
-fmt_s() { awk "BEGIN{printf \"%.5f s\", $1/1000}"; }
+# Format microseconds as seconds with 5 decimal places.
+fmt_s() { awk "BEGIN{printf \"%.5f s\", $1/1000000}"; }
 
 # Resolve to absolute path so it works regardless of `cd` inside run_one.
 RODINIA_DATA_DIR="$(cd "$RODINIA_DATA_DIR" && pwd)"
@@ -109,7 +107,7 @@ clinfo -l || true
 # ---------------------------------------------------------------------------
 # Result storage
 #
-# Each entry in RESULTS is a single line: "<mode>\t<variant>\t<bench>\t<avg_ms>"
+# Each entry in RESULTS is a single line: "<mode>\t<variant>\t<bench>\t<avg_us>"
 # Parsed back via `IFS=$'\t' read -r mode variant bench avg <<<"$entry"`.
 # ---------------------------------------------------------------------------
 RESULTS=()
@@ -148,20 +146,20 @@ run_one() {
 
   log_head "$name [$mode / $label] ($REPEATS runs)"
   printf '  command: %s\n' "${cmd[*]}"
-  local total_ms=0 i start end elapsed
+  local total_us=0 i start end elapsed
   for ((i = 1; i <= REPEATS; i++)); do
-    start=$(now_ms)
+    start=$(now_us)
     ( cd "$dir" && "${cmd[@]}" ) >/dev/null 2>&1
-    end=$(now_ms)
+    end=$(now_us)
     elapsed=$(( end - start ))
-    total_ms=$(( total_ms + elapsed ))
-    printf '  run %2d: %.5f s\n' "$i" "$(awk "BEGIN{printf \"%.5f\", $elapsed/1000}")"
+    total_us=$(( total_us + elapsed ))
+    printf '  run %2d: %.5f s\n' "$i" "$(awk "BEGIN{printf \"%.5f\", $elapsed/1000000}")"
   done
 
-  local avg_ms=$(( total_ms / REPEATS ))
-  printf '  average: %s\n' "$(fmt_s "$avg_ms")"
+  local avg_us=$(( total_us / REPEATS ))
+  printf '  average: %s\n' "$(fmt_s "$avg_us")"
 
-  RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "$avg_ms")" )
+  RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "$avg_us")" )
   remember_bench "$name"
 }
 
@@ -274,7 +272,7 @@ print_summary() {
       printf '%-*s' "$name_w" "$name"
       for vlabel in "${VARIANT_LABELS[@]}"; do
         val="$(lookup_avg "$mode" "$vlabel" "$name")"
-        [[ "$val" != "-" ]] && val="$(awk "BEGIN{printf \"%.5f\", $val/1000}")"
+        [[ "$val" != "-" ]] && val="$(awk "BEGIN{printf \"%.5f\", $val/1000000}")"
         printf ' | %*s' "$col_w" "$val"
       done
       printf '\n'
