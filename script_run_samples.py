@@ -2,7 +2,7 @@ import subprocess
 import pandas as pd
 
 def run_benchmarks():
-    print("Running bash script... Please wait until benchmarks complete.")
+    print("Running bash script... Please wait until benchmarks complete.\n")
     # Run the bash script and read its output
     process = subprocess.Popen(['./script_run_samples.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     
