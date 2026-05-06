@@ -193,12 +193,12 @@ run_suite() {
 
   run_all_variants "$mode" "cl_gemm" \
     "$SAMPLES/cl_gemm/build" \
-    ./cl_gemm "$mode" 512 512
+    ./cl_gemm "$mode" 512 128
 
   if [[ "$mode" == "gpu" ]]; then
     run_all_variants "$mode" "ze_gemm" \
       "$SAMPLES/ze_gemm/build" \
-      ./ze_gemm 512 512
+      ./ze_gemm 512 128
   fi
 
   run_all_variants "$mode" "bench_b+tree" \
