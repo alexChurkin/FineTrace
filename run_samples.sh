@@ -11,9 +11,10 @@ RODINIA="$SAMPLES/cl_rodinia_benchmarks"
 
 REPEATS=10
 MODE="cpu"
+RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
 
 usage() {
-  echo "Usage: $0 [--gpu] [-n N] [--help]"
+  echo "Usage: $0 [--gpu] [-n N] [--data-dir DIR] [--help]"
   echo ""
   echo "Run benchmark samples with per-run timing and average."
   echo ""
@@ -29,12 +30,16 @@ usage() {
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --gpu)      MODE="gpu"; shift ;;
-    -n)         REPEATS="$2"; shift 2 ;;
-    --help|-h)  usage; exit 0 ;;
-    *)          echo "Unknown option: $1"; usage; exit 1 ;;
+    --gpu)       MODE="gpu"; shift ;;
+    -n)          REPEATS="$2"; shift 2 ;;
+    --data-dir)  RODINIA_DATA_DIR="$2"; shift 2 ;;
+    --help|-h)   usage; exit 0 ;;
+    *)           echo "Unknown option: $1"; usage; exit 1 ;;
   esac
 done
+
+# Resolve to absolute path so it works regardless of `cd` inside run_bench.
+RODINIA_DATA_DIR="$(cd "$RODINIA_DATA_DIR" && pwd)"
 
 if [[ $MODE == "gpu" ]]; then
   CL_PLATFORM=0; CL_DEVICE=0
@@ -74,12 +79,12 @@ fi
 
 run_bench "bench_b+tree" \
   "$RODINIA/bench_b+tree" \
-  ./b+tree.out file ../data/b+tree/mil.txt command ../data/b+tree/command.txt \
+  ./b+tree.out file "$RODINIA_DATA_DIR/b+tree/mil.txt" command "$RODINIA_DATA_DIR/b+tree/command.txt" \
     -p "$CL_PLATFORM" -d "$CL_DEVICE"
 
 run_bench "bench_bfs" \
   "$RODINIA/bench_bfs" \
-  ./bfs.out ../data/bfs/graph1MW_6.txt \
+  ./bfs.out "$RODINIA_DATA_DIR/bfs/graph1MW_6.txt" \
     -p "$CL_PLATFORM" -d "$CL_DEVICE"
 
 run_bench "bench_gaussian" \
