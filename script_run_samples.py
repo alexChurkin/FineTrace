@@ -2,8 +2,8 @@ import subprocess
 import pandas as pd
 
 def run_benchmarks():
-    print("Запуск bash-скрипта... Ожидайте завершения бенчмарков.")
-    # Запускаем bash-скрипт и читаем вывод
+    print("Running bash script... Please wait until benchmarks complete.")
+    # Run the bash script and read its output
     process = subprocess.Popen(['./script_run_samples.sh'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     
     results = []
@@ -11,7 +11,7 @@ def run_benchmarks():
     capture = False
     
     for line in process.stdout:
-        print(line, end='') # Дублируем вывод в консоль
+        print(line, end='')  # Mirror output to the console
         
         if "Summary" in line:
             capture = True
@@ -34,44 +34,44 @@ def run_benchmarks():
     process.wait()
     return results
 
-def create_excel(data, filename="finetrace_results.xlsx"):
+def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
     df = pd.DataFrame(data)
     
-    # Конвертируем абсолютные значения в числа
+    # Convert absolute values to numbers
     abs_columns = ["clean", "call-logging", "device-timeline", "both"]
     for col in abs_columns:
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Высчитываем оверхед в процентах
+    # Compute overhead as a percentage
     pct_columns = []
     for col in ["call-logging", "device-timeline", "both"]:
         pct_col_name = f"{col} (%)"
         pct_columns.append(pct_col_name)
-        # Формула: (Текущее - Clean) / Clean * 100
+        # Formula: (Current - Clean) / Clean * 100
         df[pct_col_name] = ((df[col] - df["clean"]) / df["clean"]) * 100
 
-    # Создаем Excel
+    # Create the Excel file
     writer = pd.ExcelWriter(filename, engine='xlsxwriter')
     
     for mode in df['Mode'].unique():
-        # Отфильтровываем данные по режиму
+        # Filter data by mode
         mode_df = df[df['Mode'] == mode].drop(columns=['Mode'])
         sheet_name = f"Results_{mode}"
         
-        # Записываем в таблицу
+        # Write to the sheet
         mode_df.to_excel(writer, sheet_name=sheet_name, index=False)
         
         workbook  = writer.book
         worksheet = writer.sheets[sheet_name]
         
-        # Округляем проценты для красивого отображения в таблице
+        # Round percentages for cleaner display in the table
         format_pct = workbook.add_format({'num_format': '0.00'})
         worksheet.set_column(5, 7, None, format_pct) 
         
         max_row = len(mode_df)
         
         # ==========================================
-        # ГРАФИК 1: Абсолютное время (миллисекунды)
+        # CHART 1: Absolute time (milliseconds)
         # ==========================================
         chart_abs = workbook.add_chart({'type': 'column'})
         for i, col_name in enumerate(abs_columns):
@@ -87,11 +87,11 @@ def create_excel(data, filename="finetrace_results.xlsx"):
         worksheet.insert_chart('J2', chart_abs, {'x_scale': 1.2, 'y_scale': 1.2})
         
         # ==========================================
-        # ГРАФИК 2: Оверхед (в процентах)
+        # CHART 2: Overhead (percentage)
         # ==========================================
         chart_pct = workbook.add_chart({'type': 'column'})
         for i, col_name in enumerate(pct_columns):
-            col_idx = i + 5 # Индексы колонок с процентами (начинаются с F = 5)
+            col_idx = i + 5  # Indices of percentage columns (starting at F = 5)
             chart_pct.add_series({
                 'name':       [sheet_name, 0, col_idx],
                 'categories': [sheet_name, 1, 0, max_row, 0],
@@ -100,22 +100,22 @@ def create_excel(data, filename="finetrace_results.xlsx"):
         chart_pct.set_title({'name': f'Overhead Percentage - {mode.upper()}'})
         chart_pct.set_x_axis({'name': 'Benchmark'})
         chart_pct.set_y_axis({'name': 'Overhead (%)'})
-        chart_pct.set_style(12) # Другой стиль для визуального отличия
+        chart_pct.set_style(12)  # Different style for visual contrast
         
-        # Вставляем график оверхеда ниже первого графика
+        # Place the overhead chart below the first chart
         worksheet.insert_chart('J20', chart_pct, {'x_scale': 1.2, 'y_scale': 1.2})
         
-        # Немного расширяем колонки для читаемости
+        # Widen columns slightly for readability
         worksheet.set_column('A:A', 20)
         worksheet.set_column('B:E', 12)
         worksheet.set_column('F:H', 18)
 
     writer.close()
-    print(f"\n[Успех] Файл создан: {filename}. Добавлены графики абсолютного времени и процентного оверхеда.")
+    print(f"\n[Success] File created: {filename}. Absolute time and percentage overhead charts have been added.")
 
 if __name__ == "__main__":
     raw_data = run_benchmarks()
     if raw_data:
         create_excel(raw_data)
     else:
-        print("Данные не найдены. Проверьте вывод bash-скрипта.")
+        print("No data found. Please check the bash script output.")
