@@ -91,11 +91,8 @@ now_ms() {
   fi
 }
 
-# Format milliseconds as "<ms> ms (<s.sss> s)".
-fmt_ms() {
-  local ms=$1
-  printf '%d ms (%d.%03d s)' "$ms" $((ms / 1000)) $((ms % 1000))
-}
+# Format milliseconds as seconds with 5 decimal places.
+fmt_s() { awk "BEGIN{printf \"%.5f s\", $1/1000}"; }
 
 # Resolve to absolute path so it works regardless of `cd` inside run_one.
 RODINIA_DATA_DIR="$(cd "$RODINIA_DATA_DIR" && pwd)"
@@ -150,6 +147,7 @@ run_one() {
   fi
 
   log_head "$name [$mode / $label] ($REPEATS runs)"
+  printf '  command: %s\n' "${cmd[*]}"
   local total_ms=0 i start end elapsed
   for ((i = 1; i <= REPEATS; i++)); do
     start=$(now_ms)
@@ -157,11 +155,11 @@ run_one() {
     end=$(now_ms)
     elapsed=$(( end - start ))
     total_ms=$(( total_ms + elapsed ))
-    printf '  run %2d: %d ms\n' "$i" "$elapsed"
+    printf '  run %2d: %.5f s\n' "$i" "$(awk "BEGIN{printf \"%.5f\", $elapsed/1000}")"
   done
 
   local avg_ms=$(( total_ms / REPEATS ))
-  printf '  average: %s\n' "$(fmt_ms "$avg_ms")"
+  printf '  average: %s\n' "$(fmt_s "$avg_ms")"
 
   RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "$avg_ms")" )
   remember_bench "$name"
@@ -259,7 +257,7 @@ print_summary() {
     # Header.
     printf '%-*s' "$name_w" "Benchmark"
     for vlabel in "${VARIANT_LABELS[@]}"; do
-      printf ' | %*s' "$col_w" "$vlabel (ms)"
+      printf ' | %*s' "$col_w" "$vlabel (s)"
     done
     printf '\n'
 
@@ -276,6 +274,7 @@ print_summary() {
       printf '%-*s' "$name_w" "$name"
       for vlabel in "${VARIANT_LABELS[@]}"; do
         val="$(lookup_avg "$mode" "$vlabel" "$name")"
+        [[ "$val" != "-" ]] && val="$(awk "BEGIN{printf \"%.5f\", $val/1000}")"
         printf ' | %*s' "$col_w" "$val"
       done
       printf '\n'

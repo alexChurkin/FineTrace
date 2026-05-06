@@ -82,7 +82,7 @@ def create_excel(data, filename="finetrace_results.xlsx"):
             })
         chart_abs.set_title({'name': f'Absolute Time - {mode.upper()}'})
         chart_abs.set_x_axis({'name': 'Benchmark'})
-        chart_abs.set_y_axis({'name': 'Time (ms)'})
+        chart_abs.set_y_axis({'name': 'Time (s)'})
         chart_abs.set_style(11)
         worksheet.insert_chart('J2', chart_abs, {'x_scale': 1.2, 'y_scale': 1.2})
         
