@@ -9,4 +9,4 @@ compile_commands.json
 CMakeUserPresets.json
 error_diff.txt
 *.swp
-*finetrace_overhead.xlsx*
+finetrace_overhead_stat.xlsx
