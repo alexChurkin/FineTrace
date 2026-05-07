@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" width="720" height="900">
+<defs>
+  <filter id="sh"><feDropShadow dx="1" dy="1.5" stdDeviation="2" flood-opacity="0.22"/></filter>
+  <marker id="a"   markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#455A64"/></marker>
+  <marker id="ag"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#2E7D32"/></marker>
+  <marker id="ao"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#BF360C"/></marker>
+  <marker id="ab"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#0D47A1"/></marker>
+  <marker id="ap"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#6A1B9A"/></marker>
+  <marker id="asl" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#263238"/></marker>
+  <marker id="atl" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#004D40"/></marker>
+</defs>
+
+<rect width="720" height="900" fill="#F0F4F8"/>
+
+<!-- TITLE -->
+
+<!-- ══════════════════════════════════════ -->
+<!--  1. ЦЕЛЕВОЕ ПРИЛОЖЕНИЕ                -->
+<!-- ══════════════════════════════════════ -->
+<rect x="110" y="32" width="500" height="54" rx="9" fill="#283593" filter="url(#sh)"/>
+<text x="360" y="53" text-anchor="middle" font-family="Segoe UI,Arial" font-size="13" font-weight="bold" fill="white">Целевое приложение</text>
+<text x="360" y="71" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#9FA8DA">вызовы OpenCL API / Level Zero API · запуски kernel-программ</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  2. ЗАГРУЗЧИК + TraceOptions           -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="104" width="452" height="68" rx="9" fill="none" stroke="#7E57C2" stroke-width="1.3" stroke-dasharray="6,4"/>
+<text x="36" y="118" font-family="Segoe UI,Arial" font-size="9" fill="#7E57C2" font-style="italic">Загрузчик (LD_PRELOAD)</text>
+
+<rect x="26"  y="119" width="133" height="45" rx="7" fill="#5E35B1" filter="url(#sh)"/>
+<text x="92"  y="136" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">loader.cc</text>
+<text x="92"  y="153" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#D1C4E9">запуск приложения</text>
+
+<line x1="159" y1="141" x2="180" y2="141" stroke="#7E57C2" stroke-width="2" marker-end="url(#ap)"/>
+
+<rect x="180" y="119" width="110" height="45" rx="7" fill="#7E57C2" filter="url(#sh)"/>
+<text x="235" y="136" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">init.cc</text>
+<text x="235" y="153" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#EDE7F6">Load / Unload</text>
+
+<line x1="290" y1="141" x2="312" y2="141" stroke="#7E57C2" stroke-width="2" marker-end="url(#ap)"/>
+
+<rect x="312" y="119" width="150" height="45" rx="7" fill="#6A1B9A" filter="url(#sh)"/>
+<text x="387" y="136" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">tool.cc</text>
+<text x="387" y="153" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#E1BEE7">Enable / DisableProfiling</text>
+
+<!-- TraceOptions -->
+<rect x="486" y="104" width="216" height="68" rx="9" fill="#E65100" filter="url(#sh)"/>
+<text x="594" y="126" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" font-weight="bold" fill="white">TraceOptions</text>
+<text x="594" y="144" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFF9C4">HOST_TIMING · DEVICE_TIMING</text>
+<text x="594" y="160" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFF9C4">CHROME_* · VERBOSE …</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  3. UNIFIEDTRACER                      -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="192" width="684" height="118" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2.2" filter="url(#sh)"/>
+<text x="148" y="210" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" font-weight="bold" fill="#1B5E20">UnifiedTracer</text>
+
+<rect x="26" y="216" width="192" height="86" rx="7" fill="#546E7A"/>
+<text x="122" y="234" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">Correlator</text>
+<line x1="33" y1="240" x2="210" y2="240" stroke="#78909C" stroke-width="0.8"/>
+<text x="122" y="254" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#CFD8DC">base_time · GetTimestamp()</text>
+<text x="122" y="268" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#CFD8DC">Log() · GetKernelId()</text>
+<text x="122" y="293" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#B0BEC5">синхронизация временных меток</text>
+
+<rect x="230" y="216" width="192" height="86" rx="7" fill="#00695C"/>
+<text x="326" y="234" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">chrome_logger</text>
+<line x1="237" y1="240" x2="414" y2="240" stroke="#4DB6AC" stroke-width="0.8"/>
+<text x="326" y="254" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#B2DFDB">Logger* — JSON-события</text>
+<text x="326" y="268" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#B2DFDB">формат Chrome Tracing</text>
+<text x="326" y="293" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80CBC4">nullptr если опция выключена</text>
+
+<rect x="434" y="216" width="260" height="86" rx="7" fill="#F1F8E9" stroke="#8BC34A" stroke-width="1"/>
+<text x="564" y="234" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="#2E7D32">Report()</text>
+<line x1="441" y1="240" x2="686" y2="240" stroke="#AED581" stroke-width="0.8"/>
+<text x="564" y="254" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#558B2F">агрегирует *InfoMap всех коллекторов</text>
+<text x="564" y="267" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#558B2F">callback-методы:</text>
+<text x="564" y="280" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#558B2F">OnClKernelFinish · OnZeFunctionFinish</text>
+<text x="564" y="293" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#388E3C">ClChromeKernelCallback · …</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  4. COLLECTORS — OpenCL               -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="334" width="684" height="146" rx="10" fill="none" stroke="#BF360C" stroke-width="1.4" stroke-dasharray="7,4"/>
+<text x="40" y="350" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="#BF360C">OpenCL</text>
+
+<!-- ClApiCollector CPU -->
+<rect x="26" y="356" width="158" height="116" rx="7" fill="#E64A19" filter="url(#sh)"/>
+<text x="105" y="374" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">ClApiCollector</text>
+<text x="105" y="388" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFCCBC">CPU</text>
+<line x1="32" y1="394" x2="178" y2="394" stroke="#FF7043" stroke-width="0.8"/>
+<text x="105" y="408" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">перехват OpenCL API</text>
+<text x="105" y="421" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">→ ClFunctionInfoMap</text>
+<text x="105" y="434" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#FFCCBC">длительности API-вызовов</text>
+<text x="105" y="463" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FF8A65">CPU device</text>
+
+<!-- ClApiCollector GPU -->
+<rect x="194" y="356" width="158" height="116" rx="7" fill="#E64A19" filter="url(#sh)"/>
+<text x="273" y="374" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">ClApiCollector</text>
+<text x="273" y="388" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFCCBC">GPU</text>
+<line x1="200" y1="394" x2="346" y2="394" stroke="#FF7043" stroke-width="0.8"/>
+<text x="273" y="408" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">перехват OpenCL API</text>
+<text x="273" y="421" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">→ ClFunctionInfoMap</text>
+<text x="273" y="434" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#FFCCBC">длительности API-вызовов</text>
+<text x="273" y="463" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FF8A65">GPU device</text>
+
+<!-- ClKernelCollector CPU -->
+<rect x="362" y="356" width="162" height="116" rx="7" fill="#BF360C" filter="url(#sh)"/>
+<text x="443" y="374" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">ClKernelCollector</text>
+<text x="443" y="388" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFCCBC">CPU</text>
+<line x1="368" y1="394" x2="518" y2="394" stroke="#E64A19" stroke-width="0.8"/>
+<text x="443" y="408" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">запуск kernel-программ</text>
+<text x="443" y="421" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">→ ClKernelInfoMap</text>
+<text x="443" y="434" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#FFCCBC">queued/submit/exec</text>
+<text x="443" y="463" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FF8A65">CPU device</text>
+
+<!-- ClKernelCollector GPU -->
+<rect x="534" y="356" width="160" height="116" rx="7" fill="#BF360C" filter="url(#sh)"/>
+<text x="614" y="374" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">ClKernelCollector</text>
+<text x="614" y="388" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFCCBC">GPU</text>
+<line x1="540" y1="394" x2="688" y2="394" stroke="#E64A19" stroke-width="0.8"/>
+<text x="614" y="408" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">запуск kernel-программ</text>
+<text x="614" y="421" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#FFE0B2">→ ClKernelInfoMap</text>
+<text x="614" y="434" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#FFCCBC">queued/submit/exec</text>
+<text x="614" y="463" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FF8A65">GPU device</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  5. COLLECTORS — Level Zero            -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="500" width="684" height="146" rx="10" fill="none" stroke="#1565C0" stroke-width="1.4" stroke-dasharray="7,4"/>
+<text x="40" y="516" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="#1565C0">Level Zero</text>
+<text x="130" y="516" font-family="Segoe UI,Arial" font-size="9" fill="#5C9ADB" font-style="italic">— создаётся и управляется UnifiedTracer аналогично OpenCL</text>
+
+<!-- ZeApiCollector -->
+<rect x="26" y="520" width="330" height="116" rx="7" fill="#1565C0" filter="url(#sh)"/>
+<text x="191" y="540" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">ZeApiCollector</text>
+<line x1="32" y1="547" x2="350" y2="547" stroke="#1976D2" stroke-width="0.8"/>
+<text x="191" y="562" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#BBDEFB">перехват Level Zero API</text>
+<text x="191" y="576" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#BBDEFB">→ ZeFunctionInfoMap</text>
+<text x="191" y="590" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#BBDEFB">min / max / total / calls</text>
+<text x="191" y="604" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#BBDEFB">zel_tracer_handle_t tracer_</text>
+<text x="191" y="628" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#90CAF9">zeCommandQueue* · zeModule* …</text>
+
+<!-- ZeKernelCollector -->
+<rect x="366" y="520" width="330" height="116" rx="7" fill="#0D47A1" filter="url(#sh)"/>
+<text x="531" y="540" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">ZeKernelCollector</text>
+<line x1="372" y1="547" x2="690" y2="547" stroke="#1565C0" stroke-width="0.8"/>
+<text x="531" y="562" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#BBDEFB">append → submit → execute</text>
+<text x="531" y="576" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#BBDEFB">→ ZeKernelInfoMap</text>
+<text x="531" y="590" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#BBDEFB">ZeCommandListMap · events</text>
+<text x="531" y="628" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#90CAF9">zel_tracer_handle_t tracer_</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  6. ClApiTracer                        -->
+<!-- ══════════════════════════════════════ -->
+<rect x="110" y="662" width="338" height="44" rx="7" fill="#6A1B9A" filter="url(#sh)"/>
+<text x="279" y="679" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11" font-weight="bold" fill="white">ClApiTracer</text>
+<text x="279" y="697" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#E1BEE7">перехват OpenCL API</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  7. OUTPUT                             -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="724" width="330" height="86" rx="9" fill="#263238" filter="url(#sh)"/>
+<text x="183" y="746" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" font-weight="bold" fill="white">Таблицы (stdout / файл)</text>
+<text x="183" y="763" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#90A4AE">HOST TIMING · DEVICE TIMING</text>
+<text x="183" y="777" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#90A4AE">KERNEL SUBMITTING</text>
+<text x="183" y="791" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#78909C">total / min / max / avg / calls</text>
+<text x="183" y="803" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#546E7A">→ finetrace.{pid}.txt</text>
+
+<rect x="372" y="724" width="330" height="86" rx="9" fill="#004D40" filter="url(#sh)"/>
+<text x="537" y="746" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" font-weight="bold" fill="white">Chrome Trace JSON</text>
+<text x="537" y="763" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#80CBC4">chrome://tracing — timeline</text>
+<text x="537" y="777" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#80CBC4">DeviceTimeline · CallLogging</text>
+<text x="537" y="791" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#4DB6AC">KernelTimeline · DeviceStages</text>
+<text x="537" y="803" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#4DB6AC">→ finetrace.{pid}.json</text>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  СТРЕЛКИ / ПОТОКИ ДАННЫХ                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+
+<!-- [A] tool.cc → UnifiedTracer Create -->
+<line x1="387" y1="164" x2="387" y2="190" stroke="#6A1B9A" stroke-width="2.2" marker-end="url(#ap)"/>
+<rect x="306" y="169" width="145" height="14" rx="3" fill="#F3E5F5" opacity="0.93"/>
+<text x="378" y="181" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" fill="#6A1B9A">UnifiedTracer::Create(options)</text>
+
+<!-- [B] TraceOptions → UnifiedTracer (dashed) -->
+<line x1="594" y1="172" x2="594" y2="190" stroke="#E65100" stroke-width="1.6" stroke-dasharray="5,3" marker-end="url(#ao)"/>
+<rect x="558" y="176" width="78" height="12" rx="2" fill="#FFF3E0" opacity="0.93"/>
+<text x="597" y="187" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#E65100">конфигурация</text>
+
+
+<!-- [E] UnifiedTracer → все коллекторы: создаёт, один представительный -->
+<line x1="220" y1="310" x2="220" y2="332" stroke="#2E7D32" stroke-width="2" marker-end="url(#ag)"/>
+<rect x="116" y="313" width="197" height="14" rx="3" fill="#E8F5E9" opacity="0.93"/>
+<text x="214" y="325" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#2E7D32">создаёт · передаёт Correlator*</text>
+
+<!-- [F] коллекторы → UnifiedTracer: *InfoMap через callback -->
+<line x1="490" y1="332" x2="490" y2="310" stroke="#E65100" stroke-width="1.6" stroke-dasharray="5,2" marker-end="url(#ao)"/>
+<rect x="368" y="313" width="175" height="14" rx="3" fill="#FBE9E7" opacity="0.93"/>
+<text x="455" y="325" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#BF360C">*InfoMap через callback</text>
+
+<!-- [G+H] UnifiedTracer ↔ L0: примечание в заголовке группы -->
+
+<!-- [I] OpenCL Collectors → ClApiTracer: обходит L0 по левому краю -->
+<path d="M 105 472 L 14 472 L 14 656 L 110 656 L 110 662" stroke="#6A1B9A" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#ap)"/>
+<rect x="16" y="643" width="92" height="13" rx="2" fill="#F3E5F5" opacity="0.93"/>
+<text x="62" y="654" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#6A1B9A">используется</text>
+
+<!-- [J] UnifiedTracer → Tables: по левому краю, не пересекает блоки -->
+<path d="M 18 310 L 5 310 L 5 718 L 183 718 L 183 724" stroke="#263238" stroke-width="2" fill="none" marker-end="url(#asl)"/>
+<rect x="28" y="705" width="125" height="13" rx="2" fill="#ECEFF1" opacity="0.93"/>
+<text x="90" y="716" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#263238">Report() → таблицы</text>
+
+<!-- [K] UnifiedTracer → Chrome JSON: по правому краю, не пересекает блоки -->
+<path d="M 702 310 L 715 310 L 715 718 L 537 718 L 537 724" stroke="#004D40" stroke-width="2" fill="none" marker-end="url(#atl)"/>
+<rect x="538" y="705" width="135" height="13" rx="2" fill="#E0F2F1" opacity="0.93"/>
+<text x="605" y="716" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#004D40">chrome_logger → JSON</text>
+
+<!-- ══════════════════════════════════════ -->
+<!--  ЛЕГЕНДА                               -->
+<!-- ══════════════════════════════════════ -->
+<rect x="18" y="826" width="684" height="58" rx="7" fill="white" fill-opacity="0.55" stroke="#B0BEC5" stroke-width="1"/>
+<text x="36" y="840" font-family="Segoe UI,Arial" font-size="9" font-weight="bold" fill="#455A64">Обозначения:</text>
+
+<line x1="36" y1="854" x2="62" y2="854" stroke="#2E7D32" stroke-width="1.6" marker-end="url(#ag)"/>
+<text x="68" y="858" font-family="Segoe UI,Arial" font-size="9" fill="#2E7D32">создаёт / передаёт Correlator*</text>
+
+<line x1="36" y1="872" x2="62" y2="872" stroke="#E65100" stroke-width="1.3" stroke-dasharray="4,2" marker-end="url(#ao)"/>
+<text x="68" y="876" font-family="Segoe UI,Arial" font-size="9" fill="#BF360C">*InfoMap через callback</text>
+
+<line x1="220" y1="854" x2="246" y2="854" stroke="#6A1B9A" stroke-width="1.3" stroke-dasharray="4,2" marker-end="url(#ap)"/>
+<text x="252" y="858" font-family="Segoe UI,Arial" font-size="9" fill="#6A1B9A">внутреннее использование (ClApiTracer)</text>
+
+<line x1="220" y1="872" x2="246" y2="872" stroke="#263238" stroke-width="2" marker-end="url(#asl)"/>
+<text x="252" y="876" font-family="Segoe UI,Arial" font-size="9" fill="#263238">вывод таблиц (Report)</text>
+
+<line x1="456" y1="854" x2="482" y2="854" stroke="#004D40" stroke-width="2" marker-end="url(#atl)"/>
+<text x="488" y="858" font-family="Segoe UI,Arial" font-size="9" fill="#004D40">вывод Chrome JSON (chrome_logger)</text>
+
+</svg>
