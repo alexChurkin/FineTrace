@@ -69,6 +69,7 @@ void Usage() {
     "--pid                          " <<
     "Print process ID into host API and device activity trace" <<
     std::endl;
+  std::cout << std::endl;
   std::cout <<
     "--output [-o] <filename>       " <<
     "Print console logs into the file" <<

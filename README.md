@@ -23,6 +23,7 @@ Options:
 --kernels-per-tile             Dump kernel information per tile
 --tid                          Print thread ID into host API trace
 --pid                          Print process ID into host API and device activity trace
+
 --output [-o] <filename>       Print console logs into the file
 --conditional-collection       Enable conditional collection mode
 --version                      Print version
