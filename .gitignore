@@ -12,6 +12,9 @@ error_diff.txt
 # finetrace_overhead_stat.xlsx
 .~lock.finetrace_overhead_stat.xlsx#
 
+# Benchmark run logs
+finetrace_run_*.log
+
 # Metric profiling output files
 result.*.bin
 data.*.raw

@@ -26,6 +26,17 @@ RODINIA="$SAMPLES/cl_rodinia_benchmarks"
 FINETRACE="${FINETRACE:-$ROOT_DIR/build/finetrace}"
 RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
 
+# ---------------------------------------------------------------------------
+# Logging: tee all output (stdout + stderr) to a timestamped file.
+# Skip when already inside a tee'd re-exec to avoid infinite recursion.
+# ---------------------------------------------------------------------------
+if [[ -z "${_FTRACE_LOGGING:-}" ]]; then
+  LOG_FILE="$ROOT_DIR/finetrace_run_$(date +%Y%m%d_%H%M%S).log"
+  export _FTRACE_LOGGING=1
+  exec > >(tee "$LOG_FILE") 2>&1
+  echo "Output is also saved to: $LOG_FILE"
+fi
+
 REPEATS=2
 RUN_CPU=0
 RUN_GPU=0
