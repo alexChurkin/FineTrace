@@ -11,3 +11,9 @@ error_diff.txt
 *.swp
 # finetrace_overhead_stat.xlsx
 .~lock.finetrace_overhead_stat.xlsx#
+
+# Metric profiling output files
+result.*.bin
+data.*.raw
+data.*.bin
+data.*.query

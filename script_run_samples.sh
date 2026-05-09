@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
-# Run OpenCL/Level Zero benchmarks under a few finetrace configurations and
+# Run OpenCL/Level Zero benchmarks under several finetrace configurations and
 # print average wall-clock time per (mode, variant, benchmark).
+#
+# Variants measured:
+#   CPU mode: clean | host-timing | call-logging | host+call
+#   GPU mode: clean | host-timing | call-logging | host+call | metrics | all
+#
+# "metrics"  = --aggregation (ComputeBasic, time-based HW counters)
+# "all"      = --host-timing --call-logging --aggregation
 #
 # Device mapping:
 #   OpenCL platform 0, device 0: Intel Arc Graphics      (GPU)
@@ -16,7 +23,6 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SAMPLES="$ROOT_DIR/samples"
 RODINIA="$SAMPLES/cl_rodinia_benchmarks"
 
-# Path to the finetrace binary. Override via environment if needed.
 FINETRACE="${FINETRACE:-$ROOT_DIR/build/finetrace}"
 RODINIA_DATA_DIR="${RODINIA_DATA_DIR:-$RODINIA/data}"
 
@@ -24,9 +30,16 @@ REPEATS=20
 RUN_CPU=0
 RUN_GPU=0
 
-# Trace variants: parallel arrays so we don't have to parse "label|args".
-VARIANT_LABELS=( "clean" "call-logging"   "device-timeline"  "both" )
-VARIANT_ARGS=(   ""      "--call-logging" "--device-timeline" "--call-logging --device-timeline" )
+# ---------------------------------------------------------------------------
+# Variant definitions
+# ---------------------------------------------------------------------------
+# Base variants — run for every mode.
+BASE_LABELS=( "clean"  "host-timing"    "call-logging"   "host+call" )
+BASE_ARGS=(   ""       "--host-timing"  "--call-logging"  "--host-timing --call-logging" )
+
+# Metric variants — GPU only (requires Level Zero device).
+METRIC_LABELS=( "metrics"       "all" )
+METRIC_ARGS=(   "--aggregation" "--host-timing --call-logging --aggregation" )
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -35,19 +48,20 @@ usage() {
   cat <<EOF
 Usage: $0 [--cpu] [--gpu] [-n N] [--help]
 
-Run benchmark samples with per-run timing and average. Each benchmark runs in
-${#VARIANT_LABELS[@]} variants: ${VARIANT_LABELS[*]}.
+Run benchmark samples with per-run timing and average.
 
-  --cpu    Run on CPU only (Intel Core Ultra 5 125H, OpenCL 1:0).
-  --gpu    Run on GPU only (Intel Arc Graphics,      OpenCL 0:0).
-           Also includes ze_gemm.
-  (none)   Run on both CPU and GPU (default).
-  -n N     Number of repeats per benchmark (default: $REPEATS).
+  Variants (CPU):  ${BASE_LABELS[*]}
+  Variants (GPU):  ${BASE_LABELS[*]} ${METRIC_LABELS[*]}
+
+  --cpu    Run CPU-only suite (Intel Core Ultra 5 125H, OpenCL 1:0).
+  --gpu    Run GPU suite (Intel Arc Graphics, OpenCL 0:0 + ze_gemm).
+  (none)   Run both CPU and GPU (default).
+  -n N     Repeats per benchmark (default: $REPEATS).
   --help   Show this help.
 
 Environment:
   FINETRACE         Path to finetrace binary (default: $FINETRACE).
-  RODINIA_DATA_DIR  Path to Rodinia data dir.
+  RODINIA_DATA_DIR  Path to Rodinia data directory.
 
 CPU benchmarks: cl_gemm, bench_b+tree, bench_bfs, bench_gaussian, bench_nw
 GPU benchmarks: CPU benchmarks + ze_gemm
@@ -64,7 +78,6 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Default: both modes if neither flag given.
 if [[ $RUN_CPU -eq 0 && $RUN_GPU -eq 0 ]]; then
   RUN_CPU=1
   RUN_GPU=1
@@ -76,11 +89,8 @@ fi
 log()      { printf '%s\n' "$*"; }
 log_head() { printf '\n=== %s ===\n' "$*"; }
 
-# Microseconds since epoch. Prefer bash 5's EPOCHREALTIME (strips dot → μs),
-# fall back to `date +%s%6N` (GNU date), then to python3.
 now_us() {
   if [[ -n "${EPOCHREALTIME:-}" ]]; then
-    # EPOCHREALTIME = "<seconds>.<microseconds>"; removing the dot gives integer μs.
     printf '%s\n' "${EPOCHREALTIME/./}"
   elif [[ "$(date +%s%6N 2>/dev/null)" =~ ^[0-9]+$ ]]; then
     date +%s%6N
@@ -89,16 +99,13 @@ now_us() {
   fi
 }
 
-# Format microseconds as seconds with 5 decimal places.
 fmt_s() { awk "BEGIN{printf \"%.5f s\", $1/1000000}"; }
 
-# Resolve to absolute path so it works regardless of `cd` inside run_one.
 RODINIA_DATA_DIR="$(cd "$RODINIA_DATA_DIR" && pwd)"
 
-# Sanity check: warn early if finetrace is missing for the non-clean variants.
 if [[ ! -x "$FINETRACE" ]]; then
-  log "Warning: finetrace not found or not executable at: $FINETRACE"
-  log "         Non-clean variants will fail. Set FINETRACE=/path/to/finetrace to override."
+  log "Warning: finetrace not found at: $FINETRACE"
+  log "         Non-clean variants will fail. Set FINETRACE=/path/to/finetrace."
   log ""
 fi
 
@@ -107,11 +114,10 @@ clinfo -l || true
 # ---------------------------------------------------------------------------
 # Result storage
 #
-# Each entry in RESULTS is a single line: "<mode>\t<variant>\t<bench>\t<avg_us>"
-# Parsed back via `IFS=$'\t' read -r mode variant bench avg <<<"$entry"`.
+# Each entry: "<mode>\t<variant>\t<bench>\t<avg_us>"
 # ---------------------------------------------------------------------------
 RESULTS=()
-BENCH_NAMES=()  # ordered, unique; populated as we run benchmarks.
+BENCH_NAMES=()
 
 remember_bench() {
   local name="$1" n
@@ -124,23 +130,17 @@ remember_bench() {
 # ---------------------------------------------------------------------------
 # Core runner
 #
-# Usage: run_one <mode> <variant_idx> <bench_name> <dir> <cmd> [args...]
+# Usage: run_one <mode> <label> <ft_args> <bench_name> <dir> <cmd> [args...]
 # ---------------------------------------------------------------------------
 run_one() {
-  local mode="$1" vidx="$2" name="$3" dir="$4"
-  shift 4
+  local mode="$1" label="$2" ft_args="$3" name="$4" dir="$5"
+  shift 5
 
-  local label="${VARIANT_LABELS[$vidx]}"
-  local ft_args="${VARIANT_ARGS[$vidx]}"
-
-  # Build the final argv as an array. For the finetrace case, ft_args is split
-  # on whitespace once (intentional — these are flags we control) and then we
-  # use "${cmd[@]}" everywhere. No more SC2086 on the call site.
   local -a cmd
   if [[ -z "$ft_args" ]]; then
     cmd=( "$@" )
   else
-    # shellcheck disable=SC2206  # word-splitting on ft_args is intentional.
+    # shellcheck disable=SC2206
     cmd=( "$FINETRACE" $ft_args "$@" )
   fi
 
@@ -163,14 +163,23 @@ run_one() {
   remember_bench "$name"
 }
 
-# Run a single benchmark across all variants.
+# Run a benchmark through all variants for the given mode.
 # Usage: run_all_variants <mode> <bench_name> <dir> <cmd> [args...]
 run_all_variants() {
   local mode="$1" name="$2" dir="$3"
   shift 3
+
+  # Build variant list for this mode.
+  local -a labels=("${BASE_LABELS[@]}")
+  local -a args=("${BASE_ARGS[@]}")
+  if [[ "$mode" == "gpu" ]]; then
+    labels+=("${METRIC_LABELS[@]}")
+    args+=("${METRIC_ARGS[@]}")
+  fi
+
   local i
-  for ((i = 0; i < ${#VARIANT_LABELS[@]}; i++)); do
-    run_one "$mode" "$i" "$name" "$dir" "$@"
+  for ((i = 0; i < ${#labels[@]}; i++)); do
+    run_one "$mode" "${labels[$i]}" "${args[$i]}" "$name" "$dir" "$@"
   done
 }
 
@@ -236,33 +245,36 @@ lookup_avg() {
 print_summary() {
   log ""
   log "########################################"
-  log "# Summary (average time in seconds over $REPEATS runs)"
+  log "# Summary (average wall-clock time in seconds over $REPEATS runs)"
   log "########################################"
 
   local modes=()
   [[ $RUN_CPU -eq 1 ]] && modes+=("cpu")
   [[ $RUN_GPU -eq 1 ]] && modes+=("gpu")
 
-  local name_w=20 col_w=18
+  local name_w=20 col_w=17
   local mode name vlabel val sep_name sep_col
   printf -v sep_name '%*s' "$name_w" ''; sep_name="${sep_name// /-}"
   printf -v sep_col  '%*s' "$col_w"  ''; sep_col="${sep_col// /-}"
 
   for mode in "${modes[@]}"; do
+    # Determine which variants were actually run for this mode.
+    local -a mode_variants=("${BASE_LABELS[@]}")
+    [[ "$mode" == "gpu" ]] && mode_variants+=("${METRIC_LABELS[@]}")
+
     log ""
     log "--- Mode: $mode ---"
 
     # Header.
     printf '%-*s' "$name_w" "Benchmark"
-    for vlabel in "${VARIANT_LABELS[@]}"; do
+    for vlabel in "${mode_variants[@]}"; do
       printf ' | %*s' "$col_w" "$vlabel (s)"
     done
     printf '\n'
 
-    # Separator built from the same widths — no second loop with fixed dashes.
-    # Header has " | " between columns; we mirror that with "-+-" so widths line up.
+    # Separator.
     printf '%s' "$sep_name"
-    for vlabel in "${VARIANT_LABELS[@]}"; do
+    for vlabel in "${mode_variants[@]}"; do
       printf -- '-+-%s' "$sep_col"
     done
     printf -- '-\n'
@@ -270,7 +282,7 @@ print_summary() {
     # Rows.
     for name in "${BENCH_NAMES[@]:-}"; do
       printf '%-*s' "$name_w" "$name"
-      for vlabel in "${VARIANT_LABELS[@]}"; do
+      for vlabel in "${mode_variants[@]}"; do
         val="$(lookup_avg "$mode" "$vlabel" "$name")"
         [[ "$val" != "-" ]] && val="$(awk "BEGIN{printf \"%.5f\", $val/1000000}")"
         printf ' | %*s' "$col_w" "$val"

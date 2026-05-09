@@ -15,132 +15,151 @@ void Usage() {
   std::cout <<
     "Usage: ./finetrace [options] <application> <args>" <<
     std::endl;
-  std::cout << "Options:" << std::endl;
-  std::cout <<
-    "--call-logging [-c]                   " <<
-    "Trace host API calls" <<
-    std::endl;
-  std::cout <<
-    "--host-timing  [-h]                   " <<
-    "Report host API execution time" <<
-    std::endl;
-  std::cout <<
-    "--chrome-call-logging                 " <<
-    "Dump host API calls to JSON file" <<
-    std::endl;
+
   std::cout << std::endl;
+  std::cout << "Host Tracing Options:" << std::endl;
   std::cout <<
-    "--device-timeline [-t]                " <<
-    "Trace device activities" <<
+    "  --call-logging [-c]                 " <<
+    "Print every host API call with arguments and return value" <<
     std::endl;
   std::cout <<
-    "--device-timing [-d]                  " <<
-    "Report kernels execution time" <<
+    "  --host-timing  [-h]                 " <<
+    "Report total/average/min/max time per host API function" <<
     std::endl;
   std::cout <<
-    "--chrome-device-timeline              " <<
-    "Dump device activities to JSON file per command queue" <<
+    "  --chrome-call-logging               " <<
+    "Dump host API calls to a JSON trace file (chrome://tracing)" <<
     std::endl;
-  std::cout <<
-    "--chrome-kernel-timeline              " <<
-    "Dump device activities to JSON file per kernel name" <<
-    std::endl;
+
   std::cout << std::endl;
+  std::cout << "Device Tracing Options:" << std::endl;
   std::cout <<
-    "--kernel-submission [-s]              " <<
-    "Report append (queued), submit and execute intervals for kernels" <<
+    "  --device-timeline [-t]              " <<
+    "Print per-kernel timestamps: queued/submit/start/end" <<
     std::endl;
   std::cout <<
-    "--chrome-device-stages                " <<
-    "Dump device activities by stages to JSON file" <<
+    "  --device-timing [-d]                " <<
+    "Report total/average/min/max execution time per kernel" <<
     std::endl;
+  std::cout <<
+    "  --chrome-device-timeline            " <<
+    "Dump device activities per command queue to JSON" <<
+    std::endl;
+  std::cout <<
+    "  --chrome-kernel-timeline            " <<
+    "Dump device activities per kernel name to JSON" <<
+    std::endl;
+
   std::cout << std::endl;
+  std::cout << "Kernel Submission Options:" << std::endl;
   std::cout <<
-    "--verbose [-v]                        " <<
-    "Enable verbose mode to show more kernel information" <<
+    "  --kernel-submission [-s]            " <<
+    "Report append/submit/execute intervals per kernel" <<
     std::endl;
   std::cout <<
-    "--demangle                            " <<
+    "  --chrome-device-stages              " <<
+    "Dump per-kernel stage breakdown (append/submit/execute) to JSON" <<
+    std::endl;
+
+  std::cout << std::endl;
+  std::cout << "Output Modifiers:" << std::endl;
+  std::cout <<
+    "  --verbose [-v]                      " <<
+    "Show extended kernel info (SIMD width, group size, transfer size)" <<
+    std::endl;
+  std::cout <<
+    "  --demangle                          " <<
     "Demangle DPC++ kernel names" <<
     std::endl;
   std::cout <<
-    "--kernels-per-tile                    " <<
-    "Dump kernel information per tile" <<
+    "  --kernels-per-tile                  " <<
+    "Report timing separately for each GPU tile" <<
     std::endl;
   std::cout <<
-    "--tid                                 " <<
-    "Print thread ID into host API trace" <<
+    "  --tid                               " <<
+    "Include thread ID in host API trace output" <<
     std::endl;
   std::cout <<
-    "--pid                                 " <<
-    "Print process ID into host API and device activity trace" <<
+    "  --pid                               " <<
+    "Include process ID in host API and device activity output" <<
     std::endl;
+
   std::cout << std::endl;
+  std::cout << "General Options:" << std::endl;
   std::cout <<
-    "--output [-o] <filename>              " <<
-    "Print console logs into the file" <<
+    "  --output [-o] <filename>            " <<
+    "Redirect all console output to a file" <<
     std::endl;
   std::cout <<
-    "--conditional-collection              " <<
-    "Enable conditional collection mode" <<
+    "  --conditional-collection            " <<
+    "Enable collection only when FTRACE_ENABLE_COLLECTION=1 is set" <<
     std::endl;
   std::cout <<
-    "--version                             " <<
+    "  --version                           " <<
     "Print version" <<
     std::endl;
+
   std::cout << std::endl;
-  std::cout << "Metric Profiling Options:" << std::endl;
+  std::cout << "Metric Hardware Profiling Options (Level Zero GPU only):" << std::endl;
+  std::cout << std::endl;
+  std::cout << "  Collection modes (choose one):" << std::endl;
   std::cout <<
-    "--raw-metrics [-m]                    " <<
-    "Collect raw metric stream for the device" <<
+    "  --aggregation [-a]                  " <<
+    "Per-kernel aggregated HW counters via time-based metric stream" <<
     std::endl;
   std::cout <<
-    "--kernel-intervals [-i]               " <<
-    "Collect raw kernel intervals for the device" <<
+    "  --kernel-query [-q]                 " <<
+    "Per-kernel aggregated HW counters via event-based query (no sampling)" <<
     std::endl;
   std::cout <<
-    "--kernel-metrics [-k]                 " <<
-    "Collect over-time metrics for each kernel instance" <<
+    "  --kernel-metrics [-k]               " <<
+    "Per-kernel raw metric samples aligned to kernel intervals" <<
     std::endl;
   std::cout <<
-    "--aggregation [-a]                    " <<
-    "Collect aggregated metrics for each kernel (time-based mode)" <<
+    "  --raw-metrics [-m]                  " <<
+    "Continuous raw metric stream for the entire run (no per-kernel split)" <<
     std::endl;
   std::cout <<
-    "--kernel-query [-q]                   " <<
-    "Collect aggregated metrics for each kernel (query-based mode)" <<
+    "  --kernel-intervals [-i]             " <<
+    "Raw kernel start/end timestamps only (no metric values)" <<
+    std::endl;
+  std::cout << std::endl;
+  std::cout << "  Metric group and device:" << std::endl;
+  std::cout <<
+    "  --group [-g] <NAME>                 " <<
+    "Metric group to collect (default: ComputeBasic; see --metric-list)" <<
     std::endl;
   std::cout <<
-    "--metric-device <ID>                  " <<
-    "Target device for profiling (default is 0)" <<
+    "  --metric-device <ID>                " <<
+    "Target device index (default: 0; see --device-list)" <<
     std::endl;
   std::cout <<
-    "--group [-g] <NAME>                   " <<
-    "Target metric group to collect (default is ComputeBasic)" <<
+    "  --metric-sampling-interval <VALUE>  " <<
+    "Sampling interval in us for stream modes (default: 1000 us)" <<
+    std::endl;
+  std::cout << std::endl;
+  std::cout << "  Data path and finalization:" << std::endl;
+  std::cout <<
+    "  --raw-data-path [-p] <DIRECTORY>    " <<
+    "Directory for intermediate raw data files (default: current dir)" <<
     std::endl;
   std::cout <<
-    "--metric-sampling-interval <VALUE>    " <<
-    "Sampling interval for metrics collection in us (default is 1000 us)" <<
+    "  --no-finalize                       " <<
+    "Save raw data only; skip post-processing and result output" <<
     std::endl;
   std::cout <<
-    "--raw-data-path [-p] <DIRECTORY>      " <<
-    "Path to store raw metric data (default is current directory)" <<
+    "  --finalize [-f] <result.PID.bin>    " <<
+    "Post-process a previously saved result file and print metrics" <<
+    std::endl;
+  std::cout << std::endl;
+  std::cout << "  Discovery:" << std::endl;
+  std::cout <<
+    "  --device-list                       " <<
+    "Print available Level Zero devices and exit" <<
     std::endl;
   std::cout <<
-    "--finalize [-f] <FILENAME>            " <<
-    "Print output from collected result file" <<
-    std::endl;
-  std::cout <<
-    "--no-finalize                         " <<
-    "Do not finalize and do not report collection results" <<
-    std::endl;
-  std::cout <<
-    "--device-list                         " <<
-    "Print list of available devices" <<
-    std::endl;
-  std::cout <<
-    "--metric-list                         " <<
-    "Print list of available metrics" <<
+    "  --metric-list                       " <<
+    "Print available metric groups and their metrics, then exit" <<
     std::endl;
 }
 
