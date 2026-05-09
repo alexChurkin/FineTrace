@@ -18,8 +18,11 @@ target_include_directories(finetrace_tool
   PRIVATE "${PROJECT_SOURCE_DIR}/src"
   PRIVATE "${PROJECT_SOURCE_DIR}/src/utils"
   PRIVATE "${PROJECT_SOURCE_DIR}/src/collectors/cl_collector"
-  PRIVATE "${PROJECT_SOURCE_DIR}/src/collectors/ze_collector")
-target_compile_definitions(finetrace_tool PUBLIC FTRACE_LEVEL_ZERO=1)
+  PRIVATE "${PROJECT_SOURCE_DIR}/src/collectors/ze_collector"
+  PRIVATE "${PROJECT_SOURCE_DIR}/src/collectors/metric_collector")
+target_compile_definitions(finetrace_tool
+  PUBLIC FTRACE_LEVEL_ZERO=1
+  PUBLIC FTRACE_KERNEL_INTERVALS=1)
 if(CMAKE_INCLUDE_PATH)
   target_include_directories(finetrace_tool
     PUBLIC "${CMAKE_INCLUDE_PATH}")

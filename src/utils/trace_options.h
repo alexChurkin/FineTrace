@@ -39,25 +39,43 @@
 #define TRACE_METRIC_STREAM          29
 #define TRACE_CCL_SUMMARY_REPORT     30
 #define TRACE_CHROME_MPI_LOGGING     31
+// Metric profiling flags (bits 32-36)
+#define TRACE_RAW_METRICS            32
+#define TRACE_KERNEL_INTERVALS       33
+#define TRACE_KERNEL_METRICS         34
+#define TRACE_AGGREGATION            35
+#define TRACE_NO_FINALIZE            36
 
 const char* kChromeTraceFileExt = "json";
 
 class TraceOptions {
  public:
-  TraceOptions(uint32_t flags, const std::string& log_file)
+  TraceOptions(uint64_t flags, const std::string& log_file)
       : flags_(flags), log_file_(log_file) {
     if (CheckFlag(TRACE_LOG_TO_FILE)) {
       FTRACE_ASSERT(!log_file_.empty());
     }
     if (flags_ == 0) {
-      flags_ |= (1 << TRACE_HOST_TIMING);
-      flags_ |= (1 << TRACE_DEVICE_TIMING);
+      flags_ |= (1ULL << TRACE_HOST_TIMING);
+      flags_ |= (1ULL << TRACE_DEVICE_TIMING);
     }
   }
 
   bool CheckFlag(uint32_t flag) const {
-    return (flags_ & (1 << flag));
+    return (flags_ & (1ULL << flag));
   }
+
+  void SetMetricGroup(const std::string& group) { metric_group_ = group; }
+  void SetSamplingInterval(uint32_t interval) { sampling_interval_ = interval; }
+  void SetRawDataPath(const std::string& path) { raw_data_path_ = path; }
+  void SetDeviceId(uint32_t id) { device_id_ = id; }
+  void SetResultFile(const std::string& file) { result_file_ = file; }
+
+  const std::string& GetMetricGroup() const { return metric_group_; }
+  uint32_t GetSamplingInterval() const { return sampling_interval_; }
+  const std::string& GetRawDataPath() const { return raw_data_path_; }
+  uint32_t GetDeviceId() const { return device_id_; }
+  const std::string& GetResultFile() const { return result_file_; }
 
   std::string GetLogFileName() const {
     if (!CheckFlag(TRACE_LOG_TO_FILE)) {
@@ -105,8 +123,14 @@ class TraceOptions {
   }
 
  private:
-  uint32_t flags_;
+  uint64_t flags_;
   std::string log_file_;
+
+  std::string metric_group_{"ComputeBasic"};
+  uint32_t sampling_interval_{1000000};
+  std::string raw_data_path_;
+  uint32_t device_id_{0};
+  std::string result_file_;
 };
 
 #endif // FTRACE_TOOLS_UTILS_TRACE_OPTIONS_H_

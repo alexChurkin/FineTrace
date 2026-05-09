@@ -1,185 +1,307 @@
 # FineTrace – Tracing & Profiling Tool
+
 ## Overview
-This tool provides basic tracing and profiling capabilities for the compute applications based on Intel runtimes for OpenCL(TM) and Level Zero, like DPC++, Intel(R) Implicit SPMD Program Compiler (Intel(R) ISPC) and OpenMP* GPU offload programs.
 
-The following capabilities are available:
-```
-Usage: ./finetrace [options] <application> <args>
-Options:
---call-logging [-c]            Trace host API calls
---host-timing  [-h]            Report host API execution time
---chrome-call-logging          Dump host API calls to JSON file
+FineTrace is a tracing and profiling tool for GPU compute applications built on Intel runtimes for OpenCL™ and oneAPI Level Zero. It supports DPC++, Intel® ISPC, OpenMP GPU offload programs, and any application that uses these APIs.
 
---device-timeline [-t]         Trace device activities
---device-timing [-d]           Report kernels execution time
---chrome-device-timeline       Dump device activities to JSON file per command queue
---chrome-kernel-timeline       Dump device activities to JSON file per kernel name
+FineTrace works as a loader: it sets up the environment, injects the tracing library via `LD_PRELOAD`, and launches the target application transparently.
 
---kernel-submission [-s]       Report append (queued), submit and execute intervals for kernels
---chrome-device-stages         Dump device activities by stages to JSON file
+---
 
---verbose [-v]                 Enable verbose mode to show more kernel information
---demangle                     Demangle DPC++ kernel names
---kernels-per-tile             Dump kernel information per tile
---tid                          Print thread ID into host API trace
---pid                          Print process ID into host API and device activity trace
+## Quick Start
 
---output [-o] <filename>       Print console logs into the file
---conditional-collection       Enable conditional collection mode
---version                      Print version
+```sh
+cd finetrace
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+
+# Basic device timing
+./build/finetrace --device-timing ./samples/ze_gemm/build/ze_gemm
+
+# Host API timing + device timing
+./build/finetrace --host-timing --device-timing ./samples/ze_gemm/build/ze_gemm
+
+# GPU hardware metrics (ComputeBasic group)
+./build/finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
 ```
 
-**Call Logging** mode allows to grab full host API trace, e.g.:
+---
+
+## Options Reference
+
+### Host Tracing
+
+| Option | Short | Description |
+|---|---|---|
+| `--call-logging` | `-c` | Print every host API call with arguments and return value |
+| `--host-timing` | `-h` | Report total/average/min/max time per host API function |
+| `--chrome-call-logging` | | Dump host API calls to a JSON file (`chrome://tracing`) |
+
+**Example `--call-logging` output:**
 ```
-...
->>>> [271632470] clCreateBuffer: context = 0x5591dba3f860 flags = 4 size = 4194304 hostPtr = 0 errcodeRet = 0x7ffd334b2f04
-<<<< [271640078] clCreateBuffer [7608 ns] result = 0x5591dbaa5760 -> CL_SUCCESS (0)
->>>> [272171119] clEnqueueWriteBuffer: commandQueue = 0x5591dbf4be70 buffer = 0x5591dbaa5760 blockingWrite = 1 offset = 0 cb = 4194304 ptr = 0x5591dc92af90 numEventsInWaitList = 0 eventWaitList = 0 event = 0
+>>>> [271632470] clCreateBuffer: context = 0x... flags = 4 size = 4194304 ...
+<<<< [271640078] clCreateBuffer [7608 ns] result = 0x... -> CL_SUCCESS (0)
+>>>> [272171119] clEnqueueWriteBuffer: commandQueue = 0x... blockingWrite = 1 ...
 <<<< [272698660] clEnqueueWriteBuffer [527541 ns] -> CL_SUCCESS (0)
->>>> [272716922] clSetKernelArg: kernel = 0x5591dc500c60 argIndex = 0 argSize = 8 argValue = 0x7ffd334b2f10
-<<<< [272724034] clSetKernelArg [7112 ns] -> CL_SUCCESS (0)
->>>> [272729938] clSetKernelArg: kernel = 0x5591dc500c60 argIndex = 1 argSize = 8 argValue = 0x7ffd334b2f18
-<<<< [272733712] clSetKernelArg [3774 ns] -> CL_SUCCESS (0)
-...
 ```
-**Chrome Call Logging** mode dumps API calls to JSON format that can be opened in [chrome://tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) browser tool.
 
-**Host Timing** mode collects duration for each API call and provides the summary for the whole application:
+**Example `--host-timing` output:**
 ```
 === API Timing Results: ===
 
              Total Execution Time (ns):   372547856
     Total API Time for L0 backend (ns):   355680113
-Total API Time for CL CPU backend (ns):        7119
-Total API Time for CL GPU backend (ns):        2550
 
 == L0 Backend: ==
 
-                              Function,       Calls,           Time (ns),  Time (%),        Average (ns),            Min (ns),            Max (ns)
-                zeEventHostSynchronize,          32,           181510841,     51.03,             5672213,                  72,            45327080
-                        zeModuleCreate,           1,            96564991,     27.15,            96564991,            96564991,            96564991
-     zeCommandQueueExecuteCommandLists,           8,            76576727,     21.53,             9572090,               20752,            76024831
-...
-
-== CL CPU Backend: ==
-
-         Function,       Calls,           Time (ns),  Time (%),        Average (ns),            Min (ns),            Max (ns)
-  clGetDeviceInfo,           6,                3094,     43.46,                 515,                 216,                1295
-clGetPlatformInfo,           2,                1452,     20.40,                 726,                 487,                 965
-   clGetDeviceIDs,           4,                 987,     13.86,                 246,                  93,                 513
-...
-
-== CL GPU Backend: ==
-
-         Function,       Calls,           Time (ns),  Time (%),        Average (ns),            Min (ns),            Max (ns)
-   clGetDeviceIDs,           4,                 955,     37.45,                 238,                 153,                 352
-  clGetDeviceInfo,           6,                 743,     29.14,                 123,                  65,                 244
-  clReleaseDevice,           2,                 331,     12.98,                 165,                 134,                 197
-...
+                              Function,  Calls,       Time (ns),  Time (%),  Average (ns),  Min (ns),  Max (ns)
+                zeEventHostSynchronize,     32,       181510841,     51.03,       5672213,       72,    45327080
+                        zeModuleCreate,      1,        96564991,     27.15,      96564991, 96564991,    96564991
+     zeCommandQueueExecuteCommandLists,      8,        76576727,     21.53,       9572090,    20752,    76024831
 ```
-**Device Timing** mode collects duration for each kernel on the device and provides the summary for the whole application:
 
-Memory transfers for Level Zero are supplemented by transfer direction:
-- "M" - system memory allocated with malloc or new;
-- "H" - USM host memory allocated with `zeMemAllocHost`;
-- "D" - USM device memory allocated with `zeMemAllocDevice`;
-- "S" - USM shared memory allocated with `zeMemAllocShared`;
+---
+
+### Device Tracing
+
+| Option | Short | Description |
+|---|---|---|
+| `--device-timeline` | `-t` | Print per-kernel timestamps: queued/submit/start/end |
+| `--device-timing` | `-d` | Report total/average/min/max execution time per kernel |
+| `--chrome-device-timeline` | | Dump per-command-queue activity to JSON |
+| `--chrome-kernel-timeline` | | Dump per-kernel-name activity to JSON |
+
+Memory transfer direction suffixes in Level Zero output:
+- `M2D` / `D2M` — system memory (`malloc`) ↔ device
+- `H2D` / `D2H` — USM host memory ↔ device
+- `S` — USM shared memory
+
+**Example `--device-timing` output:**
 ```
 === Device Timing Results: ===
 
                 Total Execution Time (ns):            295236137
-Total Device Time for L0 backend (ns):                177147822
+    Total Device Time for L0 backend (ns):            177147822
 
 == L0 Backend: ==
 
-                            Kernel,       Calls,     Time (ns),  Time (%),     Average (ns),      Min (ns),      Max (ns)
-                              GEMM,           4,     172104499,     97.15,         43026124,      42814000,      43484166
-zeCommandListAppendMemoryCopy(M2D),           8,       2934831,      1.66,           366853,        286500,        585333
-zeCommandListAppendMemoryCopy(D2M),           4,       2099164,      1.18,           524791,        497666,        559666
-        zeCommandListAppendBarrier,           8,          9328,      0.01,             1166,          1166,          1166
+                            Kernel,  Calls,    Time (ns),  Time (%),  Average (ns),  Min (ns),  Max (ns)
+                              GEMM,      4,   172104499,     97.15,      43026124,  42814000,  43484166
+zeCommandListAppendMemoryCopy(M2D),      8,     2934831,      1.66,        366853,    286500,    585333
+zeCommandListAppendMemoryCopy(D2M),      4,     2099164,      1.18,        524791,    497666,    559666
+        zeCommandListAppendBarrier,      8,        9328,      0.01,          1166,      1166,      1166
 ```
-**Kernel Submission** mode collects append (queued for OpenCL(TM)), submit and execute intervals for kernels and memory transfers:
+
+**Example `--device-timeline` output:**
+```
+Device Timeline (queue: 0x...): clEnqueueWriteBuffer [ns] = 317341082 (queued) 317355010 (submit) 317452332 (start) 317980165 (end)
+Device Timeline (queue: 0x...): GEMM [ns] = 318185764 (queued) 318200629 (submit) 318550014 (start) 361260930 (end)
+```
+
+---
+
+### Kernel Submission
+
+| Option | Short | Description |
+|---|---|---|
+| `--kernel-submission` | `-s` | Report append/submit/execute intervals per kernel |
+| `--chrome-device-stages` | | Dump per-kernel stage breakdown to JSON |
+
+**Example `--kernel-submission` output:**
 ```
 === Kernel Submission Results: ===
 
-Total Execution Time (ns):            256576162
-   Total Device Time (ns):            174582990
-
-                            Kernel,       Calls,         Append (ns),  Append (%),         Submit (ns),  Submit (%),        Execute (ns), Execute (%),
-                              GEMM,           4,              553087,       10.79,            12441082,        3.03,           169770832,       97.24,
-zeCommandListAppendMemoryCopy(M2D),           8,             2898413,       56.53,            20843165,        5.08,             2843832,        1.63,
-zeCommandListAppendMemoryCopy(D2M),           4,              534710,       10.43,           182217916,       44.43,             1957331,        1.12,
-        zeCommandListAppendBarrier,           8,             1140561,       22.25,           194646664,       47.46,               10995,        0.01,
+                            Kernel,  Calls,  Append (ns),  Append (%),  Submit (ns),  Submit (%),  Execute (ns),  Execute (%)
+                              GEMM,      4,      553087,       10.79,    12441082,        3.03,    169770832,       97.24
+zeCommandListAppendMemoryCopy(M2D),      8,     2898413,       56.53,    20843165,        5.08,      2843832,        1.63
 ```
-**Verbose** mode provides additional information per kernel (SIMD width, group count and group size for oneAPI Level Zero (Level Zero) and SIMD width, global and local size for OpenCL(TM)) and per transfer (bytes transferred). This option should be used in addition to others, e.g. for **Device Timing** mode one can get:
+
+---
+
+### Output Modifiers
+
+| Option | Short | Description |
+|---|---|---|
+| `--verbose` | `-v` | Show SIMD width, group sizes, transfer sizes |
+| `--demangle` | | Demangle DPC++ kernel names |
+| `--kernels-per-tile` | | Report timing separately per GPU tile |
+| `--tid` | | Include thread ID in host API trace |
+| `--pid` | | Include process ID in output |
+
+**Example `--device-timing --verbose` output:**
 ```
-=== Device Timing Results: ===
-
-                Total Execution Time (ns):            392681085
-Total Device Time for CL GPU backend (ns):            177544981
-
 == CL GPU Backend: ==
 
-                                  Kernel,   Calls,   Time (ns),  Time (%),     Average (ns),      Min (ns),      Max (ns)
-GEMM[SIMD32, {1024, 1024, 1}, {0, 0, 0}],       4,   172101915,     96.93,         43025478,      42804333,      43375416
-     clEnqueueWriteBuffer[4194304 bytes],       8,     3217914,      1.81,           402239,        277416,        483750
-      clEnqueueReadBuffer[4194304 bytes],       4      2225152,      1.25,           556288,        527122,        570898
+                                  Kernel,  Calls,    Time (ns),  Time (%),  Average (ns),  Min (ns),  Max (ns)
+GEMM[SIMD32, {1024, 1024, 1}, {0, 0, 0}],      4,   172101915,     96.93,      43025478, 42804333,  43375416
+     clEnqueueWriteBuffer[4194304 bytes],      8,     3217914,      1.81,        402239,   277416,    483750
 ```
 
-**Device Timeline** mode dumps four timestamps for each device activity - *queued* to the host command queue for OpenCL(TM) or "append" to the command list for Level Zero, *submit* to device queue, *start* and *end* on the device (all the timestamps are in CPU nanoseconds):
-```
-Device Timeline: start time [ns] = 1632829416753742036
-...
-Device Timeline (queue: 0x55a9c7e51e70): clEnqueueWriteBuffer [ns] = 317341082 (queued) 317355010 (submit) 317452332 (start) 317980165 (end)
-Device Timeline (queue: 0x55a9c7e51e70): clEnqueueWriteBuffer [ns] = 317789774 (queued) 317814558 (submit) 318160607 (start) 318492690 (end)
-Device Timeline (queue: 0x55a9c7e51e70): GEMM [ns] = 318185764 (queued) 318200629 (submit) 318550014 (start) 361260930 (end)
-Device Timeline (queue: 0x55a9c7e51e70): clEnqueueReadBuffer [ns] = 361479600 (queued) 361481387 (submit) 361482574 (start) 362155593 (end)
-...
-```
-**Chrome Device Timeline** mode dumps timestamps for device activities per command queue to JSON format that can be opened in [chrome://tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) browser tool. Can't be used with **Chrome Kernel Timeline** and **Chrome Device Stages**.
+---
 
-**Chrome Kernel Timeline** mode dumps timestamps for device activities per kernel name to JSON format that can be opened in [chrome://tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool) browser tool. Can't be used with **Chrome Device Timeline**.
+### General Options
 
-**Chrome Device Stages** mode provides alternative view for device queue where each kernel invocation is divided into stages: "queued" or "appended", "sumbitted" and "execution". Can't be used with **Chrome Device Timeline**.
+| Option | Short | Description |
+|---|---|---|
+| `--output <file>` | `-o` | Redirect all console output to a file |
+| `--conditional-collection` | | Collect only while `FTRACE_ENABLE_COLLECTION=1` is set |
+| `--version` | | Print version |
 
-**Conditional Collection** mode allows one to enable data collection for any target interval (by default collection will be disabled) using environment variable `FTRACE_ENABLE_COLLECTION`, e.g.:
+**Conditional collection** — enables fine-grained control from within the application:
 ```cpp
-// Collection disabled
-setenv("FTRACE_ENABLE_COLLECTION", "1", 1);
-// Collection enabled
-unsetenv("FTRACE_ENABLE_COLLECTION");
-// Collection disabled
+setenv("FTRACE_ENABLE_COLLECTION", "1", 1);  // start collecting
+// ... region of interest ...
+unsetenv("FTRACE_ENABLE_COLLECTION");         // stop collecting
 ```
-All the API calls and kernels, which submission happens while collection disabled interval, will be omitted from final results.
 
-## Supported OS
+---
+
+## GPU Hardware Metric Profiling
+
+FineTrace integrates Level Zero metric APIs to collect GPU hardware performance counters.
+All metric modes require a Level Zero GPU device and work alongside any tracing option.
+
+### Collection Modes
+
+| Option | Short | Description |
+|---|---|---|
+| `--aggregation` | `-a` | Per-kernel aggregated HW counters via time-based metric stream |
+| `--kernel-query` | `-q` | Per-kernel aggregated HW counters via event-based query (no sampling) |
+| `--kernel-metrics` | `-k` | Per-kernel raw metric samples aligned to kernel start/end timestamps |
+| `--raw-metrics` | `-m` | Continuous raw metric stream for the entire run (no per-kernel split) |
+| `--kernel-intervals` | `-i` | Raw kernel start/end timestamps only (no metric values) |
+
+**`--aggregation`** is the recommended starting point. It uses a background metric stream and correlates samples to kernel execution intervals automatically.
+
+**`--kernel-query`** is more precise (event-based, zero sampling overhead) but does not work with overlapping kernels or multi-engine workloads.
+
+### Metric Groups
+
+Use `--group` to select which counters to collect. Default is `ComputeBasic`.
+
+```sh
+./build/finetrace --metric-list    # list all available groups and their metrics
+./build/finetrace --device-list    # list available devices
+```
+
+Key named groups on Intel Arc:
+
+| Group | Focus |
+|---|---|
+| `ComputeBasic` | XveActive, FpuActive, GpuBusy, CsThreads, GTI throughput *(default)* |
+| `XveActivity` | Detailed EU pipeline breakdown (EM, FPU, XMX) |
+| `L3` | L3 cache hit rate, bandwidth, evictions |
+| `SLMProfile` | Shared local memory throughput and utilization |
+| `L1ProfileSlmBankConflicts` | SLM bank conflicts (critical for GEMM-like kernels) |
+| `DataportReads` / `DataportWrites` | Load/store through the dataport |
+| `GpuBusyness` | High-level GPU/render/compute occupancy |
+| `LoadStoreCacheProfile` | L1/SLM/HDC load-store breakdown |
+
+### Options
+
+| Option | Short | Default | Description |
+|---|---|---|---|
+| `--group <NAME>` | `-g` | `ComputeBasic` | Metric group to collect |
+| `--metric-device <ID>` | | `0` | Target device index |
+| `--metric-sampling-interval <us>` | | `1000` | Sampling interval in microseconds (stream modes) |
+| `--raw-data-path <DIR>` | `-p` | `.` | Directory for intermediate raw data files |
+| `--no-finalize` | | | Save raw data only; skip post-processing |
+| `--finalize <file>` | `-f` | | Post-process a previously saved `result.PID.bin` |
+
+### Examples
+
+```sh
+# ComputeBasic metrics + device timing (recommended first run)
+./build/finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
+
+# Event-based query (more precise, no sampling overhead)
+./build/finetrace --kernel-query --device-timing ./samples/ze_gemm/build/ze_gemm
+
+# SLM bank conflicts (important for memory-bound kernels)
+./build/finetrace --kernel-query -g L1ProfileSlmBankConflicts ./samples/ze_gemm/build/ze_gemm
+
+# L3 cache profile
+./build/finetrace --aggregation -g L3 --device-timing ./samples/ze_gemm/build/ze_gemm
+
+# All tracing + metrics in one shot
+./build/finetrace \
+  --host-timing --call-logging --device-timing \
+  --aggregation -g ComputeBasic \
+  ./samples/ze_gemm/build/ze_gemm
+
+# Two-phase: collect now, finalize later
+./build/finetrace --aggregation --no-finalize ./samples/ze_gemm/build/ze_gemm
+./build/finetrace --finalize result.<PID>.bin
+```
+
+**Example `--aggregation` output:**
+```
+=== Profiling Results ===
+
+Total Execution Time: 116065933 ns
+
+== Aggregated Kernel Metrics ==
+
+Kernel,SubDeviceId,KernelTime[ns],GpuTime[ns],GpuCoreClocks[cycles],AvgGpuCoreFrequencyMHz[MHz],GpuBusy[%],CsThreads[threads],XveActive[%],XveStall[%],FpuActive[%],...
+GEMM[SIMD32 {1; 1024; 1} {1024; 1; 1}],0,32788229,32426637,28422798,881,100,23166,42.36,51.61,4.24,...
+```
+
+---
+
+## Build
+
+### Prerequisites
+
+- [CMake](https://cmake.org/) 3.12+
+- [Git](https://git-scm.com/) 1.8+
+- [Python](https://www.python.org/) 2.7+
+- [OpenCL™ ICD Loader](https://github.com/KhronosGroup/OpenCL-ICD-Loader)
+- [oneAPI Level Zero loader](https://github.com/oneapi-src/level-zero)
+- [Intel® Graphics Compute Runtime](https://github.com/intel/compute-runtime) (GPU)
+- [Intel® CPU OpenCL Runtime](https://software.intel.com/en-us/articles/opencl-drivers#cpu-section) (CPU, optional)
+
+### Supported OS
+
 - Linux
 
-## Prerequisites
-- [CMake](https://cmake.org/) (version 3.12 and above)
-- [Git](https://git-scm.com/) (version 1.8 and above)
-- [Python](https://www.python.org/) (version 2.7 and above)
-- [OpenCL(TM) ICD Loader](https://github.com/KhronosGroup/OpenCL-ICD-Loader)
-- [oneAPI Level Zero loader](https://github.com/oneapi-src/level-zero)
-- [Intel(R) Graphics Compute Runtime for oneAPI Level Zero and OpenCL(TM) Driver](https://github.com/intel/compute-runtime) to run on GPU
-- [Intel(R) Xeon(R) Processor / Intel(R) Core(TM) Processor (CPU) Runtimes](https://software.intel.com/en-us/articles/opencl-drivers#cpu-section) to run on CPU
+### Build Steps
 
-## Build and Run
-### Linux
-Run the following commands to build the sample:
 ```sh
 cd finetrace
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+
+# Optional: install to system
+cmake --install build
 ```
-Use this command line to run the tool:
+
+---
+
+## Overhead Benchmarking
+
+The `script_run_samples.sh` script measures wall-clock overhead across multiple tracing configurations:
+
+| Variant | Flags |
+|---|---|
+| `clean` | *(no finetrace)* |
+| `host-timing` | `--host-timing` |
+| `call-logging` | `--call-logging` |
+| `host+call` | `--host-timing --call-logging` |
+| `metrics` | `--aggregation` *(GPU only)* |
+| `all` | `--host-timing --call-logging --aggregation` *(GPU only)* |
+
 ```sh
-./finetrace [options] <target_application>
+# Build samples first
+./script_build_samples.sh
+
+# Run overhead benchmarks (both CPU and GPU)
+./script_run_samples.sh
+
+# GPU only, 10 repeats
+./script_run_samples.sh --gpu -n 10
+
+# Generate Excel report with charts
+python3 script_run_samples.py
 ```
-One may use e.g. [dpc_gemm](../../samples/dpc_gemm) as target application, e.g.:
-```sh
-./finetrace -c -h ../../../samples/dpc_gemm/build/dpc_gemm cpu
-./finetrace -c -h ../../../samples/dpc_gemm/build/dpc_gemm gpu
-```
+
+The Python script produces `finetrace_overhead_stat.xlsx` with per-mode sheets, absolute time charts, and overhead-percentage charts relative to the `clean` baseline.

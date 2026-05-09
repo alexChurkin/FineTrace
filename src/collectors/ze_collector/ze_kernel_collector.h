@@ -702,8 +702,8 @@ class ZeKernelCollector {
     metric_start = metric_sync + time_shift;
     metric_end = metric_start + duration;
   }
+#endif // FTRACE_KERNEL_INTERVALS
 
-#else // FTRACE_KERNEL_INTERVALS
   void GetHostTime(
       const ZeKernelCall* call,
       const ze_kernel_timestamp_result_t& timestamp,
@@ -786,7 +786,6 @@ class ZeKernelCollector {
           host_start, host_end);
     }
   }
-#endif // FTRACE_KERNEL_INTERVALS
 
   void ProcessCall(std::string callname, const ZeKernelCall* call) {
     FTRACE_ASSERT(call != nullptr);
@@ -794,9 +793,6 @@ class ZeKernelCollector {
     FTRACE_ASSERT(command != nullptr);
 
     if (call->need_to_process) {
-#ifdef FTRACE_KERNEL_INTERVALS
-      AddKernelInterval(call);
-#else // FTRACE_KERNEL_INTERVALS
       ze_result_t status = ZE_RESULT_SUCCESS;
       status = zeEventQueryStatus(command->event);
       FTRACE_ASSERT(status == ZE_RESULT_SUCCESS);
@@ -839,6 +835,8 @@ class ZeKernelCollector {
       } else {
         ProcessCall(call, timestamp, -1, true);
       }
+#ifdef FTRACE_KERNEL_INTERVALS
+      AddKernelInterval(call);
 #endif // FTRACE_KERNEL_INTERVALS
     }
 
