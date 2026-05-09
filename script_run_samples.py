@@ -1,5 +1,27 @@
 import subprocess
 import pandas as pd
+from xlsxwriter.utility import xl_rowcol_to_cell
+
+# Palette: least saturated (pale) → most saturated (vivid), single blue hue.
+_PALETTE = [
+    "#D6E4F5",  # very pale blue
+    "#A8C8EC",  # light blue
+    "#74A9DE",  # medium-light blue
+    "#4080C8",  # medium blue
+    "#1F5BAF",  # medium-dark blue
+    "#0D3478",  # deep navy
+]
+
+
+def _pick_colors(n):
+    """Return n colors evenly spread across _PALETTE, light → dark."""
+    if n == 1:
+        return [_PALETTE[-1]]
+    palette = _PALETTE
+    if n >= len(palette):
+        return palette[:]
+    indices = [round(i * (len(palette) - 1) / (n - 1)) for i in range(n)]
+    return [palette[idx] for idx in indices]
 
 
 def run_benchmarks():
@@ -102,23 +124,34 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
 
         mode_ru = "CPU" if mode == "cpu" else "GPU"
 
+        # Charts go below the table: 1 header row + max_row data rows + 2 gap rows.
+        chart_anchor_row = max_row + 2   # 0-based row index
+        chart_row_step   = 20            # rows per chart (approx chart height)
+
         # ---- Chart 1: Absolute execution time ----
+        colors_abs = _pick_colors(len(timing_cols))
         chart_abs = workbook.add_chart({'type': 'column'})
         for i, col_name in enumerate(timing_cols):
-            col_idx = i + 1  # +1 for Benchmark column
+            col_idx = i + 1
             chart_abs.add_series({
                 'name':       [sheet_name, 0, col_idx],
                 'categories': [sheet_name, 1, 0, max_row, 0],
                 'values':     [sheet_name, 1, col_idx, max_row, col_idx],
+                'fill':       {'color': colors_abs[i]},
+                'border':     {'color': colors_abs[i]},
             })
         chart_abs.set_title({'name': f'Время выполнения — {mode_ru}'})
         chart_abs.set_x_axis({'name': 'Приложение'})
         chart_abs.set_y_axis({'name': 'Время (с)'})
         chart_abs.set_style(11)
-        worksheet.insert_chart('B2', chart_abs, {'x_offset': 400, 'x_scale': 1.4, 'y_scale': 1.2})
+        worksheet.insert_chart(
+            xl_rowcol_to_cell(chart_anchor_row, 0),
+            chart_abs, {'x_scale': 1.6, 'y_scale': 1.2},
+        )
 
         # ---- Chart 2: Overhead (%) relative to clean ----
         if pct_columns:
+            colors_pct = _pick_colors(len(pct_columns))
             chart_pct = workbook.add_chart({'type': 'column'})
             for i, col_name in enumerate(pct_columns):
                 col_idx = pct_start_col + i
@@ -126,12 +159,17 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
                     'name':       [sheet_name, 0, col_idx],
                     'categories': [sheet_name, 1, 0, max_row, 0],
                     'values':     [sheet_name, 1, col_idx, max_row, col_idx],
+                    'fill':       {'color': colors_pct[i]},
+                    'border':     {'color': colors_pct[i]},
                 })
             chart_pct.set_title({'name': f'Накладные расходы vs clean — {mode_ru}'})
             chart_pct.set_x_axis({'name': 'Приложение'})
             chart_pct.set_y_axis({'name': 'Накладные расходы (%)'})
             chart_pct.set_style(12)
-            worksheet.insert_chart('B20', chart_pct, {'x_offset': 400, 'x_scale': 1.4, 'y_scale': 1.2})
+            worksheet.insert_chart(
+                xl_rowcol_to_cell(chart_anchor_row + chart_row_step, 0),
+                chart_pct, {'x_scale': 1.6, 'y_scale': 1.2},
+            )
 
         # Widen columns for readability.
         worksheet.set_column('A:A', 22)
