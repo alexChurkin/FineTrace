@@ -292,10 +292,11 @@ class ClKernelCollector {
     FTRACE_ASSERT(correlator_ != nullptr);
 #ifdef FTRACE_KERNEL_INTERVALS
     ze_device_ = GetZeDevice(device_);
-    FTRACE_ASSERT(ze_device_ != nullptr);
-    timer_mask_ = utils::ze::GetMetricTimestampMask(ze_device_);
-    timer_freq_ = utils::ze::GetMetricTimerFrequency(ze_device_);
-    CreateDeviceMap();
+    if (ze_device_ != nullptr) {
+      timer_mask_ = utils::ze::GetMetricTimestampMask(ze_device_);
+      timer_freq_ = utils::ze::GetMetricTimerFrequency(ze_device_);
+      CreateDeviceMap();
+    }
 #endif // FTRACE_KERNEL_INTERVALS
   }
 
@@ -591,6 +592,10 @@ class ClKernelCollector {
     FTRACE_ASSERT(device != nullptr);
     FTRACE_ASSERT(started < ended);
 
+    if (ze_device_ == nullptr) {
+      return;
+    }
+
     cl_ulong cl_host_timestamp = 0;
     cl_ulong cl_device_timestamp = 0;
     utils::cl::GetTimestamps(device, &cl_host_timestamp, &cl_device_timestamp);
@@ -601,7 +606,7 @@ class ClKernelCollector {
 
     uint64_t mask;
     uint64_t freq;
-    if (device = device_) {
+    if (device == device_) {
       ze_device = ze_device_;
       mask = timer_mask_;
       freq = timer_freq_;
