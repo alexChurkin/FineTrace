@@ -45,7 +45,8 @@ def run_benchmarks():
 
         # Data row — non-empty benchmark name.
         if current_headers and parts and parts[0]:
-            row = {"Mode": current_mode, "Benchmark": parts[0]}
+            bench_name = parts[0].removeprefix("bench_")
+            row = {"Mode": current_mode, "Benchmark": bench_name}
             for i, col in enumerate(current_headers):
                 row[col] = parts[i + 1].strip() if i + 1 < len(parts) else ""
             results.append(row)
@@ -61,6 +62,10 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
 
     for mode in df['Mode'].unique():
         mode_df = df[df['Mode'] == mode].drop(columns=['Mode']).copy()
+
+        # CPU charts: exclude ze_gemm (it only runs in GPU suite).
+        if mode == "cpu":
+            mode_df = mode_df[mode_df["Benchmark"] != "ze_gemm"].copy()
 
         # All columns except "Benchmark" hold timing values.
         timing_cols = [c for c in mode_df.columns if c != "Benchmark"]
@@ -95,6 +100,8 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
 
         max_row = len(mode_df)
 
+        mode_ru = "CPU" if mode == "cpu" else "GPU"
+
         # ---- Chart 1: Absolute execution time ----
         chart_abs = workbook.add_chart({'type': 'column'})
         for i, col_name in enumerate(timing_cols):
@@ -104,9 +111,9 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
                 'categories': [sheet_name, 1, 0, max_row, 0],
                 'values':     [sheet_name, 1, col_idx, max_row, col_idx],
             })
-        chart_abs.set_title({'name': f'Absolute Time — {mode.upper()}'})
-        chart_abs.set_x_axis({'name': 'Benchmark'})
-        chart_abs.set_y_axis({'name': 'Time (s)'})
+        chart_abs.set_title({'name': f'Время выполнения — {mode_ru}'})
+        chart_abs.set_x_axis({'name': 'Приложение'})
+        chart_abs.set_y_axis({'name': 'Время (с)'})
         chart_abs.set_style(11)
         worksheet.insert_chart('B2', chart_abs, {'x_offset': 400, 'x_scale': 1.4, 'y_scale': 1.2})
 
@@ -120,9 +127,9 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
                     'categories': [sheet_name, 1, 0, max_row, 0],
                     'values':     [sheet_name, 1, col_idx, max_row, col_idx],
                 })
-            chart_pct.set_title({'name': f'Overhead vs clean — {mode.upper()}'})
-            chart_pct.set_x_axis({'name': 'Benchmark'})
-            chart_pct.set_y_axis({'name': 'Overhead (%)'})
+            chart_pct.set_title({'name': f'Накладные расходы vs clean — {mode_ru}'})
+            chart_pct.set_x_axis({'name': 'Приложение'})
+            chart_pct.set_y_axis({'name': 'Накладные расходы (%)'})
             chart_pct.set_style(12)
             worksheet.insert_chart('B20', chart_pct, {'x_offset': 400, 'x_scale': 1.4, 'y_scale': 1.2})
 
