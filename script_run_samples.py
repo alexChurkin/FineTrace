@@ -2,26 +2,26 @@ import subprocess
 import pandas as pd
 from xlsxwriter.utility import xl_rowcol_to_cell
 
-# Palette: least saturated (pale) → most saturated (vivid), single blue hue.
+# One fixed color per variant slot (index matches position in timing_cols).
+# Palette: least saturated → most saturated, single blue hue.
 _PALETTE = [
-    "#D6E4F5",  # very pale blue
-    "#A8C8EC",  # light blue
-    "#74A9DE",  # medium-light blue
-    "#4080C8",  # medium blue
-    "#1F5BAF",  # medium-dark blue
-    "#0D3478",  # deep navy
+    "#D6E4F5",  # 0 clean          — very pale blue
+    "#A8C8EC",  # 1 host-timing    — light blue
+    "#74A9DE",  # 2 call-logging   — medium-light blue
+    "#4080C8",  # 3 host+call      — medium blue
+    "#1F5BAF",  # 4 metrics        — medium-dark blue
+    "#0D3478",  # 5 all            — deep navy
 ]
 
-
-def _pick_colors(n):
-    """Return n colors evenly spread across _PALETTE, light → dark."""
-    if n == 1:
-        return [_PALETTE[-1]]
-    palette = _PALETTE
-    if n >= len(palette):
-        return palette[:]
-    indices = [round(i * (len(palette) - 1) / (n - 1)) for i in range(n)]
-    return [palette[idx] for idx in indices]
+# Human-readable series labels for the legend.
+_LABELS = {
+    "clean":        "Обычный запуск",
+    "host-timing":  "FineTrace: хост-тайминг (1)",
+    "call-logging": "FineTrace: трейсинг вызовов (2)",
+    "host+call":    "FineTrace (1)+(2)",
+    "metrics":      "FineTrace: метрики GPU (3)",
+    "all":          "FineTrace (1)+(2)+(3)",
+}
 
 
 def run_benchmarks():
@@ -124,51 +124,57 @@ def create_excel(data, filename="finetrace_overhead_stat.xlsx"):
 
         mode_ru = "CPU" if mode == "cpu" else "GPU"
 
+        # Map each timing column name to its fixed palette index.
+        col_color = {col: _PALETTE[i % len(_PALETTE)] for i, col in enumerate(timing_cols)}
+
         # Charts go below the table: 1 header row + max_row data rows + 2 gap rows.
         chart_anchor_row = max_row + 2   # 0-based row index
-        chart_row_step   = 20            # rows per chart (approx chart height)
+        chart_row_step   = 22            # rows per chart (approx chart height + legend)
 
         # ---- Chart 1: Absolute execution time ----
-        colors_abs = _pick_colors(len(timing_cols))
         chart_abs = workbook.add_chart({'type': 'column'})
         for i, col_name in enumerate(timing_cols):
             col_idx = i + 1
+            color = col_color[col_name]
             chart_abs.add_series({
-                'name':       [sheet_name, 0, col_idx],
+                'name':       _LABELS.get(col_name, col_name),
                 'categories': [sheet_name, 1, 0, max_row, 0],
                 'values':     [sheet_name, 1, col_idx, max_row, col_idx],
-                'fill':       {'color': colors_abs[i]},
-                'border':     {'color': colors_abs[i]},
+                'fill':       {'color': color},
+                'border':     {'color': color},
             })
         chart_abs.set_title({'name': f'Время выполнения — {mode_ru}'})
         chart_abs.set_x_axis({'name': 'Приложение'})
         chart_abs.set_y_axis({'name': 'Время (с)'})
+        chart_abs.set_legend({'position': 'bottom'})
         chart_abs.set_style(11)
         worksheet.insert_chart(
             xl_rowcol_to_cell(chart_anchor_row, 0),
-            chart_abs, {'x_scale': 1.6, 'y_scale': 1.2},
+            chart_abs, {'x_scale': 1.6, 'y_scale': 1.4},
         )
 
         # ---- Chart 2: Overhead (%) relative to clean ----
         if pct_columns:
-            colors_pct = _pick_colors(len(pct_columns))
             chart_pct = workbook.add_chart({'type': 'column'})
-            for i, col_name in enumerate(pct_columns):
-                col_idx = pct_start_col + i
+            for pct_col in pct_columns:
+                source_col = pct_col.replace(" (%)", "")
+                col_idx = pct_start_col + pct_columns.index(pct_col)
+                color = col_color.get(source_col, _PALETTE[-1])
                 chart_pct.add_series({
-                    'name':       [sheet_name, 0, col_idx],
+                    'name':       _LABELS.get(source_col, source_col),
                     'categories': [sheet_name, 1, 0, max_row, 0],
                     'values':     [sheet_name, 1, col_idx, max_row, col_idx],
-                    'fill':       {'color': colors_pct[i]},
-                    'border':     {'color': colors_pct[i]},
+                    'fill':       {'color': color},
+                    'border':     {'color': color},
                 })
             chart_pct.set_title({'name': f'Накладные расходы vs clean — {mode_ru}'})
             chart_pct.set_x_axis({'name': 'Приложение'})
             chart_pct.set_y_axis({'name': 'Накладные расходы (%)'})
+            chart_pct.set_legend({'position': 'bottom'})
             chart_pct.set_style(12)
             worksheet.insert_chart(
                 xl_rowcol_to_cell(chart_anchor_row + chart_row_step, 0),
-                chart_pct, {'x_scale': 1.6, 'y_scale': 1.2},
+                chart_pct, {'x_scale': 1.6, 'y_scale': 1.4},
             )
 
         # Widen columns for readability.
