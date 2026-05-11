@@ -45,12 +45,12 @@ RUN_GPU=0
 # Variant definitions
 # ---------------------------------------------------------------------------
 # Base variants — run for every mode.
-BASE_LABELS=( "clean"  "host-timing"    "call-logging"   "host+call" )
-BASE_ARGS=(   ""       "--host-timing"  "--call-logging"  "--host-timing --call-logging" )
+BASE_LABELS=( "clean"  "call-logging"   "device-timeline"   "call+device" )
+BASE_ARGS=(   ""       "--call-logging" "--device-timeline"  "--call-logging --device-timeline" )
 
 # Metric variants — GPU only (requires Level Zero device).
 METRIC_LABELS=( "metrics"       "all" )
-METRIC_ARGS=(   "--aggregation" "--host-timing --call-logging --aggregation" )
+METRIC_ARGS=(   "--aggregation" "--call-logging --device-timeline --aggregation" )
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -63,6 +63,12 @@ Run benchmark samples with per-run timing and average.
 
   Variants (CPU):  ${BASE_LABELS[*]}
   Variants (GPU):  ${BASE_LABELS[*]} ${METRIC_LABELS[*]}
+
+  call-logging    --call-logging             (host API call tracing)
+  device-timeline --device-timeline          (device event tracing)
+  call+device     --call-logging --device-timeline
+  metrics         --aggregation              (GPU HW counters, GPU only)
+  all             --call-logging --device-timeline --aggregation (GPU only)
 
   --cpu    Run CPU-only suite (Intel Core Ultra 5 125H, OpenCL 1:0).
   --gpu    Run GPU suite (Intel Arc Graphics, OpenCL 0:0 + ze_gemm).

@@ -283,14 +283,14 @@ cmake --install build
 
 The `script_run_samples.sh` script measures wall-clock overhead across multiple tracing configurations:
 
-| Variant | Flags |
-|---|---|
-| `clean` | *(no finetrace)* |
-| `host-timing` | `--host-timing` |
-| `call-logging` | `--call-logging` |
-| `host+call` | `--host-timing --call-logging` |
-| `metrics` | `--aggregation` *(GPU only)* |
-| `all` | `--host-timing --call-logging --aggregation` *(GPU only)* |
+| Variant | Flags | What it measures |
+|---|---|---|
+| `clean` | *(no finetrace)* | Baseline |
+| `call-logging` | `--call-logging` | Host API call tracing overhead |
+| `device-timeline` | `--device-timeline` | Device event tracing overhead |
+| `call+device` | `--call-logging --device-timeline` | Both host and device tracing |
+| `metrics` | `--aggregation` *(GPU only)* | GPU HW metric collection overhead |
+| `all` | `--call-logging --device-timeline --aggregation` *(GPU only)* | Full tracing + metrics |
 
 ```sh
 # Build samples first

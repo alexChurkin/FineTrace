@@ -1,90 +1,101 @@
-# cl_gemm
+# All benchmark launches performed by script_run_samples.sh
+# Each command runs in the listed directory (cd).
+# finetrace = build/finetrace (absolute path from repo root)
+# data/...  = samples/cl_rodinia_benchmarks/data/... (absolute path)
+
+################################################################################
+# CPU suite (OpenCL platform 1, device 0 — Intel Core Ultra 5 125H)
+################################################################################
+
+# --- cl_gemm ---
 cd samples/cl_gemm/build
 ./cl_gemm cpu 512 128
-build/finetrace --host-timing ./cl_gemm cpu 512 128
-build/finetrace --call-logging ./cl_gemm cpu 512 128
-build/finetrace --host-timing --call-logging ./cl_gemm cpu 512 128
+finetrace --call-logging ./cl_gemm cpu 512 128
+finetrace --device-timeline ./cl_gemm cpu 512 128
+finetrace --call-logging --device-timeline ./cl_gemm cpu 512 128
 
-# bench_b+tree
+# --- bench_b+tree ---
 cd samples/cl_rodinia_benchmarks/bench_b+tree
 ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
-build/finetrace --host-timing ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
-build/finetrace --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
-build/finetrace --host-timing --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
+finetrace --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
+finetrace --device-timeline ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
+finetrace --call-logging --device-timeline ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 1 -d 0
 
-# bench_bfs
+# --- bench_bfs ---
 cd samples/cl_rodinia_benchmarks/bench_bfs
 ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --host-timing ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --host-timing --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
+finetrace --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
+finetrace --device-timeline ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
+finetrace --call-logging --device-timeline ./bfs.out data/bfs/graph1MW_6.txt -p 1 -d 0
 
-# bench_gaussian
+# --- bench_gaussian ---
 cd samples/cl_rodinia_benchmarks/bench_gaussian
 ./gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --host-timing ./gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --call-logging ./gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --host-timing --call-logging ./gaussian.out -s 2048 -p 1 -d 0
+finetrace --call-logging ./gaussian.out -s 2048 -p 1 -d 0
+finetrace --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
+finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
 
-# bench_nw
+# --- bench_nw ---
 cd samples/cl_rodinia_benchmarks/bench_nw
 ./nw.out 8192 10 ./nw.cl -p 1 -d 0
-build/finetrace --host-timing ./nw.out 8192 10 ./nw.cl -p 1 -d 0
-build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 1 -d 0
-build/finetrace --host-timing --call-logging ./nw.out 8192 10 ./nw.cl -p 1 -d 0
-GPU suite
+finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
 
+################################################################################
+# GPU suite (OpenCL platform 0, device 0 — Intel Arc Graphics)
+################################################################################
 
-# cl_gemm
+# --- cl_gemm ---
 cd samples/cl_gemm/build
 ./cl_gemm gpu 512 128
-build/finetrace --host-timing ./cl_gemm gpu 512 128
-build/finetrace --call-logging ./cl_gemm gpu 512 128
-build/finetrace --host-timing --call-logging ./cl_gemm gpu 512 128
-build/finetrace --aggregation ./cl_gemm gpu 512 128
-build/finetrace --host-timing --call-logging --aggregation ./cl_gemm gpu 512 128
+finetrace --call-logging ./cl_gemm gpu 512 128
+finetrace --device-timeline ./cl_gemm gpu 512 128
+finetrace --call-logging --device-timeline ./cl_gemm gpu 512 128
+finetrace --aggregation ./cl_gemm gpu 512 128
+finetrace --call-logging --device-timeline --aggregation ./cl_gemm gpu 512 128
 
-# ze_gemm
+# --- ze_gemm ---
 cd samples/ze_gemm/build
 ./ze_gemm 512 128
-build/finetrace --host-timing ./ze_gemm 512 128
-build/finetrace --call-logging ./ze_gemm 512 128
-build/finetrace --host-timing --call-logging ./ze_gemm 512 128
-build/finetrace --aggregation ./ze_gemm 512 128
-build/finetrace --host-timing --call-logging --aggregation ./ze_gemm 512 128
+finetrace --call-logging ./ze_gemm 512 128
+finetrace --device-timeline ./ze_gemm 512 128
+finetrace --call-logging --device-timeline ./ze_gemm 512 128
+finetrace --aggregation ./ze_gemm 512 128
+finetrace --call-logging --device-timeline --aggregation ./ze_gemm 512 128
 
-# bench_b+tree
+# --- bench_b+tree ---
 cd samples/cl_rodinia_benchmarks/bench_b+tree
 ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
-build/finetrace --host-timing ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
-build/finetrace --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
-build/finetrace --host-timing --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
-build/finetrace --aggregation ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
-build/finetrace --host-timing --call-logging --aggregation ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
+finetrace --call-logging ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
+finetrace --device-timeline ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
+finetrace --call-logging --device-timeline ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
+finetrace --aggregation ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
+finetrace --call-logging --device-timeline --aggregation ./b+tree.out file data/b+tree/mil.txt command data/b+tree/command.txt -p 0 -d 0
 
-# bench_bfs
+# --- bench_bfs ---
 cd samples/cl_rodinia_benchmarks/bench_bfs
 ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --host-timing ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --host-timing --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --aggregation ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --host-timing --call-logging --aggregation ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
+finetrace --call-logging ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
+finetrace --device-timeline ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
+finetrace --call-logging --device-timeline ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
+finetrace --aggregation ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
+finetrace --call-logging --device-timeline --aggregation ./bfs.out data/bfs/graph1MW_6.txt -p 0 -d 0
 
-# bench_gaussian
+# --- bench_gaussian ---
 cd samples/cl_rodinia_benchmarks/bench_gaussian
 ./gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --host-timing ./gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --call-logging ./gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --host-timing --call-logging ./gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --aggregation ./gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --host-timing --call-logging --aggregation ./gaussian.out -s 2048 -p 0 -d 0
+finetrace --call-logging ./gaussian.out -s 2048 -p 0 -d 0
+finetrace --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
+finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
+finetrace --aggregation ./gaussian.out -s 2048 -p 0 -d 0
+finetrace --call-logging --device-timeline --aggregation ./gaussian.out -s 2048 -p 0 -d 0
 
-# bench_nw
+# --- bench_nw ---
 cd samples/cl_rodinia_benchmarks/bench_nw
 ./nw.out 8192 10 ./nw.cl -p 0 -d 0
-build/finetrace --host-timing ./nw.out 8192 10 ./nw.cl -p 0 -d 0
-build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 0 -d 0
-build/finetrace --host-timing --call-logging ./nw.out 8192 10 ./nw.cl -p 0 -d 0
-build/finetrace --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
-build/finetrace --host-timing --call-logging --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+finetrace --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+finetrace --call-logging --device-timeline --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0

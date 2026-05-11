@@ -15,12 +15,12 @@ _PALETTE = [
 
 # Human-readable series labels for the legend.
 _LABELS = {
-    "clean":        "Обычный запуск",
-    "host-timing":  "FineTrace: хост-тайминг (1)",
-    "call-logging": "FineTrace: трейсинг вызовов (2)",
-    "host+call":    "FineTrace (1)+(2)",
-    "metrics":      "FineTrace: метрики GPU (3)",
-    "all":          "FineTrace (1)+(2)+(3)",
+    "clean":           "Обычный запуск",
+    "call-logging":    "FineTrace: трейсинг API-вызовов (1)",
+    "device-timeline": "FineTrace: трейсинг GPU-событий (2)",
+    "call+device":     "FineTrace (1)+(2)",
+    "metrics":         "FineTrace: метрики GPU (3)",
+    "all":             "FineTrace (1)+(2)+(3)",
 }
 
 
