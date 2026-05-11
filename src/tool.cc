@@ -526,6 +526,8 @@ static TraceOptions ReadArgs() {
 void EnableProfiling() {
   TraceOptions options = ReadArgs();
 
+  tracer = UnifiedTracer::Create(options);
+
   if (IsMetricMode()) {
     ze_result_t status = zeInit(ZE_INIT_FLAG_GPU_ONLY);
     if (status == ZE_RESULT_ERROR_DEPENDENCY_UNAVAILABLE) {
@@ -534,19 +536,23 @@ void EnableProfiling() {
       std::cerr << "  Please check that metrics libraries are installed " <<
         "and /proc/sys/dev/i915/perf_stream_paranoid is set to 0" << std::endl;
     } else if (status == ZE_RESULT_SUCCESS) {
-      metric_profiler = MetricProfiler::Create(options);
+      ClKernelCollector* shared_cl = (tracer != nullptr)
+          ? tracer->GetClGpuKernelCollector()
+          : nullptr;
+      metric_profiler = MetricProfiler::Create(options, shared_cl);
     }
   }
-
-  tracer = UnifiedTracer::Create(options);
 }
 
 void DisableProfiling() {
-  if (tracer != nullptr) {
-    delete tracer;
-  }
+  // MetricProfiler first: its DumpResultFile may read from a shared
+  // ClKernelCollector owned by UnifiedTracer, so UnifiedTracer must
+  // still be alive when MetricProfiler destructs.
   if (metric_profiler != nullptr) {
     delete metric_profiler;
+  }
+  if (tracer != nullptr) {
+    delete tracer;
   }
 }
 

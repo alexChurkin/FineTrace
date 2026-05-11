@@ -16,7 +16,9 @@
 
 class MetricProfiler {
  public:
-  static MetricProfiler* Create(const TraceOptions& options) {
+  static MetricProfiler* Create(
+      const TraceOptions& options,
+      ClKernelCollector* shared_cl_kernel_collector = nullptr) {
     ze_driver_handle_t driver = GetZeDriver(options.GetDeviceId());
     if (driver == nullptr) {
       std::cerr << "[WARNING] Unable to find target Level Zero driver" <<
@@ -88,17 +90,22 @@ class MetricProfiler {
         profiler->ze_kernel_collector_ = ze_kernel_collector;
 
         ClKernelCollector* cl_kernel_collector = nullptr;
-        cl_device_id cl_device = GetClDevice(options.GetDeviceId());
-        if (cl_device == nullptr) {
-          std::cerr <<
-            "[WARNING] Unable to find target OpenCL device" << std::endl;
+        if (shared_cl_kernel_collector != nullptr) {
+          cl_kernel_collector = shared_cl_kernel_collector;
+          profiler->owns_cl_kernel_collector_ = false;
         } else {
-          cl_kernel_collector = ClKernelCollector::Create(
-              cl_device, &(profiler->correlator_), kernel_options);
-          if (cl_kernel_collector == nullptr) {
+          cl_device_id cl_device = GetClDevice(options.GetDeviceId());
+          if (cl_device == nullptr) {
             std::cerr <<
-              "[WARNING] Unable to create OpenCL kernel collector" <<
-              std::endl;
+              "[WARNING] Unable to find target OpenCL device" << std::endl;
+          } else {
+            cl_kernel_collector = ClKernelCollector::Create(
+                cl_device, &(profiler->correlator_), kernel_options);
+            if (cl_kernel_collector == nullptr) {
+              std::cerr <<
+                "[WARNING] Unable to create OpenCL kernel collector" <<
+                std::endl;
+            }
           }
         }
         profiler->cl_kernel_collector_ = cl_kernel_collector;
@@ -134,7 +141,7 @@ class MetricProfiler {
       if (ze_kernel_collector_ != nullptr) {
         ze_kernel_collector_->DisableTracing();
       }
-      if (cl_kernel_collector_ != nullptr) {
+      if (cl_kernel_collector_ != nullptr && owns_cl_kernel_collector_) {
         cl_kernel_collector_->DisableTracing();
       }
 
@@ -146,7 +153,7 @@ class MetricProfiler {
       if (ze_kernel_collector_ != nullptr) {
         delete ze_kernel_collector_;
       }
-      if (cl_kernel_collector_ != nullptr) {
+      if (cl_kernel_collector_ != nullptr && owns_cl_kernel_collector_) {
         delete cl_kernel_collector_;
       }
     }
@@ -320,6 +327,7 @@ class MetricProfiler {
   MetricStreamerCollector* metric_streamer_collector_ = nullptr;
   ZeKernelCollector* ze_kernel_collector_ = nullptr;
   ClKernelCollector* cl_kernel_collector_ = nullptr;
+  bool owns_cl_kernel_collector_ = true;
 
   Correlator correlator_;
 

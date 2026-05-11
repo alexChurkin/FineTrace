@@ -207,6 +207,10 @@ class UnifiedTracer {
     return tracer;
   }
 
+  ClKernelCollector* GetClGpuKernelCollector() const {
+    return cl_gpu_kernel_collector_;
+  }
+
   ~UnifiedTracer() {
     total_execution_time_ = correlator_.GetTimestamp();
 

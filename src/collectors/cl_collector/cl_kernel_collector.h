@@ -441,11 +441,6 @@ class ClKernelCollector {
       cl_ulong time = ended - started;
       FTRACE_ASSERT(time > 0);
 
-#ifdef FTRACE_KERNEL_INTERVALS
-      cl_device_id device = utils::cl::GetDevice(queue);
-      FTRACE_ASSERT(device != nullptr);
-      AddKernelInterval(instance, device, started, ended);
-#else // FTRACE_KERNEL_INTERVALS
       std::string name = instance->props.name;
       FTRACE_ASSERT(!name.empty());
 
@@ -477,6 +472,11 @@ class ClKernelCollector {
             host_queued, host_submitted,
             host_started, host_ended);
       }
+
+#ifdef FTRACE_KERNEL_INTERVALS
+      cl_device_id device = utils::cl::GetDevice(queue);
+      FTRACE_ASSERT(device != nullptr);
+      AddKernelInterval(instance, device, started, ended);
 #endif // FTRACE_KERNEL_INTERVALS
     }
 
