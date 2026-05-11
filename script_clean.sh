@@ -51,8 +51,8 @@ find "$ROOT_DIR" -maxdepth 1 \( \
 echo "-- Removing log files"
 find "$ROOT_DIR" -maxdepth 1 -name "finetrace_run_*.log" -print -delete
 
-echo "-- Removing Excel report"
-find "$ROOT_DIR" -maxdepth 1 -name "finetrace_overhead_stat.xlsx" -print -delete
+# echo "-- Removing Excel report"
+# find "$ROOT_DIR" -maxdepth 1 -name "finetrace_overhead_stat.xlsx" -print -delete
 
 # ---------------------------------------------------------------------------
 # Build directories (opt-in)
