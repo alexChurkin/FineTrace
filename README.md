@@ -16,13 +16,13 @@ cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 
 # Basic device timing
-./build/finetrace --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --device-timing ./samples/ze_gemm/build/ze_gemm
 
 # Host API timing + device timing
-./build/finetrace --host-timing --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --host-timing --device-timing ./samples/ze_gemm/build/ze_gemm
 
 # GPU hardware metrics (ComputeBasic group)
-./build/finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
 ```
 
 ---
@@ -180,8 +180,8 @@ All metric modes require a Level Zero GPU device and work alongside any tracing 
 Use `--group` to select which counters to collect. Default is `ComputeBasic`.
 
 ```sh
-./build/finetrace --metric-list    # list all available groups and their metrics
-./build/finetrace --device-list    # list available devices
+finetrace --metric-list    # list all available groups and their metrics
+finetrace --device-list    # list available devices
 ```
 
 Key named groups on Intel Arc:
@@ -212,26 +212,26 @@ Key named groups on Intel Arc:
 
 ```sh
 # ComputeBasic metrics + device timing (recommended first run)
-./build/finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --aggregation --device-timing ./samples/ze_gemm/build/ze_gemm
 
 # Event-based query (more precise, no sampling overhead)
-./build/finetrace --kernel-query --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --kernel-query --device-timing ./samples/ze_gemm/build/ze_gemm
 
 # SLM bank conflicts (important for memory-bound kernels)
-./build/finetrace --kernel-query -g L1ProfileSlmBankConflicts ./samples/ze_gemm/build/ze_gemm
+finetrace --kernel-query -g L1ProfileSlmBankConflicts ./samples/ze_gemm/build/ze_gemm
 
 # L3 cache profile
-./build/finetrace --aggregation -g L3 --device-timing ./samples/ze_gemm/build/ze_gemm
+finetrace --aggregation -g L3 --device-timing ./samples/ze_gemm/build/ze_gemm
 
 # All tracing + metrics in one shot
-./build/finetrace \
+finetrace \
   --host-timing --call-logging --device-timing \
   --aggregation -g ComputeBasic \
   ./samples/ze_gemm/build/ze_gemm
 
 # Two-phase: collect now, finalize later
-./build/finetrace --aggregation --no-finalize ./samples/ze_gemm/build/ze_gemm
-./build/finetrace --finalize result.<PID>.bin
+finetrace --aggregation --no-finalize ./samples/ze_gemm/build/ze_gemm
+finetrace --finalize result.<PID>.bin
 ```
 
 **Example `--aggregation` output:**
