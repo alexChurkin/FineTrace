@@ -67,8 +67,8 @@ def run_benchmarks():
 
         # Data row — non-empty benchmark name.
         if current_headers and parts and parts[0]:
-            name = parts[0].removeprefix("")
-            row = {"Mode": current_mode, "Benchmark": name}
+            bench_name = parts[0].removeprefix("bench_")
+            row = {"Mode": current_mode, "Benchmark": bench_name}
             for i, col in enumerate(current_headers):
                 row[col] = parts[i + 1].strip() if i + 1 < len(parts) else ""
             results.append(row)

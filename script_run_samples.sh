@@ -80,7 +80,7 @@ Environment:
   FINETRACE         Path to finetrace binary (default: $FINETRACE).
   RODINIA_DATA_DIR  Path to Rodinia data directory.
 
-CPU benchmarks: cl_gemm, b+tree, bfs, gaussian, nw
+CPU benchmarks: cl_gemm, bench_b+tree, bench_bfs, bench_gaussian, bench_nw
 GPU benchmarks: CPU benchmarks + ze_gemm
 EOF
 }
@@ -163,7 +163,7 @@ remember_bench() {
 # ---------------------------------------------------------------------------
 # Core runner
 #
-# Usage: run_one <mode> <label> <ft_args> <name> <dir> <cmd> [args...]
+# Usage: run_one <mode> <label> <ft_args> <bench_name> <dir> <cmd> [args...]
 # ---------------------------------------------------------------------------
 run_one() {
   local mode="$1" label="$2" ft_args="$3" name="$4" dir="$5"
@@ -206,7 +206,7 @@ run_one() {
 }
 
 # Run a benchmark through all variants for the given mode.
-# Usage: run_all_variants <mode> <name> <dir> <cmd> [args...]
+# Usage: run_all_variants <mode> <bench_name> <dir> <cmd> [args...]
 run_all_variants() {
   local mode="$1" name="$2" dir="$3"
   shift 3
@@ -248,23 +248,23 @@ run_suite() {
       ./ze_gemm 512 128
   fi
 
-  run_all_variants "$mode" "b+tree" \
-    "$RODINIA/b+tree" \
+  run_all_variants "$mode" "bench_b+tree" \
+    "$RODINIA/bench_b+tree" \
     ./b+tree.out file "$RODINIA_DATA_DIR/b+tree/mil.txt" \
                  command "$RODINIA_DATA_DIR/b+tree/command.txt" \
                  -p "$plat" -d "$dev"
 
-  run_all_variants "$mode" "bfs" \
-    "$RODINIA/bfs" \
+  run_all_variants "$mode" "bench_bfs" \
+    "$RODINIA/bench_bfs" \
     ./bfs.out "$RODINIA_DATA_DIR/bfs/graph1MW_6.txt" \
               -p "$plat" -d "$dev"
 
-  run_all_variants "$mode" "gaussian" \
-    "$RODINIA/gaussian" \
+  run_all_variants "$mode" "bench_gaussian" \
+    "$RODINIA/bench_gaussian" \
     ./gaussian.out -s 2048 -p "$plat" -d "$dev"
 
-  run_all_variants "$mode" "nw" \
-    "$RODINIA/nw" \
+  run_all_variants "$mode" "bench_nw" \
+    "$RODINIA/bench_nw" \
     ./nw.out 8192 10 ./nw.cl -p "$plat" -d "$dev"
 }
 

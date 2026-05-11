@@ -15,29 +15,29 @@ build/finetrace --call-logging samples/cl_gemm/build/cl_gemm cpu 512 4
 build/finetrace --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 4
 build/finetrace --call-logging --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 4
 
-# --- b+tree ---
-$RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
-build/finetrace --call-logging $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
-build/finetrace --device-timeline $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
+# --- bench_b+tree ---
+$RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
+build/finetrace --call-logging $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
+build/finetrace --device-timeline $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
 
-# --- bfs ---
-$RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --call-logging $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --device-timeline $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
+# --- bench_bfs ---
+$RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
+build/finetrace --call-logging $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
+build/finetrace --device-timeline $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 1 -d 0
 
-# --- gaussian ---
-$RODINIA/gaussian/gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --call-logging $RODINIA/gaussian/gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --device-timeline $RODINIA/gaussian/gaussian.out -s 2048 -p 1 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/gaussian/gaussian.out -s 2048 -p 1 -d 0
+# --- bench_gaussian ---
+$RODINIA/bench_gaussian/gaussian.out -s 2048 -p 1 -d 0
+build/finetrace --call-logging $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 1 -d 0
+build/finetrace --device-timeline $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 1 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 1 -d 0
 
-# --- nw ---
-$RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 1 -d 0
-build/finetrace --call-logging $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 1 -d 0
-build/finetrace --device-timeline $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 1 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 1 -d 0
+# --- bench_nw ---
+$RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 1 -d 0
+build/finetrace --call-logging $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 1 -d 0
+build/finetrace --device-timeline $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 1 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 1 -d 0
 
 ################################################################################
 # GPU suite (OpenCL platform 0, device 0 — Intel Arc Graphics)
@@ -59,34 +59,34 @@ build/finetrace --call-logging --device-timeline samples/ze_gemm/build/ze_gemm 5
 build/finetrace --aggregation samples/ze_gemm/build/ze_gemm 512 4
 build/finetrace --call-logging --device-timeline --aggregation samples/ze_gemm/build/ze_gemm 512 4
 
-# --- b+tree ---
-$RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
-build/finetrace --call-logging $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
-build/finetrace --device-timeline $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
-build/finetrace --aggregation $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
-build/finetrace --call-logging --device-timeline --aggregation $RODINIA/b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+# --- bench_b+tree ---
+$RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+build/finetrace --call-logging $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+build/finetrace --device-timeline $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+build/finetrace --aggregation $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
+build/finetrace --call-logging --device-timeline --aggregation $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
 
-# --- bfs ---
-$RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --call-logging $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --device-timeline $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --aggregation $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
-build/finetrace --call-logging --device-timeline --aggregation $RODINIA/bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+# --- bench_bfs ---
+$RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+build/finetrace --call-logging $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+build/finetrace --device-timeline $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+build/finetrace --aggregation $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
+build/finetrace --call-logging --device-timeline --aggregation $RODINIA/bench_bfs/bfs.out $RODINIA/data/bfs/graph1MW_6.txt -p 0 -d 0
 
-# --- gaussian ---
-$RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --call-logging $RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --device-timeline $RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --aggregation $RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
-build/finetrace --call-logging --device-timeline --aggregation $RODINIA/gaussian/gaussian.out -s 2048 -p 0 -d 0
+# --- bench_gaussian ---
+$RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
+build/finetrace --call-logging $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
+build/finetrace --device-timeline $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
+build/finetrace --aggregation $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
+build/finetrace --call-logging --device-timeline --aggregation $RODINIA/bench_gaussian/gaussian.out -s 2048 -p 0 -d 0
 
-# --- nw ---
-$RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
-build/finetrace --call-logging $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
-build/finetrace --device-timeline $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
-build/finetrace --call-logging --device-timeline $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
-build/finetrace --aggregation $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
-build/finetrace --call-logging --device-timeline --aggregation $RODINIA/nw/nw.out 8192 10 $RODINIA/nw/nw.cl -p 0 -d 0
+# --- bench_nw ---
+$RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
+build/finetrace --call-logging $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
+build/finetrace --device-timeline $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
+build/finetrace --call-logging --device-timeline $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
+build/finetrace --aggregation $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
+build/finetrace --call-logging --device-timeline --aggregation $RODINIA/bench_nw/nw.out 8192 10 $RODINIA/bench_nw/nw.cl -p 0 -d 0
