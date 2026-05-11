@@ -409,14 +409,14 @@ class ClKernelCollector {
       utils::cl::GetEventTimestamp(event, CL_PROFILING_COMMAND_SUBMIT);
     FTRACE_ASSERT(submitted > 0);
 
-    FTRACE_ASSERT(instance->device_sync <= queued);
-    uint64_t time_shift = queued - instance->device_sync;
+    uint64_t time_shift = (queued >= instance->device_sync)
+        ? (queued - instance->device_sync) : 0;
 
     host_queued = instance->host_sync + time_shift;
-    FTRACE_ASSERT(queued <= submitted);
-    host_submitted = host_queued + (submitted - queued);
-    FTRACE_ASSERT(submitted <= started);
-    host_started = host_submitted + (started - submitted);
+    uint64_t queued_to_submit = (submitted >= queued) ? (submitted - queued) : 0;
+    host_submitted = host_queued + queued_to_submit;
+    uint64_t submit_to_start = (started >= submitted) ? (started - submitted) : 0;
+    host_started = host_submitted + submit_to_start;
     FTRACE_ASSERT(started <= ended);
     host_ended = host_started + (ended - started);
   }

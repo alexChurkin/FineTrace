@@ -179,20 +179,29 @@ run_one() {
 
   log_head "$name [$mode / $label] ($REPEATS runs)"
   printf '  command: %s\n' "${cmd[*]}"
-  local total_us=0 i start end elapsed
+  local total_us=0 ok_runs=0 i start end elapsed exit_code
   for ((i = 1; i <= REPEATS; i++)); do
     start=$(now_us)
-    ( cd "$dir" && "${cmd[@]}" ) >/dev/null 2>&1
+    ( cd "$dir" && "${cmd[@]}" ) >/dev/null 2>&1; exit_code=$?
     end=$(now_us)
     elapsed=$(( end - start ))
+    if [[ $exit_code -ne 0 ]]; then
+      printf '  run %2d: FAILED (exit %d)\n' "$i" "$exit_code"
+      continue
+    fi
     total_us=$(( total_us + elapsed ))
+    ok_runs=$(( ok_runs + 1 ))
     printf '  run %2d: %.5f s\n' "$i" "$(awk "BEGIN{printf \"%.5f\", $elapsed/1000000}")"
   done
 
-  local avg_us=$(( total_us / REPEATS ))
-  printf '  average: %s\n' "$(fmt_s "$avg_us")"
-
-  RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "$avg_us")" )
+  if [[ $ok_runs -eq 0 ]]; then
+    printf '  average: N/A (all runs failed)\n'
+    RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "-")" )
+  else
+    local avg_us=$(( total_us / ok_runs ))
+    printf '  average: %s  (%d/%d runs ok)\n' "$(fmt_s "$avg_us")" "$ok_runs" "$REPEATS"
+    RESULTS+=( "$(printf '%s\t%s\t%s\t%s' "$mode" "$label" "$name" "$avg_us")" )
+  fi
   remember_bench "$name"
 }
 
