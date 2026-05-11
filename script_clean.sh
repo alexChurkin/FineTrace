@@ -15,13 +15,13 @@ usage() {
   cat <<EOF
 Usage: $0 [--builds] [--help]
 
-Remove generated output files from the repository root.
+Remove generated output files from the repository (all subdirectories).
 
   (default)  Remove metric data files, log files, and Excel reports.
   --builds   Also remove all build directories (finetrace + all samples).
   --help     Show this help.
 
-Files removed by default:
+Files removed by default (searched recursively):
   data.*.raw / data.*.bin / data.*.query   Metric collection intermediate files
   result.*.bin                             Metric result files
   finetrace_run_*.log                      Benchmark run logs
@@ -41,15 +41,13 @@ done
 # Output artifacts (always cleaned)
 # ---------------------------------------------------------------------------
 echo "-- Removing metric output files"
-find "$ROOT_DIR" -maxdepth 1 \( \
-  -name "data.*.raw"  \
-  -o -name "data.*.bin"   \
-  -o -name "data.*.query" \
-  -o -name "result.*.bin" \
-\) -print -delete
+find "$ROOT_DIR" \
+  \( -name ".git" -prune \) -o \
+  \( -name "data.*.raw" -o -name "data.*.bin" -o -name "data.*.query" -o -name "result.*.bin" \) \
+  -print -delete
 
 echo "-- Removing log files"
-find "$ROOT_DIR" -maxdepth 1 -name "finetrace_run_*.log" -print -delete
+find "$ROOT_DIR" \( -name ".git" -prune \) -o -name "finetrace_run_*.log" -print -delete
 
 # echo "-- Removing Excel report"
 # find "$ROOT_DIR" -maxdepth 1 -name "finetrace_overhead_stat.xlsx" -print -delete
