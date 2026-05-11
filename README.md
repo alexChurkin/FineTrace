@@ -11,6 +11,8 @@ FineTrace works as a loader: it sets up the environment, injects the tracing lib
 ## Quick Start
 
 ```sh
+echo 0 | sudo tee /proc/sys/dev/i915/perf_stream_paranoid  # For Metrics Collection
+
 cd finetrace
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
