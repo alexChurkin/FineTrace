@@ -1,0 +1,711 @@
+Output is also saved to: /home/lxchu/Projects/finetrace/finetrace_run_20260511_131922.log
+Platform #0: Intel(R) OpenCL Graphics
+ `-- Device #0: Intel(R) Arc(TM) Graphics
+Platform #1: Intel(R) OpenCL
+ `-- Device #0: Intel(R) Core(TM) Ultra 5 125H
+-- /proc/sys/dev/i915/perf_stream_paranoid already 0, skipping
+
+########################################
+# Running suite on: cpu
+########################################
+
+=== cl_gemm [cpu / clean] (8 runs) ===
+  command: ./cl_gemm cpu 512 128
+  run  1: 1.00494 s
+  run  2: 1.04182 s
+  run  3: 0.98945 s
+  run  4: 1.01747 s
+  run  5: 1.00745 s
+  run  6: 1.00961 s
+  run  7: 1.02169 s
+  run  8: 0.98631 s
+  average: 1.00984 s  (8/8 runs ok)
+
+=== cl_gemm [cpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./cl_gemm cpu 512 128
+  run  1: 1.02444 s
+  run  2: 1.04191 s
+  run  3: 1.03119 s
+  run  4: 1.02677 s
+  run  5: 1.03696 s
+  run  6: 1.03345 s
+  run  7: 1.02515 s
+  run  8: 1.05318 s
+  average: 1.03413 s  (8/8 runs ok)
+
+=== cl_gemm [cpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./cl_gemm cpu 512 128
+  run  1: 1.07179 s
+  run  2: 1.10417 s
+  run  3: 1.25758 s
+  run  4: 1.33963 s
+  run  5: 1.35668 s
+  run  6: 1.28617 s
+  run  7: 1.30622 s
+  run  8: 1.32686 s
+  average: 1.25614 s  (8/8 runs ok)
+
+=== cl_gemm [cpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./cl_gemm cpu 512 128
+  run  1: 1.33665 s
+  run  2: 1.32037 s
+  run  3: 1.29967 s
+  run  4: 1.31287 s
+  run  5: 1.31273 s
+  run  6: 1.31802 s
+  run  7: 1.31589 s
+  run  8: 1.32972 s
+  average: 1.31824 s  (8/8 runs ok)
+
+=== bench_b+tree [cpu / clean] (8 runs) ===
+  command: ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
+  run  1: 0.85850 s
+  run  2: 0.83769 s
+  run  3: 0.84064 s
+  run  4: 0.83529 s
+  run  5: 0.83072 s
+  run  6: 0.82768 s
+  run  7: 0.81873 s
+  run  8: 0.83961 s
+  average: 0.83611 s  (8/8 runs ok)
+
+=== bench_b+tree [cpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
+  run  1: 0.85993 s
+  run  2: 0.87938 s
+  run  3: 0.85860 s
+  run  4: 0.86267 s
+  run  5: 0.85812 s
+  run  6: 0.86874 s
+  run  7: 0.86660 s
+  run  8: 0.87172 s
+  average: 0.86572 s  (8/8 runs ok)
+
+=== bench_b+tree [cpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
+  run  1: 0.85981 s
+  run  2: 0.86684 s
+  run  3: 0.86347 s
+  run  4: 0.88867 s
+  run  5: 0.86876 s
+  run  6: 0.86694 s
+  run  7: 0.86625 s
+  run  8: 0.88092 s
+  average: 0.87021 s  (8/8 runs ok)
+
+=== bench_b+tree [cpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
+  run  1: 0.85893 s
+  run  2: 0.86328 s
+  run  3: 0.86111 s
+  run  4: 0.86921 s
+  run  5: 0.87032 s
+  run  6: 0.84664 s
+  run  7: 0.85743 s
+  run  8: 0.86177 s
+  average: 0.86109 s  (8/8 runs ok)
+
+=== bench_bfs [cpu / clean] (8 runs) ===
+  command: ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
+  run  1: 0.73224 s
+  run  2: 0.75064 s
+  run  3: 0.73369 s
+  run  4: 0.71681 s
+  run  5: 0.76390 s
+  run  6: 0.73619 s
+  run  7: 0.72729 s
+  run  8: 0.72226 s
+  average: 0.73538 s  (8/8 runs ok)
+
+=== bench_bfs [cpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
+  run  1: 0.80797 s
+  run  2: 0.81404 s
+  run  3: 0.80833 s
+  run  4: 0.81948 s
+  run  5: 0.80490 s
+  run  6: 0.81047 s
+  run  7: 0.81988 s
+  run  8: 0.83061 s
+  average: 0.81446 s  (8/8 runs ok)
+
+=== bench_bfs [cpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
+  run  1: 0.80541 s
+  run  2: 0.80895 s
+  run  3: 0.78942 s
+  run  4: 0.80293 s
+  run  5: 0.83312 s
+  run  6: 0.80527 s
+  run  7: 0.81346 s
+  run  8: 0.79289 s
+  average: 0.80643 s  (8/8 runs ok)
+
+=== bench_bfs [cpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
+  run  1: 0.80458 s
+  run  2: 0.79044 s
+  run  3: 0.80497 s
+  run  4: 0.79214 s
+  run  5: 0.79820 s
+  run  6: 0.80706 s
+  run  7: 0.84924 s
+  run  8: 0.80971 s
+  average: 0.80704 s  (8/8 runs ok)
+
+=== bench_gaussian [cpu / clean] (8 runs) ===
+  command: ./gaussian.out -s 2048 -p 1 -d 0
+  run  1: 0.41520 s
+  run  2: 0.41048 s
+  run  3: 0.40857 s
+  run  4: 0.40092 s
+  run  5: 0.42978 s
+  run  6: 0.39689 s
+  run  7: 0.39597 s
+  run  8: 0.42159 s
+  average: 0.40992 s  (8/8 runs ok)
+
+=== bench_gaussian [cpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./gaussian.out -s 2048 -p 1 -d 0
+  run  1: 0.52314 s
+  run  2: 0.52701 s
+  run  3: 0.53561 s
+  run  4: 0.52620 s
+  run  5: 0.52769 s
+  run  6: 0.52638 s
+  run  7: 0.53219 s
+  run  8: 0.52348 s
+  average: 0.52771 s  (8/8 runs ok)
+
+=== bench_gaussian [cpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
+  run  1: 0.45087 s
+  run  2: 0.47962 s
+  run  3: 0.47895 s
+  run  4: 0.49727 s
+  run  5: 0.48100 s
+  run  6: 0.48002 s
+  run  7: 0.48065 s
+  run  8: 0.46852 s
+  average: 0.47711 s  (8/8 runs ok)
+
+=== bench_gaussian [cpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
+  run  1: 0.53523 s
+  run  2: 0.53557 s
+  run  3: 0.54150 s
+  run  4: 0.54191 s
+  run  5: 0.54301 s
+  run  6: 0.54524 s
+  run  7: 0.53957 s
+  run  8: 0.54104 s
+  average: 0.54039 s  (8/8 runs ok)
+
+=== bench_nw [cpu / clean] (8 runs) ===
+  command: ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+  run  1: 0.57751 s
+  run  2: 0.58720 s
+  run  3: 0.59115 s
+  run  4: 0.58626 s
+  run  5: 0.60095 s
+  run  6: 0.60417 s
+  run  7: 0.58337 s
+  run  8: 0.57821 s
+  average: 0.58860 s  (8/8 runs ok)
+
+=== bench_nw [cpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+  run  1: 0.62876 s
+  run  2: 0.61233 s
+  run  3: 0.61228 s
+  run  4: 0.61889 s
+  run  5: 0.61794 s
+  run  6: 0.61359 s
+  run  7: 0.61097 s
+  run  8: 0.62592 s
+  average: 0.61759 s  (8/8 runs ok)
+
+=== bench_nw [cpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+  run  1: 0.61252 s
+  run  2: 0.61468 s
+  run  3: 0.59908 s
+  run  4: 0.60593 s
+  run  5: 0.60395 s
+  run  6: 0.60660 s
+  run  7: 0.60901 s
+  run  8: 0.61204 s
+  average: 0.60798 s  (8/8 runs ok)
+
+=== bench_nw [cpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
+  run  1: 0.61587 s
+  run  2: 0.61348 s
+  run  3: 0.61228 s
+  run  4: 0.60346 s
+  run  5: 0.62391 s
+  run  6: 0.61760 s
+  run  7: 0.62130 s
+  run  8: 0.60177 s
+  average: 0.61371 s  (8/8 runs ok)
+
+########################################
+# Running suite on: gpu
+########################################
+
+=== cl_gemm [gpu / clean] (8 runs) ===
+  command: ./cl_gemm gpu 512 128
+  run  1: 0.38689 s
+  run  2: 0.35826 s
+  run  3: 0.35780 s
+  run  4: 0.36370 s
+  run  5: 0.37615 s
+  run  6: 0.37326 s
+  run  7: 0.39034 s
+  run  8: 0.38146 s
+  average: 0.37348 s  (8/8 runs ok)
+
+=== cl_gemm [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./cl_gemm gpu 512 128
+  run  1: 0.41766 s
+  run  2: 0.42752 s
+  run  3: 0.42504 s
+  run  4: 0.40621 s
+  run  5: 0.37503 s
+  run  6: 0.42944 s
+  run  7: 0.40855 s
+  run  8: 0.42090 s
+  average: 0.41379 s  (8/8 runs ok)
+
+=== cl_gemm [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./cl_gemm gpu 512 128
+  run  1: 0.44464 s
+  run  2: 0.44237 s
+  run  3: 0.43078 s
+  run  4: 0.42453 s
+  run  5: 0.43219 s
+  run  6: 0.40291 s
+  run  7: 0.42241 s
+  run  8: 0.41812 s
+  average: 0.42724 s  (8/8 runs ok)
+
+=== cl_gemm [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./cl_gemm gpu 512 128
+  run  1: 0.42540 s
+  run  2: 0.42796 s
+  run  3: 0.42589 s
+  run  4: 0.42861 s
+  run  5: 0.41296 s
+  run  6: 0.40553 s
+  run  7: 0.43012 s
+  run  8: 0.43051 s
+  average: 0.42337 s  (8/8 runs ok)
+
+=== cl_gemm [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./cl_gemm gpu 512 128
+  run  1: 0.59120 s
+  run  2: 0.61738 s
+  run  3: 0.61249 s
+  run  4: 0.59891 s
+  run  5: 0.61706 s
+  run  6: 0.58645 s
+  run  7: 0.63203 s
+  run  8: 0.64472 s
+  average: 0.61253 s  (8/8 runs ok)
+
+=== cl_gemm [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./cl_gemm gpu 512 128
+  run  1: 0.63724 s
+  run  2: 0.61051 s
+  run  3: 0.61117 s
+  run  4: 0.64260 s
+  run  5: 0.62770 s
+  run  6: 0.60633 s
+  run  7: 0.61262 s
+  run  8: 0.64079 s
+  average: 0.62362 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / clean] (8 runs) ===
+  command: ./ze_gemm 512 128
+  run  1: 0.39823 s
+  run  2: 0.39134 s
+  run  3: 0.39720 s
+  run  4: 0.37548 s
+  run  5: 0.39001 s
+  run  6: 0.39085 s
+  run  7: 0.39632 s
+  run  8: 0.40808 s
+  average: 0.39344 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./ze_gemm 512 128
+  run  1: 0.43353 s
+  run  2: 0.44293 s
+  run  3: 0.46995 s
+  run  4: 0.44873 s
+  run  5: 0.45538 s
+  run  6: 0.45503 s
+  run  7: 0.45235 s
+  run  8: 0.44785 s
+  average: 0.45072 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./ze_gemm 512 128
+  run  1: 0.48742 s
+  run  2: 0.47683 s
+  run  3: 0.47519 s
+  run  4: 0.48135 s
+  run  5: 0.45532 s
+  run  6: 0.48306 s
+  run  7: 0.45532 s
+  run  8: 0.46489 s
+  average: 0.47242 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./ze_gemm 512 128
+  run  1: 0.48114 s
+  run  2: 0.49889 s
+  run  3: 0.48488 s
+  run  4: 0.46743 s
+  run  5: 0.47803 s
+  run  6: 0.48541 s
+  run  7: 0.51739 s
+  run  8: 0.49199 s
+  average: 0.48814 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./ze_gemm 512 128
+  run  1: 0.67275 s
+  run  2: 0.67801 s
+  run  3: 0.65848 s
+  run  4: 0.68461 s
+  run  5: 0.66628 s
+  run  6: 0.66785 s
+  run  7: 0.64467 s
+  run  8: 0.67421 s
+  average: 0.66836 s  (8/8 runs ok)
+
+=== ze_gemm [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./ze_gemm 512 128
+  run  1: 0.65058 s
+  run  2: 0.66193 s
+  run  3: 0.67804 s
+  run  4: 0.67947 s
+  run  5: 0.68597 s
+  run  6: 0.66613 s
+  run  7: 0.68581 s
+  run  8: 0.69247 s
+  average: 0.67505 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / clean] (8 runs) ===
+  command: ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 0.92650 s
+  run  2: 0.93052 s
+  run  3: 0.94027 s
+  run  4: 0.93476 s
+  run  5: 0.93289 s
+  run  6: 0.93198 s
+  run  7: 0.94413 s
+  run  8: 0.93837 s
+  average: 0.93493 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 0.97638 s
+  run  2: 0.94541 s
+  run  3: 0.97754 s
+  run  4: 0.95085 s
+  run  5: 0.97545 s
+  run  6: 0.96832 s
+  run  7: 0.98135 s
+  run  8: 0.97926 s
+  average: 0.96932 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 0.97452 s
+  run  2: 0.96589 s
+  run  3: 0.97237 s
+  run  4: 0.98590 s
+  run  5: 0.97371 s
+  run  6: 0.96030 s
+  run  7: 0.96476 s
+  run  8: 0.94640 s
+  average: 0.96798 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 0.95745 s
+  run  2: 0.97521 s
+  run  3: 0.95641 s
+  run  4: 0.97240 s
+  run  5: 0.96283 s
+  run  6: 0.99916 s
+  run  7: 0.96302 s
+  run  8: 0.96781 s
+  average: 0.96928 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 1.13701 s
+  run  2: 1.15030 s
+  run  3: 1.13234 s
+  run  4: 1.14593 s
+  run  5: 1.12753 s
+  run  6: 1.15270 s
+  run  7: 1.16406 s
+  run  8: 1.15658 s
+  average: 1.14581 s  (8/8 runs ok)
+
+=== bench_b+tree [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
+  run  1: 1.15856 s
+  run  2: 1.16352 s
+  run  3: 1.16813 s
+  run  4: 1.14718 s
+  run  5: 1.14969 s
+  run  6: 1.16837 s
+  run  7: 1.14028 s
+  run  8: 1.15470 s
+  average: 1.15630 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / clean] (8 runs) ===
+  command: ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.63353 s
+  run  2: 0.64429 s
+  run  3: 0.64477 s
+  run  4: 0.61545 s
+  run  5: 0.64952 s
+  run  6: 0.62968 s
+  run  7: 0.62601 s
+  run  8: 0.62073 s
+  average: 0.63300 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.69890 s
+  run  2: 0.70208 s
+  run  3: 0.69281 s
+  run  4: 0.69994 s
+  run  5: 0.70073 s
+  run  6: 0.70095 s
+  run  7: 0.69910 s
+  run  8: 0.68945 s
+  average: 0.69800 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.69776 s
+  run  2: 0.69524 s
+  run  3: 0.71108 s
+  run  4: 0.69151 s
+  run  5: 0.69232 s
+  run  6: 0.71588 s
+  run  7: 0.71723 s
+  run  8: 0.70417 s
+  average: 0.70315 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.69400 s
+  run  2: 0.68728 s
+  run  3: 0.70696 s
+  run  4: 0.69188 s
+  run  5: 0.69887 s
+  run  6: 0.70088 s
+  run  7: 0.70246 s
+  run  8: 0.70273 s
+  average: 0.69813 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.87046 s
+  run  2: 0.87960 s
+  run  3: 0.88846 s
+  run  4: 0.87690 s
+  run  5: 0.87049 s
+  run  6: 0.87421 s
+  run  7: 0.85839 s
+  run  8: 0.87957 s
+  average: 0.87476 s  (8/8 runs ok)
+
+=== bench_bfs [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
+  run  1: 0.88397 s
+  run  2: 0.88757 s
+  run  3: 0.88016 s
+  run  4: 0.89173 s
+  run  5: 0.86943 s
+  run  6: 0.89115 s
+  run  7: 0.86359 s
+  run  8: 0.86050 s
+  average: 0.87851 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / clean] (8 runs) ===
+  command: ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 1.45407 s
+  run  2: 1.45181 s
+  run  3: 1.45016 s
+  run  4: 1.42957 s
+  run  5: 1.47487 s
+  run  6: 1.43443 s
+  run  7: 1.43237 s
+  run  8: 1.44924 s
+  average: 1.44707 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 1.54516 s
+  run  2: 1.54534 s
+  run  3: 1.53375 s
+  run  4: 1.55422 s
+  run  5: 1.54965 s
+  run  6: 1.54094 s
+  run  7: 1.56408 s
+  run  8: 1.53510 s
+  average: 1.54603 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 1.65048 s
+  run  2: 1.68938 s
+  run  3: 1.67013 s
+  run  4: 1.64814 s
+  run  5: 1.66253 s
+  run  6: 1.64367 s
+  run  7: 1.65979 s
+  run  8: 1.67725 s
+  average: 1.66267 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 1.70673 s
+  run  2: 1.68887 s
+  run  3: 1.70911 s
+  run  4: 1.71421 s
+  run  5: 1.69863 s
+  run  6: 1.71942 s
+  run  7: 1.71820 s
+  run  8: 1.71418 s
+  average: 1.70867 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 1.94485 s
+  run  2: 1.90280 s
+  run  3: 1.91807 s
+  run  4: 1.91484 s
+  run  5: 1.94340 s
+  run  6: 1.91530 s
+  run  7: 1.89727 s
+  run  8: 1.89098 s
+  average: 1.91594 s  (8/8 runs ok)
+
+=== bench_gaussian [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./gaussian.out -s 2048 -p 0 -d 0
+  run  1: 2.07312 s
+  run  2: 2.12160 s
+  run  3: 2.11468 s
+  run  4: 2.10743 s
+  run  5: 2.00709 s
+  run  6: 2.01802 s
+  run  7: 2.06463 s
+  run  8: 2.01287 s
+  average: 2.06493 s  (8/8 runs ok)
+
+=== bench_nw [gpu / clean] (8 runs) ===
+  command: ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.61479 s
+  run  2: 0.63898 s
+  run  3: 0.63526 s
+  run  4: 0.63202 s
+  run  5: 0.65189 s
+  run  6: 0.62292 s
+  run  7: 0.66024 s
+  run  8: 0.64081 s
+  average: 0.63711 s  (8/8 runs ok)
+
+=== bench_nw [gpu / call-logging] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.65817 s
+  run  2: 0.66470 s
+  run  3: 0.67023 s
+  run  4: 0.66344 s
+  run  5: 0.66852 s
+  run  6: 0.65397 s
+  run  7: 0.66746 s
+  run  8: 0.65873 s
+  average: 0.66315 s  (8/8 runs ok)
+
+=== bench_nw [gpu / device-timeline] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.67898 s
+  run  2: 0.66358 s
+  run  3: 0.67429 s
+  run  4: 0.67433 s
+  run  5: 0.69637 s
+  run  6: 0.67511 s
+  run  7: 0.66503 s
+  run  8: 0.69845 s
+  average: 0.67827 s  (8/8 runs ok)
+
+=== bench_nw [gpu / call+device] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.69737 s
+  run  2: 0.71975 s
+  run  3: 0.69561 s
+  run  4: 0.70035 s
+  run  5: 0.69424 s
+  run  6: 0.71036 s
+  run  7: 0.75624 s
+  run  8: 0.70635 s
+  average: 0.71003 s  (8/8 runs ok)
+
+=== bench_nw [gpu / metrics] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.85784 s
+  run  2: 0.85412 s
+  run  3: 0.82382 s
+  run  4: 0.84057 s
+  run  5: 0.82174 s
+  run  6: 0.88012 s
+  run  7: 0.83727 s
+  run  8: 0.82536 s
+  average: 0.84261 s  (8/8 runs ok)
+
+=== bench_nw [gpu / all] (8 runs) ===
+  command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
+  run  1: 0.84063 s
+  run  2: 0.84620 s
+  run  3: 0.81454 s
+  run  4: 0.83527 s
+  run  5: 0.81438 s
+  run  6: 0.82257 s
+  run  7: 0.82493 s
+  run  8: 0.83162 s
+  average: 0.82877 s  (8/8 runs ok)
+
+########################################
+# Summary (average wall-clock time in seconds over 8 runs)
+########################################
+
+--- Mode: cpu ---
+Benchmark            |         clean (s) |  call-logging (s) | device-timeline (s) |   call+device (s)
+---------------------+-------------------+-------------------+-------------------+-------------------
+cl_gemm              |           1.00984 |           1.03413 |           1.25614 |           1.31824
+bench_b+tree         |           0.83611 |           0.86572 |           0.87021 |           0.86109
+bench_bfs            |           0.73538 |           0.81446 |           0.80643 |           0.80704
+bench_gaussian       |           0.40992 |           0.52771 |           0.47711 |           0.54039
+bench_nw             |           0.58860 |           0.61759 |           0.60798 |           0.61371
+ze_gemm              |                 - |                 - |                 - |                 -
+
+--- Mode: gpu ---
+Benchmark            |         clean (s) |  call-logging (s) | device-timeline (s) |   call+device (s) |       metrics (s) |           all (s)
+---------------------+-------------------+-------------------+-------------------+-------------------+-------------------+-------------------
+cl_gemm              |           0.37348 |           0.41379 |           0.42724 |           0.42337 |           0.61253 |           0.62362
+bench_b+tree         |           0.93493 |           0.96932 |           0.96798 |           0.96928 |           1.14581 |           1.15630
+bench_bfs            |           0.63300 |           0.69800 |           0.70315 |           0.69813 |           0.87476 |           0.87851
+bench_gaussian       |           1.44707 |           1.54603 |           1.66267 |           1.70867 |           1.91594 |           2.06493
+bench_nw             |           0.63711 |           0.66315 |           0.67827 |           0.71003 |           0.84261 |           0.82877
+ze_gemm              |           0.39344 |           0.45072 |           0.47242 |           0.48814 |           0.66836 |           0.67505
+
