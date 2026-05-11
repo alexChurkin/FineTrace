@@ -47,7 +47,7 @@ class MetricFinalizer {
     FTRACE_ASSERT(data_ != nullptr);
 
     logger_.Log("\n");
-    logger_.Log("=== Profiling Results ===\n");
+    logger_.Log("=== Metrics Results: ===\n");
     logger_.Log("\n");
 
     std::stringstream header;
