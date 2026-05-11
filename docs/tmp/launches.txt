@@ -10,10 +10,10 @@ RODINIA=samples/cl_rodinia_benchmarks
 ################################################################################
 
 # --- cl_gemm ---
-samples/cl_gemm/build/cl_gemm cpu 512 128
-build/finetrace --call-logging samples/cl_gemm/build/cl_gemm cpu 512 128
-build/finetrace --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 128
-build/finetrace --call-logging --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 128
+samples/cl_gemm/build/cl_gemm cpu 512 4
+build/finetrace --call-logging samples/cl_gemm/build/cl_gemm cpu 512 4
+build/finetrace --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 4
+build/finetrace --call-logging --device-timeline samples/cl_gemm/build/cl_gemm cpu 512 4
 
 # --- bench_b+tree ---
 $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 1 -d 0
@@ -44,20 +44,20 @@ build/finetrace --call-logging --device-timeline $RODINIA/bench_nw/nw.out 8192 1
 ################################################################################
 
 # --- cl_gemm ---
-samples/cl_gemm/build/cl_gemm gpu 512 128
-build/finetrace --call-logging samples/cl_gemm/build/cl_gemm gpu 512 128
-build/finetrace --device-timeline samples/cl_gemm/build/cl_gemm gpu 512 128
-build/finetrace --call-logging --device-timeline samples/cl_gemm/build/cl_gemm gpu 512 128
-build/finetrace --aggregation samples/cl_gemm/build/cl_gemm gpu 512 128
-build/finetrace --call-logging --device-timeline --aggregation samples/cl_gemm/build/cl_gemm gpu 512 128
+samples/cl_gemm/build/cl_gemm gpu 512 4
+build/finetrace --call-logging samples/cl_gemm/build/cl_gemm gpu 512 4
+build/finetrace --device-timeline samples/cl_gemm/build/cl_gemm gpu 512 4
+build/finetrace --call-logging --device-timeline samples/cl_gemm/build/cl_gemm gpu 512 4
+build/finetrace --aggregation samples/cl_gemm/build/cl_gemm gpu 512 4
+build/finetrace --call-logging --device-timeline --aggregation samples/cl_gemm/build/cl_gemm gpu 512 4
 
 # --- ze_gemm ---
-samples/ze_gemm/build/ze_gemm 512 128
-build/finetrace --call-logging samples/ze_gemm/build/ze_gemm 512 128
-build/finetrace --device-timeline samples/ze_gemm/build/ze_gemm 512 128
-build/finetrace --call-logging --device-timeline samples/ze_gemm/build/ze_gemm 512 128
-build/finetrace --aggregation samples/ze_gemm/build/ze_gemm 512 128
-build/finetrace --call-logging --device-timeline --aggregation samples/ze_gemm/build/ze_gemm 512 128
+samples/ze_gemm/build/ze_gemm 512 4
+build/finetrace --call-logging samples/ze_gemm/build/ze_gemm 512 4
+build/finetrace --device-timeline samples/ze_gemm/build/ze_gemm 512 4
+build/finetrace --call-logging --device-timeline samples/ze_gemm/build/ze_gemm 512 4
+build/finetrace --aggregation samples/ze_gemm/build/ze_gemm 512 4
+build/finetrace --call-logging --device-timeline --aggregation samples/ze_gemm/build/ze_gemm 512 4
 
 # --- bench_b+tree ---
 $RODINIA/bench_b+tree/b+tree.out file $RODINIA/data/b+tree/mil.txt command $RODINIA/data/b+tree/command.txt -p 0 -d 0
