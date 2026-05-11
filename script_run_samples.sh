@@ -122,6 +122,22 @@ fi
 
 clinfo -l || true
 
+# Required for Level Zero metric collection (--aggregation and other metric modes).
+# Only needed on GPU runs; harmless to set unconditionally.
+PARANOID_PATH="/proc/sys/dev/i915/perf_stream_paranoid"
+if [[ -f "$PARANOID_PATH" ]]; then
+  if [[ "$(cat "$PARANOID_PATH")" != "0" ]]; then
+    log "-- Setting $PARANOID_PATH = 0 (required for GPU metric collection)"
+    if echo 0 | sudo tee "$PARANOID_PATH" > /dev/null; then
+      log "   OK"
+    else
+      log "   Warning: failed to set perf_stream_paranoid. Metric variants may fail."
+    fi
+  else
+    log "-- $PARANOID_PATH already 0, skipping"
+  fi
+fi
+
 # ---------------------------------------------------------------------------
 # Result storage
 #
