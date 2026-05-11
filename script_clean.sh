@@ -62,10 +62,10 @@ if [[ $CLEAN_BUILDS -eq 1 ]]; then
   rm -rf "$SAMPLES/cl_gemm/build" "$SAMPLES/ze_gemm/build"
 
   echo "-- Cleaning Rodinia benchmarks"
-  make -C "$RODINIA/bench_b+tree"  clean 2>/dev/null || true
-  make -C "$RODINIA/bench_bfs"     clean 2>/dev/null || true
-  make -C "$RODINIA/bench_gaussian" clean 2>/dev/null || true
-  make -C "$RODINIA/bench_nw"      clean 2>/dev/null || true
+  make -C "$RODINIA/b+tree"  clean 2>/dev/null || true
+  make -C "$RODINIA/bfs"     clean 2>/dev/null || true
+  make -C "$RODINIA/gaussian" clean 2>/dev/null || true
+  make -C "$RODINIA/nw"      clean 2>/dev/null || true
 fi
 
 echo "-- Done"

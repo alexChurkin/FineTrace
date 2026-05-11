@@ -57,7 +57,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.32972 s
   average: 1.31824 s  (8/8 runs ok)
 
-=== bench_b+tree [cpu / clean] (8 runs) ===
+=== b+tree [cpu / clean] (8 runs) ===
   command: ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
   run  1: 0.85850 s
   run  2: 0.83769 s
@@ -69,7 +69,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.83961 s
   average: 0.83611 s  (8/8 runs ok)
 
-=== bench_b+tree [cpu / call-logging] (8 runs) ===
+=== b+tree [cpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
   run  1: 0.85993 s
   run  2: 0.87938 s
@@ -81,7 +81,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.87172 s
   average: 0.86572 s  (8/8 runs ok)
 
-=== bench_b+tree [cpu / device-timeline] (8 runs) ===
+=== b+tree [cpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
   run  1: 0.85981 s
   run  2: 0.86684 s
@@ -93,7 +93,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.88092 s
   average: 0.87021 s  (8/8 runs ok)
 
-=== bench_b+tree [cpu / call+device] (8 runs) ===
+=== b+tree [cpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 1 -d 0
   run  1: 0.85893 s
   run  2: 0.86328 s
@@ -105,7 +105,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.86177 s
   average: 0.86109 s  (8/8 runs ok)
 
-=== bench_bfs [cpu / clean] (8 runs) ===
+=== bfs [cpu / clean] (8 runs) ===
   command: ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
   run  1: 0.73224 s
   run  2: 0.75064 s
@@ -117,7 +117,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.72226 s
   average: 0.73538 s  (8/8 runs ok)
 
-=== bench_bfs [cpu / call-logging] (8 runs) ===
+=== bfs [cpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
   run  1: 0.80797 s
   run  2: 0.81404 s
@@ -129,7 +129,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.83061 s
   average: 0.81446 s  (8/8 runs ok)
 
-=== bench_bfs [cpu / device-timeline] (8 runs) ===
+=== bfs [cpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
   run  1: 0.80541 s
   run  2: 0.80895 s
@@ -141,7 +141,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.79289 s
   average: 0.80643 s  (8/8 runs ok)
 
-=== bench_bfs [cpu / call+device] (8 runs) ===
+=== bfs [cpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 1 -d 0
   run  1: 0.80458 s
   run  2: 0.79044 s
@@ -153,7 +153,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.80971 s
   average: 0.80704 s  (8/8 runs ok)
 
-=== bench_gaussian [cpu / clean] (8 runs) ===
+=== gaussian [cpu / clean] (8 runs) ===
   command: ./gaussian.out -s 2048 -p 1 -d 0
   run  1: 0.41520 s
   run  2: 0.41048 s
@@ -165,7 +165,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.42159 s
   average: 0.40992 s  (8/8 runs ok)
 
-=== bench_gaussian [cpu / call-logging] (8 runs) ===
+=== gaussian [cpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./gaussian.out -s 2048 -p 1 -d 0
   run  1: 0.52314 s
   run  2: 0.52701 s
@@ -177,7 +177,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.52348 s
   average: 0.52771 s  (8/8 runs ok)
 
-=== bench_gaussian [cpu / device-timeline] (8 runs) ===
+=== gaussian [cpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
   run  1: 0.45087 s
   run  2: 0.47962 s
@@ -189,7 +189,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.46852 s
   average: 0.47711 s  (8/8 runs ok)
 
-=== bench_gaussian [cpu / call+device] (8 runs) ===
+=== gaussian [cpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 1 -d 0
   run  1: 0.53523 s
   run  2: 0.53557 s
@@ -201,7 +201,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.54104 s
   average: 0.54039 s  (8/8 runs ok)
 
-=== bench_nw [cpu / clean] (8 runs) ===
+=== nw [cpu / clean] (8 runs) ===
   command: ./nw.out 8192 10 ./nw.cl -p 1 -d 0
   run  1: 0.57751 s
   run  2: 0.58720 s
@@ -213,7 +213,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.57821 s
   average: 0.58860 s  (8/8 runs ok)
 
-=== bench_nw [cpu / call-logging] (8 runs) ===
+=== nw [cpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 1 -d 0
   run  1: 0.62876 s
   run  2: 0.61233 s
@@ -225,7 +225,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.62592 s
   average: 0.61759 s  (8/8 runs ok)
 
-=== bench_nw [cpu / device-timeline] (8 runs) ===
+=== nw [cpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
   run  1: 0.61252 s
   run  2: 0.61468 s
@@ -237,7 +237,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.61204 s
   average: 0.60798 s  (8/8 runs ok)
 
-=== bench_nw [cpu / call+device] (8 runs) ===
+=== nw [cpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 1 -d 0
   run  1: 0.61587 s
   run  2: 0.61348 s
@@ -397,7 +397,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.69247 s
   average: 0.67505 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / clean] (8 runs) ===
+=== b+tree [gpu / clean] (8 runs) ===
   command: ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 0.92650 s
   run  2: 0.93052 s
@@ -409,7 +409,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.93837 s
   average: 0.93493 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / call-logging] (8 runs) ===
+=== b+tree [gpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 0.97638 s
   run  2: 0.94541 s
@@ -421,7 +421,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.97926 s
   average: 0.96932 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / device-timeline] (8 runs) ===
+=== b+tree [gpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 0.97452 s
   run  2: 0.96589 s
@@ -433,7 +433,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.94640 s
   average: 0.96798 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / call+device] (8 runs) ===
+=== b+tree [gpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 0.95745 s
   run  2: 0.97521 s
@@ -445,7 +445,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.96781 s
   average: 0.96928 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / metrics] (8 runs) ===
+=== b+tree [gpu / metrics] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 1.13701 s
   run  2: 1.15030 s
@@ -457,7 +457,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.15658 s
   average: 1.14581 s  (8/8 runs ok)
 
-=== bench_b+tree [gpu / all] (8 runs) ===
+=== b+tree [gpu / all] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./b+tree.out file /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/mil.txt command /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/b+tree/command.txt -p 0 -d 0
   run  1: 1.15856 s
   run  2: 1.16352 s
@@ -469,7 +469,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.15470 s
   average: 1.15630 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / clean] (8 runs) ===
+=== bfs [gpu / clean] (8 runs) ===
   command: ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.63353 s
   run  2: 0.64429 s
@@ -481,7 +481,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.62073 s
   average: 0.63300 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / call-logging] (8 runs) ===
+=== bfs [gpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.69890 s
   run  2: 0.70208 s
@@ -493,7 +493,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.68945 s
   average: 0.69800 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / device-timeline] (8 runs) ===
+=== bfs [gpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.69776 s
   run  2: 0.69524 s
@@ -505,7 +505,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.70417 s
   average: 0.70315 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / call+device] (8 runs) ===
+=== bfs [gpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.69400 s
   run  2: 0.68728 s
@@ -517,7 +517,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.70273 s
   average: 0.69813 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / metrics] (8 runs) ===
+=== bfs [gpu / metrics] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.87046 s
   run  2: 0.87960 s
@@ -529,7 +529,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.87957 s
   average: 0.87476 s  (8/8 runs ok)
 
-=== bench_bfs [gpu / all] (8 runs) ===
+=== bfs [gpu / all] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./bfs.out /home/lxchu/Projects/finetrace/samples/cl_rodinia_benchmarks/data/bfs/graph1MW_6.txt -p 0 -d 0
   run  1: 0.88397 s
   run  2: 0.88757 s
@@ -541,7 +541,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.86050 s
   average: 0.87851 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / clean] (8 runs) ===
+=== gaussian [gpu / clean] (8 runs) ===
   command: ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 1.45407 s
   run  2: 1.45181 s
@@ -553,7 +553,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.44924 s
   average: 1.44707 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / call-logging] (8 runs) ===
+=== gaussian [gpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 1.54516 s
   run  2: 1.54534 s
@@ -565,7 +565,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.53510 s
   average: 1.54603 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / device-timeline] (8 runs) ===
+=== gaussian [gpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 1.65048 s
   run  2: 1.68938 s
@@ -577,7 +577,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.67725 s
   average: 1.66267 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / call+device] (8 runs) ===
+=== gaussian [gpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 1.70673 s
   run  2: 1.68887 s
@@ -589,7 +589,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.71418 s
   average: 1.70867 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / metrics] (8 runs) ===
+=== gaussian [gpu / metrics] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 1.94485 s
   run  2: 1.90280 s
@@ -601,7 +601,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 1.89098 s
   average: 1.91594 s  (8/8 runs ok)
 
-=== bench_gaussian [gpu / all] (8 runs) ===
+=== gaussian [gpu / all] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./gaussian.out -s 2048 -p 0 -d 0
   run  1: 2.07312 s
   run  2: 2.12160 s
@@ -613,7 +613,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 2.01287 s
   average: 2.06493 s  (8/8 runs ok)
 
-=== bench_nw [gpu / clean] (8 runs) ===
+=== nw [gpu / clean] (8 runs) ===
   command: ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.61479 s
   run  2: 0.63898 s
@@ -625,7 +625,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.64081 s
   average: 0.63711 s  (8/8 runs ok)
 
-=== bench_nw [gpu / call-logging] (8 runs) ===
+=== nw [gpu / call-logging] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.65817 s
   run  2: 0.66470 s
@@ -637,7 +637,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.65873 s
   average: 0.66315 s  (8/8 runs ok)
 
-=== bench_nw [gpu / device-timeline] (8 runs) ===
+=== nw [gpu / device-timeline] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.67898 s
   run  2: 0.66358 s
@@ -649,7 +649,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.69845 s
   average: 0.67827 s  (8/8 runs ok)
 
-=== bench_nw [gpu / call+device] (8 runs) ===
+=== nw [gpu / call+device] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.69737 s
   run  2: 0.71975 s
@@ -661,7 +661,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.70635 s
   average: 0.71003 s  (8/8 runs ok)
 
-=== bench_nw [gpu / metrics] (8 runs) ===
+=== nw [gpu / metrics] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.85784 s
   run  2: 0.85412 s
@@ -673,7 +673,7 @@ Platform #1: Intel(R) OpenCL
   run  8: 0.82536 s
   average: 0.84261 s  (8/8 runs ok)
 
-=== bench_nw [gpu / all] (8 runs) ===
+=== nw [gpu / all] (8 runs) ===
   command: /home/lxchu/Projects/finetrace/build/finetrace --call-logging --device-timeline --aggregation ./nw.out 8192 10 ./nw.cl -p 0 -d 0
   run  1: 0.84063 s
   run  2: 0.84620 s
@@ -693,19 +693,19 @@ Platform #1: Intel(R) OpenCL
 Benchmark            |         clean (s) |  call-logging (s) | device-timeline (s) |   call+device (s)
 ---------------------+-------------------+-------------------+-------------------+-------------------
 cl_gemm              |           1.00984 |           1.03413 |           1.25614 |           1.31824
-bench_b+tree         |           0.83611 |           0.86572 |           0.87021 |           0.86109
-bench_bfs            |           0.73538 |           0.81446 |           0.80643 |           0.80704
-bench_gaussian       |           0.40992 |           0.52771 |           0.47711 |           0.54039
-bench_nw             |           0.58860 |           0.61759 |           0.60798 |           0.61371
+b+tree         |           0.83611 |           0.86572 |           0.87021 |           0.86109
+bfs            |           0.73538 |           0.81446 |           0.80643 |           0.80704
+gaussian       |           0.40992 |           0.52771 |           0.47711 |           0.54039
+nw             |           0.58860 |           0.61759 |           0.60798 |           0.61371
 ze_gemm              |                 - |                 - |                 - |                 -
 
 --- Mode: gpu ---
 Benchmark            |         clean (s) |  call-logging (s) | device-timeline (s) |   call+device (s) |       metrics (s) |           all (s)
 ---------------------+-------------------+-------------------+-------------------+-------------------+-------------------+-------------------
 cl_gemm              |           0.37348 |           0.41379 |           0.42724 |           0.42337 |           0.61253 |           0.62362
-bench_b+tree         |           0.93493 |           0.96932 |           0.96798 |           0.96928 |           1.14581 |           1.15630
-bench_bfs            |           0.63300 |           0.69800 |           0.70315 |           0.69813 |           0.87476 |           0.87851
-bench_gaussian       |           1.44707 |           1.54603 |           1.66267 |           1.70867 |           1.91594 |           2.06493
-bench_nw             |           0.63711 |           0.66315 |           0.67827 |           0.71003 |           0.84261 |           0.82877
+b+tree         |           0.93493 |           0.96932 |           0.96798 |           0.96928 |           1.14581 |           1.15630
+bfs            |           0.63300 |           0.69800 |           0.70315 |           0.69813 |           0.87476 |           0.87851
+gaussian       |           1.44707 |           1.54603 |           1.66267 |           1.70867 |           1.91594 |           2.06493
+nw             |           0.63711 |           0.66315 |           0.67827 |           0.71003 |           0.84261 |           0.82877
 ze_gemm              |           0.39344 |           0.45072 |           0.47242 |           0.48814 |           0.66836 |           0.67505
 
