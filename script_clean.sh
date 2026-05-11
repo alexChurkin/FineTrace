@@ -41,13 +41,12 @@ done
 # Output artifacts (always cleaned)
 # ---------------------------------------------------------------------------
 echo "-- Removing metric output files"
-find "$ROOT_DIR" \
-  \( -name ".git" -prune \) -o \
+find "$ROOT_DIR" ! -path "*/.git/*" \
   \( -name "data.*.raw" -o -name "data.*.bin" -o -name "data.*.query" -o -name "result.*.bin" \) \
   -print -delete
 
 echo "-- Removing log files"
-find "$ROOT_DIR" \( -name ".git" -prune \) -o -name "finetrace_run_*.log" -print -delete
+find "$ROOT_DIR" ! -path "*/.git/*" -name "finetrace_run_*.log" -print -delete
 
 # echo "-- Removing Excel report"
 # find "$ROOT_DIR" -maxdepth 1 -name "finetrace_overhead_stat.xlsx" -print -delete

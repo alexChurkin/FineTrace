@@ -37,7 +37,7 @@ if [[ -z "${_FTRACE_LOGGING:-}" ]]; then
   echo "Output is also saved to: $LOG_FILE"
 fi
 
-REPEATS=16
+REPEATS=8
 RUN_CPU=0
 RUN_GPU=0
 
