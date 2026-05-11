@@ -48,7 +48,7 @@
 <text x="594" y="126" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" font-weight="bold" fill="white">TraceOptions</text>
 <text x="594" y="144" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFF9C4">HOST_TIMING · DEVICE_TIMING</text>
 <text x="594" y="160" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#FFF9C4">CHROME_* · VERBOSE …</text>
-<text x="594" y="169" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FFCCBC">--aggregation · --kernel-query · --raw-metrics</text>
+<text x="594" y="169" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#FFCCBC">--aggregation · --raw-metrics</text>
 
 <!-- ══════════════════════════════════════ -->
 <!--  3. UNIFIEDTRACER                      -->
@@ -152,43 +152,34 @@
 <text x="380" y="678" font-family="Segoe UI,Arial" font-size="9" fill="#00838F" font-style="italic">Level Zero Metrics API · GPU hardware counters · создаётся из tool.cc</text>
 
 <!-- MetricProfiler -->
-<rect x="26" y="684" width="138" height="106" rx="7" fill="#006064" filter="url(#sh)"/>
-<text x="95" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">MetricProfiler</text>
-<line x1="32" y1="708" x2="158" y2="708" stroke="#00ACC1" stroke-width="0.8"/>
-<text x="95" y="722" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2EBF2">выбор режима сбора</text>
-<text x="95" y="735" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2EBF2">управление lifecycle</text>
-<text x="95" y="749" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80DEEA">--group · --metric-device</text>
-<text x="95" y="762" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80DEEA">--sampling-interval</text>
-<text x="95" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#4DD0E1">ComputeBasic (default)</text>
-
-<!-- MetricQueryCollector -->
-<rect x="176" y="684" width="152" height="106" rx="7" fill="#00695C" filter="url(#sh)"/>
-<text x="252" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">MetricQuery</text>
-<text x="252" y="714" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">Collector</text>
-<line x1="182" y1="720" x2="322" y2="720" stroke="#4DB6AC" stroke-width="0.8"/>
-<text x="252" y="734" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">event-based query</text>
-<text x="252" y="747" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">zeMetricQueryGet</text>
-<text x="252" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#4DB6AC">--kernel-query (-q)</text>
+<rect x="26" y="684" width="214" height="106" rx="7" fill="#006064" filter="url(#sh)"/>
+<text x="133" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">MetricProfiler</text>
+<line x1="32" y1="708" x2="234" y2="708" stroke="#00ACC1" stroke-width="0.8"/>
+<text x="133" y="722" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2EBF2">выбор режима сбора</text>
+<text x="133" y="735" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2EBF2">управление lifecycle</text>
+<text x="133" y="749" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80DEEA">--group · --metric-device</text>
+<text x="133" y="762" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80DEEA">--sampling-interval</text>
+<text x="133" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#4DD0E1">ComputeBasic (default)</text>
 
 <!-- MetricStreamerCollector -->
-<rect x="340" y="684" width="160" height="106" rx="7" fill="#004D40" filter="url(#sh)"/>
-<text x="420" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">MetricStreamer</text>
-<text x="420" y="714" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">Collector</text>
-<line x1="346" y1="720" x2="494" y2="720" stroke="#4DB6AC" stroke-width="0.8"/>
-<text x="420" y="734" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">time-based stream</text>
-<text x="420" y="747" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">фоновый поток чтения</text>
-<text x="420" y="760" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80CBC4">metric_storage · result_storage</text>
-<text x="420" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#4DB6AC">--aggregation (-a) · --kernel-metrics (-k)</text>
+<rect x="252" y="684" width="214" height="106" rx="7" fill="#004D40" filter="url(#sh)"/>
+<text x="359" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">MetricStreamer</text>
+<text x="359" y="714" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9.5" font-weight="bold" fill="white">Collector</text>
+<line x1="258" y1="720" x2="460" y2="720" stroke="#4DB6AC" stroke-width="0.8"/>
+<text x="359" y="734" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">time-based stream</text>
+<text x="359" y="747" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#B2DFDB">фоновый поток чтения</text>
+<text x="359" y="760" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#80CBC4">metric_storage · result_storage</text>
+<text x="359" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#4DB6AC">--aggregation (-a) · --kernel-metrics (-k)</text>
 
 <!-- MetricFinalizer -->
-<rect x="512" y="684" width="182" height="106" rx="7" fill="#1A237E" filter="url(#sh)"/>
-<text x="603" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">MetricFinalizer</text>
-<line x1="518" y1="708" x2="688" y2="708" stroke="#5C6BC0" stroke-width="0.8"/>
-<text x="603" y="722" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">читает binary result</text>
-<text x="603" y="735" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">корреляция метрик → kernel</text>
-<text x="603" y="748" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">агрегация: avg / min / max</text>
-<text x="603" y="761" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#9FA8DA">--finalize (-f) · --no-finalize</text>
-<text x="603" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#7986CB">XveActive · GpuBusy · FpuActive …</text>
+<rect x="478" y="684" width="216" height="106" rx="7" fill="#1A237E" filter="url(#sh)"/>
+<text x="586" y="702" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" font-weight="bold" fill="white">MetricFinalizer</text>
+<line x1="484" y1="708" x2="688" y2="708" stroke="#5C6BC0" stroke-width="0.8"/>
+<text x="586" y="722" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">читает binary result</text>
+<text x="586" y="735" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">корреляция метрик → kernel</text>
+<text x="586" y="748" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#C5CAE9">агрегация: avg / min / max</text>
+<text x="586" y="761" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8.5" fill="#9FA8DA">--finalize (-f) · --no-finalize</text>
+<text x="586" y="781" text-anchor="middle" font-family="Segoe UI,Arial" font-size="8" fill="#7986CB">XveActive · GpuBusy · FpuActive …</text>
 
 <!-- ══════════════════════════════════════ -->
 <!--  7. ClApiTracer                        -->
@@ -261,9 +252,9 @@
 <text x="605" y="868" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#004D40">chrome_logger → JSON</text>
 
 <!-- [M] ZeKernelCollector → MetricStreamerCollector: kernel intervals -->
-<path d="M 450 636 L 450 658 L 420 658 L 420 684" stroke="#00838F" stroke-width="1.8" stroke-dasharray="4,2" fill="none" marker-end="url(#am)"/>
-<rect x="380" y="645" width="96" height="13" rx="2" fill="#E0F7FA" opacity="0.93"/>
-<text x="428" y="656" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#006064">kernel intervals</text>
+<path d="M 450 636 L 450 658 L 359 658 L 359 684" stroke="#00838F" stroke-width="1.8" stroke-dasharray="4,2" fill="none" marker-end="url(#am)"/>
+<rect x="357" y="645" width="96" height="13" rx="2" fill="#E0F7FA" opacity="0.93"/>
+<text x="405" y="656" text-anchor="middle" font-family="Segoe UI,Arial" font-size="9" fill="#006064">kernel intervals</text>
 
 <!-- [N] MetricFinalizer → Metrics CSV: по правому краю -->
 <path d="M 694 790 L 715 790 L 715 1014 L 516 1014 L 516 978" stroke="#00838F" stroke-width="1.8" fill="none" marker-end="url(#am)"/>
