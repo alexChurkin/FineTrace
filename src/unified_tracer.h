@@ -245,16 +245,16 @@ class UnifiedTracer {
     if (ze_api_collector_ != nullptr) {
       delete ze_api_collector_;
     }
-
-    if (cl_cpu_kernel_collector_ != nullptr ||
-        cl_gpu_kernel_collector_ != nullptr) {
-      if (cl_cpu_kernel_collector_ != nullptr) {
-        delete cl_cpu_kernel_collector_;
-      }
-      if (cl_gpu_kernel_collector_ != nullptr) {
-        delete cl_gpu_kernel_collector_;
-      }
+    if (cl_cpu_api_collector_ != nullptr ||
+        cl_gpu_api_collector_ != nullptr) {
       ClExtCollector::Destroy();
+    }
+
+    if (cl_cpu_kernel_collector_ != nullptr) {
+      delete cl_cpu_kernel_collector_;
+    }
+    if (cl_gpu_kernel_collector_ != nullptr) {
+      delete cl_gpu_kernel_collector_;
     }
     if (ze_kernel_collector_ != nullptr) {
       delete ze_kernel_collector_;
