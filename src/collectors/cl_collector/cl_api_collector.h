@@ -1,5 +1,5 @@
 #ifndef FTRACE_TOOLS_COLLECTORS_CL_COLLECTOR_CL_API_COLLECTOR_H_
-#define FTRACE_TOOLS_COLLECTORS_CL_COLLECTOR_API_COLLECTOR_H_
+#define FTRACE_TOOLS_COLLECTORS_CL_COLLECTOR_CL_API_COLLECTOR_H_
 
 #include <chrono>
 #include <iomanip>
@@ -70,9 +70,9 @@ class ClApiCollector {
       std::cerr << "[WARNING] Unable to create OpenCL tracer " <<
         "for target device" << std::endl;
       if (tracer != nullptr) {
-        delete collector;
+        delete tracer;
       }
-      delete tracer;
+      delete collector;
       return nullptr;
     }
 
