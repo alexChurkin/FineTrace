@@ -10,7 +10,7 @@
   <marker id="atl" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#004D40"/></marker>
   <marker id="am"  markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,9 3,0 6" fill="#00838F"/></marker>
 </defs>
-<rect width="1280" height="640" fill="#F0F4F8"/>
+<rect width="1280" height="640" fill="#FFFFFF"/>
 
 <!-- ══ 1. TARGET APP ══ -->
 <rect x="50" y="14" width="1180" height="44" rx="8" fill="#283593" filter="url(#sh)"/>
