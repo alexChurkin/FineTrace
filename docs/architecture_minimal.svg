@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 345" width="620" height="345">
+<defs>
+  <filter id="sh"><feDropShadow dx="1" dy="1.5" stdDeviation="2" flood-opacity="0.18"/></filter>
+  <marker id="ag"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2E7D32"/></marker>
+  <marker id="ap"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#6A1B9A"/></marker>
+  <marker id="ao"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#E64A19"/></marker>
+  <marker id="asl" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#455A64"/></marker>
+</defs>
+<rect width="620" height="345" fill="#FFFFFF"/>
+
+<!-- 0. CLI -->
+<rect x="15" y="12" width="590" height="38" rx="7" fill="#1E1E2E" filter="url(#sh)"/>
+<text x="310" y="29" text-anchor="middle" font-family="Consolas,monospace" font-size="13">
+  <tspan fill="#A6E22E">$ </tspan><tspan fill="#66D9E8">finetrace</tspan><tspan fill="#F8F8F2"> ./my_app</tspan>
+</text>
+<text x="310" y="44" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#6272A4">LD_PRELOAD · дочерний процесс</text>
+
+<!-- arrow CLI -> process -->
+<line x1="310" y1="50" x2="310" y2="60" stroke="#6A1B9A" stroke-width="2" marker-end="url(#ap)"/>
+
+<!-- 1a. Target App -->
+<rect x="15" y="62" width="276" height="58" rx="6" fill="#283593" filter="url(#sh)"/>
+<rect x="16.5" y="86" width="273" height="32.5" fill="#E8EAF6"/>
+<line x1="16.5" y1="86" x2="291.5" y2="86" stroke="#1A237E" stroke-width="0.8"/>
+<text x="153" y="79" text-anchor="middle" font-family="Segoe UI,Arial" font-size="14" font-weight="bold" fill="white">Целевое приложение</text>
+<text x="153" y="103" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" fill="#3949AB">OpenCL · Level Zero API</text>
+
+<!-- intercept arrow -->
+<line x1="292" y1="91" x2="326" y2="91" stroke="#E64A19" stroke-width="2" marker-end="url(#ao)"/>
+
+<!-- 1b. FineTrace -->
+<rect x="329" y="62" width="276" height="58" rx="6" fill="#6A1B9A" filter="url(#sh)"/>
+<rect x="330.5" y="86" width="273" height="32.5" fill="#F3E5F5"/>
+<line x1="330.5" y1="86" x2="604.5" y2="86" stroke="#4A148C" stroke-width="0.8"/>
+<text x="467" y="79" text-anchor="middle" font-family="Segoe UI,Arial" font-size="14" font-weight="bold" fill="white">FineTrace</text>
+<text x="467" y="103" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" fill="#4A148C">перехват API-вызовов</text>
+
+<!-- arrow process -> UnifiedTracer -->
+<line x1="310" y1="120" x2="310" y2="130" stroke="#6A1B9A" stroke-width="2" marker-end="url(#ap)"/>
+
+<!-- 2. UnifiedTracer -->
+<rect x="15" y="132" width="590" height="50" rx="7" fill="#2E7D32" filter="url(#sh)"/>
+<rect x="16.5" y="156" width="587" height="24.5" fill="#E8F5E9"/>
+<line x1="16.5" y1="156" x2="604.5" y2="156" stroke="#1B5E20" stroke-width="0.8"/>
+<text x="310" y="150" text-anchor="middle" font-family="Segoe UI,Arial" font-size="16" font-weight="bold" fill="white">UnifiedTracer</text>
+<text x="310" y="172" text-anchor="middle" font-family="Segoe UI,Arial" font-size="12" fill="#1B5E20">координатор · Correlator · chrome_logger</text>
+
+<!-- arrows UT -> collectors -->
+<line x1="110" y1="182" x2="110" y2="194" stroke="#2E7D32" stroke-width="2" marker-end="url(#ag)"/>
+<line x1="310" y1="182" x2="310" y2="194" stroke="#2E7D32" stroke-width="2" marker-end="url(#ag)"/>
+<line x1="510" y1="182" x2="510" y2="194" stroke="#2E7D32" stroke-width="2" marker-end="url(#ag)"/>
+
+<!-- 3a. OpenCL Collectors — shadow card (drawn first = behind) -->
+<rect x="19" y="198" width="190" height="66" rx="6" fill="#BF360C" opacity="0.45"/>
+<!-- 3a. OpenCL Collectors — main card -->
+<rect x="15" y="194" width="190" height="66" rx="6" fill="#E64A19" filter="url(#sh)"/>
+<rect x="16.5" y="218" width="187" height="40.5" fill="#FBE9E7"/>
+<line x1="16.5" y1="218" x2="204.5" y2="218" stroke="#BF360C" stroke-width="0.8"/>
+<text x="110" y="211" text-anchor="middle" font-family="Segoe UI,Arial" font-size="13" font-weight="bold" fill="white">OpenCL Collectors</text>
+<text x="110" y="234" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11.5" fill="#7F0000">API · Kernel · Extension</text>
+<text x="110" y="249" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#BF360C">перехват OpenCL API</text>
+
+<!-- 3b. Level Zero Collectors — shadow card (drawn first = behind) -->
+<rect x="219" y="198" width="190" height="66" rx="6" fill="#0D47A1" opacity="0.45"/>
+<!-- 3b. Level Zero Collectors — main card -->
+<rect x="215" y="194" width="190" height="66" rx="6" fill="#1565C0" filter="url(#sh)"/>
+<rect x="216.5" y="218" width="187" height="40.5" fill="#E3F2FD"/>
+<line x1="216.5" y1="218" x2="404.5" y2="218" stroke="#0D47A1" stroke-width="0.8"/>
+<text x="310" y="211" text-anchor="middle" font-family="Segoe UI,Arial" font-size="13" font-weight="bold" fill="white">Level Zero Collectors</text>
+<text x="310" y="234" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11.5" fill="#0D47A1">API · Kernel</text>
+<text x="310" y="249" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#1565C0">перехват Level Zero API</text>
+
+<!-- 3c. Metric Collectors -->
+<rect x="415" y="194" width="190" height="66" rx="6" fill="#006064" filter="url(#sh)"/>
+<rect x="416.5" y="218" width="187" height="40.5" fill="#E0F7FA"/>
+<line x1="416.5" y1="218" x2="604.5" y2="218" stroke="#004D40" stroke-width="0.8"/>
+<text x="510" y="211" text-anchor="middle" font-family="Segoe UI,Arial" font-size="13" font-weight="bold" fill="white">Metric Collectors</text>
+<text x="510" y="241" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11.5" fill="#004D40">GPU HW-счётчики</text>
+
+<!-- arrow collectors -> output -->
+<line x1="310" y1="260" x2="310" y2="272" stroke="#455A64" stroke-width="2" marker-end="url(#asl)"/>
+
+<!-- 4. Output -->
+<rect x="15" y="274" width="590" height="52" rx="7" fill="#263238" filter="url(#sh)"/>
+<rect x="16.5" y="298" width="587" height="26.5" fill="#37474F"/>
+<line x1="16.5" y1="298" x2="604.5" y2="298" stroke="#1A2327" stroke-width="0.8"/>
+<text x="310" y="291" text-anchor="middle" font-family="Segoe UI,Arial" font-size="14" font-weight="bold" fill="white">Вывод</text>
+<text x="310" y="315" text-anchor="middle" font-family="Segoe UI,Arial" font-size="11.5" fill="#90A4AE">finetrace.{pid}.txt · finetrace.{pid}.json · result.{pid}.csv</text>
+
+</svg>
