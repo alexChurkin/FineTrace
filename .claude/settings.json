@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(bash -n \"c:/Projects/FineTrace/benchmark.sh\")",
-      "Bash(mkdir -p src)",
-      "Bash(git mv *)"
-    ]
-  }
-}
