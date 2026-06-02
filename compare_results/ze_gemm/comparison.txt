@@ -18,41 +18,41 @@ Flags                                --host-timing --call-logging
 
   Function                                            FT Calls   FT Total(ns)   FT Avg(ns)   VT TaskT(ns)   VT CpuT(ns)  VT Calls
   --------------------------------------------------------------------------------
-  zeCommandQueueSynchronize                                128      315321286      2463447      309313000     285457000       128
-  zeEventHostSynchronize                                   124      605037529      4879334              -             -         -
-  zeCommandQueueExecuteCommandLists                        128      129907685      1014903      147717000     185296000       128
-  GEMM                                                     128      257060679      2008286              -             -         -
-  zeCommandListAppendMemoryCopy                            384       61685765       160640       46670000      30048000       384
-  zeCommandListAppendMemoryCopy(M2D)                       256       31679064       123746              -             -         -
-  zeCommandListAppendMemoryCopy(D2M)                       128       16807242       131306              -             -         -
-  zeMemAllocDevice                                         384        5915385        15404        6946000       5008000       384
-  zeEventPoolCreate                                        129        6121809        47455              -             -         -
-  zeEventCreate                                            129        4728529        36655              -             -         -
-  zeCommandListCreate                                      128        1696723        13255        1696000             -       128
-  zeCommandListDestroy                                     128        3113904        24327              -             -         -
-  zeEventPoolDestroy                                       129        2951659        22881              -             -         -
-  zeMemFree                                                384        1887124         4914              -             -         -
-  zeCommandListAppendLaunchKernel                          128         860397         6721         905000             -       128
-  zeCommandQueueCreate                                     128         561130         4383         776000             -       128
-  zeCommandListAppendBarrier                               256         635431         2482         531000             -       256
-  zeKernelSetArgumentValue                                 512         634457         1239              -             -         -
-  zeModuleCreate                                             1         284142       284142         313000             -         1
-  zeCommandListClose                                       128         283297         2213              -             -         -
-  zeEventHostReset                                         124         225504         1818              -             -         -
-  zeContextDestroy                                           1         190299       190299              -             -         -
-  zeCommandQueueDestroy                                    128         172754         1349              -             -         -
-  zeDeviceGetProperties                                    134         171046         1276              -             -         -
-  zeKernelSuggestGroupSize                                 128         132719         1036              -             -         -
-  zeEventDestroy                                           129          85489          662              -             -         -
-  zeKernelSetGroupSize                                     128          70294          549              -             -         -
-  zeKernelCreate                                             1          23111        23111          25000             -         1
-  zeEventQueryKernelTimestamp                              128          43558          340              -             -         -
-  zeContextCreate                                            2          10446         5223              -             -         -
-  zeModuleDestroy                                            1           9527         9527              -             -         -
-  zeDriverGet                                               16           9179          573              -             -         -
-  zeDeviceGet                                               14           4032          288              -             -         -
-  clGetDeviceIDs                                             2           3921         1960              -             -         -
-  zeKernelDestroy                                            1           2559         2559              -             -         -
+  zeCommandQueueSynchronize                                128      245817941      1920452      231052000     225361000       128
+  zeEventHostSynchronize                                    84      408686416      4865314              -             -         -
+  GEMM                                                     128      193689427      1513198              -             -         -
+  zeCommandQueueExecuteCommandLists                        128       78603187       614087       75155000      75120000       128
+  zeCommandListAppendMemoryCopy                            384       28631625        74561       34825000      40064000       384
+  zeCommandListAppendMemoryCopy(M2D)                       256       28802087       112508              -             -         -
+  zeCommandListAppendMemoryCopy(D2M)                       128       15060260       117658              -             -         -
+  zeMemAllocDevice                                         384        2992107         7791        3249000      10016000       384
+  zeEventPoolCreate                                        129        2636725        20439              -             -         -
+  zeEventCreate                                            129        2560871        19851              -             -         -
+  zeCommandListCreate                                      128         900283         7033         793000             -       128
+  zeCommandListDestroy                                     128        1392526        10879              -             -         -
+  zeEventPoolDestroy                                       129        1023969         7937              -             -         -
+  zeMemFree                                                384         818068         2130              -             -         -
+  zeCommandListAppendBarrier                               256         477547         1865         187000             -       256
+  zeCommandQueueCreate                                     128         260017         2031         369000             -       128
+  zeCommandListAppendLaunchKernel                          128         318100         2485         298000             -       128
+  zeModuleCreate                                             1         282749       282749         268000             -         1
+  zeKernelSetArgumentValue                                 512         269688          526              -             -         -
+  zeCommandListClose                                       128         126586          988              -             -         -
+  zeContextDestroy                                           1         107839       107839              -             -         -
+  zeDeviceGetProperties                                    134          67112          500              -             -         -
+  zeCommandQueueDestroy                                    128          60723          474              -             -         -
+  zeKernelSuggestGroupSize                                 128          53884          420              -             -         -
+  zeKernelCreate                                             1          15681        15681          28000             -         1
+  zeEventHostReset                                          84          37452          445              -             -         -
+  zeEventDestroy                                           129          32093          248              -             -         -
+  zeKernelSetGroupSize                                     128          32013          250              -             -         -
+  zeEventQueryKernelTimestamp                              128          16277          127              -             -         -
+  zeDriverGet                                               16          13970          873              -             -         -
+  zeModuleDestroy                                            1           7418         7418              -             -         -
+  zeContextCreate                                            2           5372         2686              -             -         -
+  zeDeviceGet                                               14           3561          254              -             -         -
+  clGetDeviceIDs                                             2           2842         1421              -             -         -
+  zeDeviceGetSubDevices                                      6           2136          356              -             -         -
 
 ================================================================================
 ② DEVICE TIMELINE  (per-event: append / submit / start / end)
@@ -62,36 +62,36 @@ Flags                                --host-timing --call-logging
 
   Kernel                                                      Append          Submit           Start             End     Exec (ns)
   --------------------------------------------------------------------------------
-  0x5b6a6f0fddf8): zeCommandListAppendMemoryCopy(M2D)<1.1>       120415388       123395091       126528372       126719934        191562
-  0x5b6a6f0fddf8): zeCommandListAppendMemoryCopy(M2D)<2.1>       122709487       123395091       126720455       126887434        166979
-  0x5b6a6f0fddf8): zeCommandListAppendBarrier<3.1>         122906595       123395091       126887955       126891705          3750
-  0x5b6a6f0fddf8): GEMM<4.1>                               123048349       123395091       126892226       131982330       5090104
-  0x5b6a6f0fddf8): zeCommandListAppendBarrier<5.1>         123067618       123395091       131982538       131984933          2395
-  0x5b6a6f0fddf8): zeCommandListAppendMemoryCopy(D2M)<6.1>       123079471       123395091       131985143       132123893        138750
-  0x5b6a6f101538): zeCommandListAppendMemoryCopy(M2D)<7.1>       134148810       135503477       137413008       137556758        143750
-  0x5b6a6f101538): zeCommandListAppendMemoryCopy(M2D)<8.1>       134516849       135503477       137556966       137676653        119687
-  0x5b6a6f101538): zeCommandListAppendBarrier<9.1>         134808279       135503477       137676966       137679153          2187
-  0x5b6a6f101538): GEMM<10.1>                              135080356       135503477       137679362       140701445       3022083
-  0x5b6a6f101538): zeCommandListAppendBarrier<11.1>        135125843       135503477       140701654       140703841          2187
-  0x5b6a6f101538): zeCommandListAppendMemoryCopy(D2M)<12.1>       135161210       135503477       140704154       140846029        141875
-  0x5b6a6f1014e8): zeCommandListAppendMemoryCopy(M2D)<13.1>       142704946       144128045       146135701       146301951        166250
-  0x5b6a6f1014e8): zeCommandListAppendMemoryCopy(M2D)<14.1>       143099298       144128045       146302159       146457054        154895
-  0x5b6a6f1014e8): zeCommandListAppendBarrier<15.1>        143411913       144128045       146457367       146460075          2708
-  0x5b6a6f1014e8): GEMM<16.1>                              143666900       144128045       146460284       149661117       3200833
-  0x5b6a6f1014e8): zeCommandListAppendBarrier<17.1>        143707268       144128045       149661430       149669971          8541
-  0x5b6a6f1014e8): zeCommandListAppendMemoryCopy(D2M)<18.1>       143741480       144128045       149670284       149868929        198645
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(M2D)<19.1>       151717229       153140207       155156925       155325987        169062
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(M2D)<20.1>       152087343       153140207       155326196       155474008        147812
-  0x5b6a6f102418): zeCommandListAppendBarrier<21.1>        152386741       153140207       155474321       155476821          2500
-  0x5b6a6f102418): GEMM<22.1>                              152644182       153140207       155477029       158595987       3118958
-  0x5b6a6f102418): zeCommandListAppendBarrier<23.1>        152687927       153140207       158596300       158598800          2500
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(D2M)<24.1>       152723118       153140207       158599009       158769217        170208
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(M2D)<25.1>       160616606       162089700       163970637       164142303        171666
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(M2D)<26.1>       161021502       162089700       164142616       164292720        150104
-  0x5b6a6f102418): zeCommandListAppendBarrier<27.1>        161348805       162089700       164293033       164295637          2604
-  0x5b6a6f102418): GEMM<28.1>                              161614927       162089700       164295950       167458241       3162291
-  0x5b6a6f102418): zeCommandListAppendBarrier<29.1>        161660130       162089700       167458450       167465845          7395
-  0x5b6a6f102418): zeCommandListAppendMemoryCopy(D2M)<30.1>       161697158       162089700       167466158       167671887        205729
+  0x61ff632a9278): zeCommandListAppendMemoryCopy(M2D)<1.1>        89451513        92454440        94999283        95139387        140104
+  0x61ff632a9278): zeCommandListAppendMemoryCopy(M2D)<2.1>        91934659        92454440        95139596        95254804        115208
+  0x61ff632a9278): zeCommandListAppendBarrier<3.1>          92081834        92454440        95255117        95257200          2083
+  0x61ff632a9278): GEMM<4.1>                                92194136        92454440        95257512        98306991       3049479
+  0x61ff632a9278): zeCommandListAppendBarrier<5.1>          92216542        92454440        98307304        98309491          2187
+  0x61ff632a9278): zeCommandListAppendMemoryCopy(D2M)<6.1>        92228053        92454440        98309804        98470637        160833
+  0x61ff632677b8): zeCommandListAppendMemoryCopy(M2D)<7.1>        99383324        99959435       100966518       101093393        126875
+  0x61ff632677b8): zeCommandListAppendMemoryCopy(M2D)<8.1>        99552821        99959435       101093705       101208392        114687
+  0x61ff632677b8): zeCommandListAppendBarrier<9.1>          99658477        99959435       101208705       101210788          2083
+  0x61ff632677b8): GEMM<10.1>                               99785689        99959435       101211101       104245580       3034479
+  0x61ff632677b8): zeCommandListAppendBarrier<11.1>         99802702        99959435       104245893       104253184          7291
+  0x61ff632677b8): zeCommandListAppendMemoryCopy(D2M)<12.1>        99813437        99959435       104253497       104429642        176145
+  0x61ff63267768): zeCommandListAppendMemoryCopy(M2D)<13.1>       104779854       105091354       105732499       105868332        135833
+  0x61ff63267768): zeCommandListAppendMemoryCopy(M2D)<14.1>       104871962       105091354       105868645       105989999        121354
+  0x61ff63267768): zeCommandListAppendBarrier<15.1>        104934378       105091354       105990312       105992499          2187
+  0x61ff63267768): GEMM<16.1>                              104992202       105091354       105992708       109017083       3024375
+  0x61ff63267768): zeCommandListAppendBarrier<17.1>        104999509       105091354       109017395       109019582          2187
+  0x61ff63267768): zeCommandListAppendMemoryCopy(D2M)<18.1>       105005039       105091354       109019791       109175311        155520
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(M2D)<19.1>       109522440       109827907       110624157       110789469        165312
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(M2D)<20.1>       109611375       109827907       110789677       110934989        145312
+  0x61ff6316ce58): zeCommandListAppendBarrier<21.1>        109672679       109827907       110935198       110937489          2291
+  0x61ff6316ce58): GEMM<22.1>                              109728549       109827907       110937802       113562593       2624791
+  0x61ff6316ce58): zeCommandListAppendBarrier<23.1>        109735103       109827907       113562802       113564781          1979
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(D2M)<24.1>       109740633       109827907       113564990       113693219        128229
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(M2D)<25.1>       114044260       114348712       115613295       115743920        130625
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(M2D)<26.1>       114135401       114348712       115744128       115859128        115000
+  0x61ff6316ce58): zeCommandListAppendBarrier<27.1>        114195723       114348712       115859337       115861316          1979
+  0x61ff6316ce58): GEMM<28.1>                              114251851       114348712       115861524       119724649       3863125
+  0x61ff6316ce58): zeCommandListAppendBarrier<29.1>        114258585       114348712       119724962       119729024          4062
+  0x61ff6316ce58): zeCommandListAppendMemoryCopy(D2M)<30.1>       114263411       114348712       119729232       119891107        161875
   ... (738 more events — see finetrace/raw.txt)
 
   VTune (gpu-offload) device timeline:
@@ -108,11 +108,11 @@ Flags                                --host-timing --call-logging
 
   Kernel                                              FT Calls   FT Total(ns)   FT Avg(ns)   VT Total(ns)   VT Avg(ns)  VT Calls
   --------------------------------------------------------------------------------
-  GEMM                                                     128      257060679      2008286      251456000      1965000       128
-  zeCommandListAppendMemoryCopy(M2D)                       256       31679064       123746              -            -         -
-  zeCommandListAppendMemoryCopy                              -              -            -       17110000       134000       128
-  zeCommandListAppendMemoryCopy(D2M)                       128       16807242       131306              -            -         -
-  zeCommandListAppendBarrier                               256         635431         2482         794000         3000       256
+  GEMM                                                     128      193689427      1513198      182726000      1428000       128
+  zeCommandListAppendMemoryCopy(M2D)                       256       28802087       112508              -            -         -
+  zeCommandListAppendMemoryCopy(D2M)                       128       15060260       117658              -            -         -
+  zeCommandListAppendMemoryCopy                              -              -            -       14564000       114000       128
+  zeCommandListAppendBarrier                               256         477547         1865         686000         3000       256
 
 ================================================================================
 ④ GPU HARDWARE METRICS  (per-kernel, aggregated)
@@ -127,18 +127,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                       5090104        267795000 ns  Kernel exec time
-  │  GpuTime[ns]                                          4860415        267795000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                      5856              642066  Compute threads launched
-  │  XveActive[%]                                         61.0758                46.2  XVE active (any pipeline)
-  │  XveStall[%]                                          35.5777                45.6  XVE stalled
-  │  FpuActive[%]                                         6.18567                 4.6  FPU/ALU0 active
-  │  EmActive[%]                                          51.1619                38.4  EM/ALU1 active
+  │  KernelTime[ns]                                       3034479        183629000 ns  Kernel exec time
+  │  GpuTime[ns]                                          3043488        183629000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                      6144              515152  Compute threads launched
+  │  XveActive[%]                                           58.68                41.0  XVE active (any pipeline)
+  │  XveStall[%]                                          37.5415                46.7  XVE stalled
+  │  FpuActive[%]                                         5.93092                 4.7  FPU/ALU0 active
+  │  EmActive[%]                                          49.0476                33.2  EM/ALU1 active
   │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
-  │  XveThreadOccupancy[%]                                95.2388               100.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                             4573440           46.852465  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  GtiWriteThroughput[bytes]                            2300160            1.589359  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  SlmReads[messages]                                         0          3329564782  SLM/Send instructions
+  │  XveThreadOccupancy[%]                                95.3819               100.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                             4712960           52.947012  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                            2319872            4.379167  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0          2612750396  SLM/Send instructions
 
   ┌─ Kernel: zeCommandListAppendBarrier
   │  finetrace key: zeCommandListAppendBarrier
@@ -146,18 +146,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                             -          1012000 ns  Kernel exec time
-  │  GpuTime[ns]                                                -          1012000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                         -                2718  Compute threads launched
-  │  XveActive[%]                                               -                54.0  XVE active (any pipeline)
-  │  XveStall[%]                                                -                36.5  XVE stalled
-  │  FpuActive[%]                                               -                 5.4  FPU/ALU0 active
-  │  EmActive[%]                                                -                45.0  EM/ALU1 active
+  │  KernelTime[ns]                                             -           653000 ns  Kernel exec time
+  │  GpuTime[ns]                                                -           653000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                         -                2751  Compute threads launched
+  │  XveActive[%]                                               -                33.5  XVE active (any pipeline)
+  │  XveStall[%]                                                -                24.2  XVE stalled
+  │  FpuActive[%]                                               -                 3.4  FPU/ALU0 active
+  │  EmActive[%]                                                -                27.9  EM/ALU1 active
   │  XmxActive[%]                                               -                 0.0  XMX (matrix) active
   │  XveThreadOccupancy[%]                                      -                 0.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                                   -          104.498204  GTI/L3 read BW (FT=bytes, VT=GB/s)
-  │  GtiWriteThroughput[bytes]                                  -            1.582888  GTI/L3 write BW (FT=bytes, VT=GB/s)
-  │  SlmReads[messages]                                         -            22872758  SLM/Send instructions
+  │  GtiReadThroughput[bytes]                                   -          116.951027  GTI/L3 read BW (FT=bytes, VT=GB/s)
+  │  GtiWriteThroughput[bytes]                                  -            2.506799  GTI/L3 write BW (FT=bytes, VT=GB/s)
+  │  SlmReads[messages]                                         -            17468948  SLM/Send instructions
 
   ┌─ Kernel: zeCommandListAppendMemoryCopy
   │  finetrace key: zeCommandListAppendMemoryCopy
@@ -165,18 +165,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                             -         35466000 ns  Kernel exec time
-  │  GpuTime[ns]                                                -         35466000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                         -               47555  Compute threads launched
-  │  XveActive[%]                                               -                 0.4  XVE active (any pipeline)
-  │  XveStall[%]                                                -                37.6  XVE stalled
-  │  FpuActive[%]                                               -                 0.0  FPU/ALU0 active
-  │  EmActive[%]                                                -                 0.3  EM/ALU1 active
+  │  KernelTime[ns]                                             -         21108000 ns  Kernel exec time
+  │  GpuTime[ns]                                                -         21108000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                         -               30925  Compute threads launched
+  │  XveActive[%]                                               -                 0.6  XVE active (any pipeline)
+  │  XveStall[%]                                                -                 9.6  XVE stalled
+  │  FpuActive[%]                                               -                 0.4  FPU/ALU0 active
+  │  EmActive[%]                                                -                 0.1  EM/ALU1 active
   │  XmxActive[%]                                               -                 0.0  XMX (matrix) active
   │  XveThreadOccupancy[%]                                      -                 0.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                                   -            1.298775  GTI/L3 read BW (FT=bytes, VT=GB/s)
-  │  GtiWriteThroughput[bytes]                                  -            1.095216  GTI/L3 write BW (FT=bytes, VT=GB/s)
-  │  SlmReads[messages]                                         -             2217886  SLM/Send instructions
+  │  GtiReadThroughput[bytes]                                   -            3.376779  GTI/L3 read BW (FT=bytes, VT=GB/s)
+  │  GtiWriteThroughput[bytes]                                  -            2.465575  GTI/L3 write BW (FT=bytes, VT=GB/s)
+  │  SlmReads[messages]                                         -             9459020  SLM/Send instructions
 
   ┌─ Kernel: zeCommandListAppendMemoryCopy(D2M)
   │  finetrace key: zeCommandListAppendMemoryCopy(D2M)
@@ -221,15 +221,15 @@ Flags                                --host-timing --call-logging
       Work Size:Global                              512 x 512
       Work Size:Local                               512 x 2
       Computing Task:SIMD Width                     32
-      GPU Memory Bandwidth, GB/sec:Read             1.928774
-      GPU Memory Bandwidth, GB/sec:Write            1.004621
+      GPU Memory Bandwidth, GB/sec:Read             3.137329
+      GPU Memory Bandwidth, GB/sec:Write            1.804578
     zeCommandListAppendBarrier:
-      GPU Memory Bandwidth, GB/sec:Read             0.878630
-      GPU Memory Bandwidth, GB/sec:Write            1.124283
+      GPU Memory Bandwidth, GB/sec:Read             1.811185
+      GPU Memory Bandwidth, GB/sec:Write            2.362893
     zeCommandListAppendMemoryCopy:
-      Transfer Size:Host-to-Device                  268435456
-      GPU Memory Bandwidth, GB/sec:Read             1.433080
-      GPU Memory Bandwidth, GB/sec:Write            0.842135
+      Transfer Size:Host-to-Device                  199229440
+      GPU Memory Bandwidth, GB/sec:Read             2.023933
+      GPU Memory Bandwidth, GB/sec:Write            1.234983
 
 
 ================================================================================

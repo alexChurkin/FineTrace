@@ -1,15 +1,15 @@
-Elapsed Time: 2.844s
-    GPU Time: 0.456s
-XVE Array Stalled/Idle: 77.2% of Elapsed time with GPU busy
+Elapsed Time: 2.199s
+    GPU Time: 0.311s
+XVE Array Stalled/Idle: 73.9% of Elapsed time with GPU busy
  | The percentage of time when the XVEs were stalled or idle is high, which has
  | a negative impact on compute-bound applications.
  |
-    GPU L3 Bandwidth Bound: 3.0% of peak value
+    GPU L3 Bandwidth Bound: 3.5% of peak value
 
         Hottest GPU Computing Tasks Bound by GPU L3 Bandwidth
         Computing Task  Total Time
         --------------  ----------
-    Occupancy: 54.0% of peak value
+    Occupancy: 61.3% of peak value
      | Several factors including shared local memory, use of memory barriers,
      | and inefficient work scheduling can cause a low value of the occupancy
      | metric.
@@ -18,13 +18,14 @@ XVE Array Stalled/Idle: 77.2% of Elapsed time with GPU busy
         Hottest GPU Computing Tasks with Low Occupancy
         Computing Task  Total Time  SIMD Width  Peak XVE Threads Occupancy(%)  Occupancy(%)  SIMD Utilization(%)
         --------------  ----------  ----------  -----------------------------  ------------  -------------------
+        GEMM                0.182s          32                         100.0%         88.2%               100.0%
 Collection and Platform Info
     Application Command Line: /home/lxchu/Projects/finetrace/samples/cl_gemm/build/cl_gemm "gpu" "512" "128" 
     Operating System: 6.17.0-23-generic DISTRIB_ID=Ubuntu DISTRIB_RELEASE=25.10 DISTRIB_CODENAME=questing DISTRIB_DESCRIPTION="Ubuntu 25.10"
     Computer Name: lxchu-FLMH-XX
-    Result Size: 12.4 MB 
-    Collection start time: 12:43:34 02/06/2026 UTC
-    Collection stop time: 12:43:37 02/06/2026 UTC
+    Result Size: 9.9 MB 
+    Collection start time: 14:13:17 02/06/2026 UTC
+    Collection stop time: 14:13:19 02/06/2026 UTC
     Collector Type: Event-based sampling driver,User-mode sampling and tracing
     CPU
         Name: Intel(R) microarchitecture code named Meteorlake-P
@@ -44,11 +45,11 @@ Collection and Platform Info
             SVM Capabilities
 
 Recommendations:
-    GPU Time, % of Elapsed time: 16.0%
+    GPU Time, % of Elapsed time: 14.1%
      | GPU utilization is low. Switch to the for in-depth analysis of host
      | activity. Poor GPU utilization can prevent the application from
      | offloading effectively.
-    XVE Array Stalled/Idle: 77.2% of Elapsed time with GPU busy
+    XVE Array Stalled/Idle: 73.9% of Elapsed time with GPU busy
      | GPU metrics detect some kernel issues. Use GPU Compute/Media Hotspots
      | (preview) to understand how well your application runs on the specified
      | hardware.

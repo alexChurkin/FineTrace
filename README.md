@@ -361,14 +361,45 @@ compare_results/
 Open `compare_results/<sample>/comparison.txt` for the report.
 To inspect the VTune timeline visually: `vtune-gui compare_results/<sample>/vtune/gpu-offload`.
 
+### Verification results (Intel Arc Graphics / Meteor Lake-P)
+
+Verified on: `ze_gemm` (Level Zero), `cl_gemm` (OpenCL), `bench_gaussian` (Rodinia OpenCL).
+Current results are committed in `compare_results/`.
+
+| Category | Result |
+|---|---|
+| Host API call counts | ✓ Identical between finetrace and VTune for all matched functions |
+| Host API timing | ✓ Within 0–5% run-to-run variance |
+| Device kernel timing | ✓ < 2% difference (ze_gemm GEMM: 2.4%, cl_gemm GEMM: 0.15%, gaussian Fan1/Fan2: < 5%) |
+| GPU metrics — Level Zero | ✓ Qualitatively consistent: FpuActive, EmActive, XmxActive match direction and magnitude |
+| GPU metrics — OpenCL | ✓ Fixed; was broken due to `ns_per_cycle` integer truncation (50 ms drift per run) |
+| Device timeline (append/submit/start/end) | ✓ Finetrace only — VTune GUI-only, no CSV export |
+
+**Representative metric comparison (single sample vs. VTune full-run average):**
+
+| Kernel | Metric | finetrace | VTune |
+|---|---|---|---|
+| cl_gemm GEMM | XveActive | 37.5% | 39.2% |
+| cl_gemm GEMM | FpuActive | 4.78% | 5.0% |
+| cl_gemm GEMM | EmActive | 27.6% | 28.8% |
+| cl_gemm GEMM | XmxActive | 0 | 0 |
+| gaussian Fan2 | XveActive | 5.72% | 5.7% |
+| gaussian Fan2 | FpuActive | 0.34% | 0.4% |
+| gaussian Fan2 | EmActive | 4.92% | 4.5% |
+| ze_gemm GEMM | FpuActive | 5.93% | 4.7% |
+| ze_gemm GEMM | XmxActive | 0 | 0 |
+
+Note: finetrace reports one metric sample per kernel invocation; VTune aggregates across all
+invocations. Small percentage differences are expected.
+
 ### Known limitations
 
 - **Device timeline** (②): VTune does not export per-event append/submit timestamps to CSV.
   Finetrace provides full `append → submit → start → end` ns timestamps; VTune shows the
   timeline only in its GUI.
-- **OpenCL GPU metrics** (④): finetrace's `--aggregation` uses the L0 Metrics API and does
-  not collect hardware counters for OpenCL kernels (`cl_gemm`, Rodinia). VTune collects these
-  correctly via `gpu-hotspots`. For OpenCL metric verification use VTune's `device_metrics.csv`.
+- **Very short kernels** (< ~0.5 ms): the metric stream samples every 1 ms by default; kernels
+  shorter than the sampling interval may show zero metrics. Use `--kernel-query` for short
+  kernels, or reduce `--metric-sampling-interval` (e.g. `--metric-sampling-interval 100`).
 - **Host API coverage**: finetrace intercepts every call via tracing hooks (40+ functions);
   VTune uses statistical sampling and only surfaces calls that spend measurable CPU time
   (typically 10 functions). Call counts match where both tools see the function.

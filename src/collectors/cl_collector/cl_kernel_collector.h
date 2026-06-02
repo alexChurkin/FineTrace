@@ -626,21 +626,28 @@ class ClKernelCollector {
     elapsed = cl_device_timestamp - started;
     elapsed += (ze_host_timestamp - cl_host_timestamp);
 
+
     uint64_t ze_started;
     uint64_t ze_ended;
 
-    uint64_t ns_per_cycle;
-    ns_per_cycle = static_cast<uint64_t>(NSEC_IN_SEC) / freq;
+    // Convert ns → cycles and cycles → ns using multiply-then-divide to avoid
+    // the ~50 ms drift that accumulates when ns_per_cycle is computed as
+    // integer 1e9/freq (e.g. 52 instead of 52.0833 for 19.2 MHz timer).
+    // This matches the pattern used in ze_kernel_collector GetMetricTime:
+    //   cycles * NSEC_IN_SEC / freq  (not  cycles * (NSEC_IN_SEC / freq))
+    uint64_t elapsed_cycles  = elapsed            * freq / static_cast<uint64_t>(NSEC_IN_SEC);
+    uint64_t duration_cycles = (ended - started)  * freq / static_cast<uint64_t>(NSEC_IN_SEC);
 
-    ze_started = (ze_device_timestamp - (elapsed / ns_per_cycle)) & mask;
-    ze_ended = (ze_started + ((ended - started) / ns_per_cycle)) & mask;;
+    ze_started = (ze_device_timestamp - elapsed_cycles)  & mask;
+    ze_ended   = (ze_started + duration_cycles)           & mask;
 
-    ze_started = ze_started * ns_per_cycle;
-    ze_ended = ze_ended * ns_per_cycle;
+    ze_started = ze_started * static_cast<uint64_t>(NSEC_IN_SEC) / freq;
+    ze_ended   = ze_ended   * static_cast<uint64_t>(NSEC_IN_SEC) / freq;
 
     if (ze_ended < ze_started) {
-      ze_ended += ((mask + 1)* ns_per_cycle);
+      ze_ended += ((mask + 1) * static_cast<uint64_t>(NSEC_IN_SEC) / freq);
     }
+
 
 #if 0
     uint64_t host_queued = 0, host_submitted = 0;

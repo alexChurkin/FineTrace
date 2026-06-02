@@ -574,11 +574,18 @@ def build_comparison(sample_name: str,
     ft_metrics = parse_ft_metrics(raw)
     vt_metrics = parse_vtune_device_metrics(vtune_reports / "device_metrics.csv")
 
-    # Collapse finetrace rows: take the first sample per unique base kernel name
+    # Collapse finetrace rows per kernel: prefer the sample with the highest
+    # CsThreads (most GPU activity) — the first sample may fall on the metric-
+    # stream startup boundary and show zeros for all ratio metrics.
     ft_by_kernel = {}
+    def _cs(row):
+        try:
+            return int(row.get("CsThreads[threads]", "0") or "0")
+        except ValueError:
+            return 0
     for row in ft_metrics:
         base = row.get("Kernel", "?").split("[")[0].strip()
-        if base not in ft_by_kernel:
+        if base not in ft_by_kernel or _cs(row) > _cs(ft_by_kernel[base]):
             ft_by_kernel[base] = row
 
     # Collapse VTune rows: same

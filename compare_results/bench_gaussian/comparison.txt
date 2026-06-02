@@ -18,39 +18,39 @@ Flags                                --host-timing --call-logging
 
   Function                                            FT Calls   FT Total(ns)   FT Avg(ns)   VT TaskT(ns)   VT CpuT(ns)  VT Calls
   --------------------------------------------------------------------------------
-  clFinish                                                4101     1515676635       369587     1440959000     470753000      4101
-  zeEventHostSynchronize                                   416     2049758050      4927303              -             -         -
-  Fan2                                                    2047     1035501234       505862              -             -         -
-  clEnqueueNDRangeKernel                                  4094      195820004        47830      264577999     260417000      4094
-  clBuildProgram                                             1         244708       244708      244271000     235377000         1
-  Fan1                                                    2047       38601536        18857              -             -         -
-  clCreateBuffer                                             3       10289148      3429716        7237000      10016000         3
-  clSetKernelArg                                         20470       16150603          788              -             -         -
-  clReleaseEvent                                          4100        6892015         1680              -             -         -
-  clEnqueueWriteBuffer                                       3        1391457       463819        5182000             -         3
-  clEnqueueReadBuffer                                        3        1406040       468680        3803000       5008000         3
-  clGetEventProfilingInfo                                 8200        2006543          244              -             -         -
-  zeEventHostReset                                         416         405735          975              -             -         -
-  clCreateKernel                                             2          16919         8459         257999             -         2
-  clCreateContextFromType                                    1         222914       222914              -             -         -
-  clReleaseMemObject                                         3          66987        22329          71000             -         3
-  clCreateCommandQueue                                       1          16374        16374          99000             -         1
-  zeEventPoolCreate                                          1         108046       108046              -             -         -
-  zeEventPoolDestroy                                         1          50824        50824              -             -         -
-  clCreateProgramWithSource                                  1          18529        18529          28000             -         1
-  zeEventCreate                                              1          31081        31081              -             -         -
-  clGetDeviceIDs                                             6           8517         1419              -             -         -
-  zeDriverGet                                               12           8207          683              -             -         -
-  clReleaseCommandQueue                                      1           6801         6801              -             -         -
-  zeDeviceGet                                               10           6692          669              -             -         -
-  zeDeviceGetProperties                                      3           5815         1938              -             -         -
-  clGetDeviceInfo                                            4           3103          775              -             -         -
-  zeEventDestroy                                             1           2239         2239              -             -         -
-  zeDeviceGetSubDevices                                      5           1912          382              -             -         -
-  zeContextCreate                                            1           1317         1317              -             -         -
-  zeDriverGetApiVersion                                      1           1214         1214              -             -         -
-  clGetPlatformInfo                                          1           1182         1182              -             -         -
-  clReleaseContext                                           1            323          323              -             -         -
+  clFinish                                                4101     1426396226       347816     1316613000     420673000      4101
+  zeEventHostSynchronize                                   336     1665430918      4956639              -             -         -
+  Fan2                                                    2047      991509348       484371              -             -         -
+  clEnqueueNDRangeKernel                                  4094       79986134        19537      141309000     165264000      4094
+  Fan1                                                    2047       38253734        18687              -             -         -
+  clCreateBuffer                                             3        6279023      2093007        6681000       5008000         3
+  clEnqueueWriteBuffer                                       3        1148020       382673        4295000             -         3
+  clSetKernelArg                                         20470        5074195          247              -             -         -
+  clEnqueueReadBuffer                                        3        1395728       465242        2950000       5008000         3
+  clReleaseEvent                                          4100        1710570          417              -             -         -
+  clGetEventProfilingInfo                                 8200         746444           91              -             -         -
+  clBuildProgram                                             1         173270       173270         194000             -         1
+  clCreateContextFromType                                    1         192414       192414              -             -         -
+  clCreateKernel                                             2          11972         5986         120000             -         2
+  zeEventPoolCreate                                          1         127485       127485              -             -         -
+  zeEventHostReset                                         336         120132          357              -             -         -
+  clReleaseMemObject                                         3          54066        18022          57000             -         3
+  clCreateCommandQueue                                       1          12886        12886          72000             -         1
+  zeEventCreate                                              1          43808        43808              -             -         -
+  clCreateProgramWithSource                                  1          11873        11873          14000             -         1
+  zeEventPoolDestroy                                         1          25653        25653              -             -         -
+  zeDriverGet                                               12           6105          508              -             -         -
+  clGetDeviceIDs                                             6           5162          860              -             -         -
+  zeDeviceGetProperties                                      3           4976         1658              -             -         -
+  clReleaseCommandQueue                                      1           3164         3164              -             -         -
+  clGetDeviceInfo                                            4           2450          612              -             -         -
+  zeDeviceGet                                               10           2165          216              -             -         -
+  zeContextCreate                                            1           1824         1824              -             -         -
+  zeDeviceGetSubDevices                                      5           1500          300              -             -         -
+  zeEventDestroy                                             1           1064         1064              -             -         -
+  zeDriverGetApiVersion                                      1           1037         1037              -             -         -
+  clGetPlatformInfo                                          1            656          656              -             -         -
+  clReleaseContext                                           1            121          121              -             -         -
 
 ================================================================================
 ② DEVICE TIMELINE  (per-event: append / submit / start / end)
@@ -74,10 +74,10 @@ Flags                                --host-timing --call-logging
 
   Kernel                                              FT Calls   FT Total(ns)   FT Avg(ns)   VT Total(ns)   VT Avg(ns)  VT Calls
   --------------------------------------------------------------------------------
-  Fan2                                                    2047     1035501234       505862     1076529000       526000      2047
-  Fan1                                                    2047       38601536        18857       38258000        19000      2047
-  clEnqueueReadBuffer                                        3        1406040       468680        1892000       631000         3
-  clEnqueueWriteBuffer                                       3        1391457       463819        1352000       451000         3
+  Fan2                                                    2047      991509348       484371      971170000       474000      2047
+  Fan1                                                    2047       38253734        18687       34814000        17000      2047
+  clEnqueueReadBuffer                                        3        1395728       465242        1397000       466000         3
+  clEnqueueWriteBuffer                                       3        1148020       382673        1154000       385000         3
 
 ================================================================================
 ④ GPU HARDWARE METRICS  (per-kernel, aggregated)
@@ -92,18 +92,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                         29848         37689000 ns  Kernel exec time
-  │  GpuTime[ns]                                           153333         37689000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                         0              969161  Compute threads launched
-  │  XveActive[%]                                               0                 1.5  XVE active (any pipeline)
-  │  XveStall[%]                                                0                27.6  XVE stalled
-  │  FpuActive[%]                                               0                 0.1  FPU/ALU0 active
-  │  EmActive[%]                                                0                 1.2  EM/ALU1 active
+  │  KernelTime[ns]                                         20156         36700000 ns  Kernel exec time
+  │  GpuTime[ns]                                           655156         36700000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                     65536             2154413  Compute threads launched
+  │  XveActive[%]                                         6.24068                 2.8  XVE active (any pipeline)
+  │  XveStall[%]                                          78.6752                38.0  XVE stalled
+  │  FpuActive[%]                                        0.341957                 0.2  FPU/ALU0 active
+  │  EmActive[%]                                          4.91942                 2.2  EM/ALU1 active
   │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
-  │  XveThreadOccupancy[%]                                      0                14.3  Thread occupancy
-  │  GtiReadThroughput[bytes]                                 512           81.680350  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  GtiWriteThroughput[bytes]                               1280           49.074783  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  SlmReads[messages]                                         0            22121848  SLM/Send instructions
+  │  XveThreadOccupancy[%]                                70.7236                14.3  Thread occupancy
+  │  GtiReadThroughput[bytes]                             7333888          122.113662  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                            7262464           73.650507  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0            35486222  SLM/Send instructions
 
   ┌─ Kernel: Fan2
   │  finetrace key: Fan2
@@ -111,18 +111,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                       2970604       1070996000 ns  Kernel exec time
-  │  GpuTime[ns]                                          1706666       1070996000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                         0            90462838  Compute threads launched
-  │  XveActive[%]                                               0                 6.5  XVE active (any pipeline)
-  │  XveStall[%]                                                0                72.8  XVE stalled
-  │  FpuActive[%]                                               0                 0.4  FPU/ALU0 active
-  │  EmActive[%]                                                0                 5.3  EM/ALU1 active
+  │  KernelTime[ns]                                        830677        964779000 ns  Kernel exec time
+  │  GpuTime[ns]                                           805152        964779000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                    131648            78372502  Compute threads launched
+  │  XveActive[%]                                         5.71945                 5.7  XVE active (any pipeline)
+  │  XveStall[%]                                          24.9251                72.1  XVE stalled
+  │  FpuActive[%]                                        0.337231                 0.4  FPU/ALU0 active
+  │  EmActive[%]                                           4.9193                 4.5  EM/ALU1 active
   │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
-  │  XveThreadOccupancy[%]                                      0               100.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                                   0          157.713716  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  GtiWriteThroughput[bytes]                                512           95.893165  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  SlmReads[messages]                                         0          1386769246  SLM/Send instructions
+  │  XveThreadOccupancy[%]                                12.2925               100.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                             1259520          201.925933  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                            1163008          121.546111  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0          1533391546  SLM/Send instructions
 
   ┌─ Kernel: clEnqueueReadBuffer
   │  finetrace key: clEnqueueReadBuffer
@@ -130,18 +130,18 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                        700908          1908000 ns  Kernel exec time
-  │  GpuTime[ns]                                           621274          1908000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                    131136               17652  Compute threads launched
-  │  XveActive[%]                                         5.97665                 1.0  XVE active (any pipeline)
-  │  XveStall[%]                                          25.7676                97.4  XVE stalled
-  │  FpuActive[%]                                        0.354167                 0.0  FPU/ALU0 active
-  │  EmActive[%]                                          5.16514                 0.6  EM/ALU1 active
+  │  KernelTime[ns]                                        692864          1952000 ns  Kernel exec time
+  │  GpuTime[ns]                                           853332          1952000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                      2173               10082  Compute threads launched
+  │  XveActive[%]                                        0.145996                 0.8  XVE active (any pipeline)
+  │  XveStall[%]                                          10.6774                93.1  XVE stalled
+  │  FpuActive[%]                                      0.00227333                 0.0  FPU/ALU0 active
+  │  EmActive[%]                                        0.0902198                 0.5  EM/ALU1 active
   │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
-  │  XveThreadOccupancy[%]                                 11.884                 0.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                              624384            9.345717  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  GtiWriteThroughput[bytes]                             579072            9.115203  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
-  │  SlmReads[messages]                                         0              969530  SLM/Send instructions
+  │  XveThreadOccupancy[%]                                9.89419                 0.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                             2022656            5.116049  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                            1784320            4.788301  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0              528582  SLM/Send instructions
 
   ┌─ Kernel: clEnqueueWriteBuffer
   │  finetrace key: clEnqueueWriteBuffer
@@ -149,40 +149,40 @@ Flags                                --host-timing --call-logging
   │
   │  Metric                                             finetrace               VTune  Notes
   │  ------------------------------------------------------------------------------------------
-  │  KernelTime[ns]                                             -          1455000 ns  Kernel exec time
-  │  GpuTime[ns]                                                -          1455000 ns  GPU time (same column in VTune)
-  │  CsThreads[threads]                                         -               14208  Compute threads launched
-  │  XveActive[%]                                               -                 5.2  XVE active (any pipeline)
-  │  XveStall[%]                                                -                89.0  XVE stalled
-  │  FpuActive[%]                                               -                 0.1  FPU/ALU0 active
-  │  EmActive[%]                                                -                 2.8  EM/ALU1 active
-  │  XmxActive[%]                                               -                 0.0  XMX (matrix) active
-  │  XveThreadOccupancy[%]                                      -                 0.0  Thread occupancy
-  │  GtiReadThroughput[bytes]                                   -            9.901733  GTI/L3 read BW (FT=bytes, VT=GB/s)
-  │  GtiWriteThroughput[bytes]                                  -            9.739277  GTI/L3 write BW (FT=bytes, VT=GB/s)
-  │  SlmReads[messages]                                         -              722722  SLM/Send instructions
+  │  KernelTime[ns]                                        564427          1151000 ns  Kernel exec time
+  │  GpuTime[ns]                                           467994          1151000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                     13216               11184  Compute threads launched
+  │  XveActive[%]                                         3.32683                 3.0  XVE active (any pipeline)
+  │  XveStall[%]                                           91.059                80.3  XVE stalled
+  │  FpuActive[%]                                       0.0626374                 0.1  FPU/ALU0 active
+  │  EmActive[%]                                           1.8206                 1.7  EM/ALU1 active
+  │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
+  │  XveThreadOccupancy[%]                                81.4818                 0.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                            13270528            9.628877  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                           11262976            9.265893  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0              547444  SLM/Send instructions
 
   VTune additional info (no finetrace equivalent):
     Fan2:
       Work Size:Global                              2048 x 2048
       Work Size:Local                               1024 x 1
       Computing Task:SIMD Width                     32
-      GPU Memory Bandwidth, GB/sec:Read             6.270478
-      GPU Memory Bandwidth, GB/sec:Write            3.887077
+      GPU Memory Bandwidth, GB/sec:Read             7.970912
+      GPU Memory Bandwidth, GB/sec:Write            6.080172
     Fan1:
       Work Size:Global                              2048
       Work Size:Local                               16
       Computing Task:SIMD Width                     32
-      GPU Memory Bandwidth, GB/sec:Read             3.539959
-      GPU Memory Bandwidth, GB/sec:Write            4.762838
+      GPU Memory Bandwidth, GB/sec:Read             5.398556
+      GPU Memory Bandwidth, GB/sec:Write            6.278144
     clEnqueueReadBuffer:
       Transfer Size:Device-to-Host                  33562624
-      GPU Memory Bandwidth, GB/sec:Read             9.270757
-      GPU Memory Bandwidth, GB/sec:Write            9.260159
+      GPU Memory Bandwidth, GB/sec:Read             5.049371
+      GPU Memory Bandwidth, GB/sec:Write            4.847701
     clEnqueueWriteBuffer:
       Transfer Size:Host-to-Device                  33562624
-      GPU Memory Bandwidth, GB/sec:Read             9.838096
-      GPU Memory Bandwidth, GB/sec:Write            8.484800
+      GPU Memory Bandwidth, GB/sec:Read             9.529012
+      GPU Memory Bandwidth, GB/sec:Write            5.776170
 
 
 ================================================================================
