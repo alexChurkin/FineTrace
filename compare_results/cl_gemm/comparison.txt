@@ -1,0 +1,176 @@
+
+================================================================================
+COMPARISON REPORT: cl_gemm
+================================================================================
+
+Tool                                 finetrace                            VTune 2026
+Flags                                --host-timing --call-logging       
+                                     --device-timing --device-timeline    gpu-offload + gpu-hotspots
+                                     --aggregation                      
+
+
+================================================================================
+① HOST API CALLS  (CPU-side API timing)
+================================================================================
+
+  finetrace: --host-timing  →  total/avg/min/max per L0 / OpenCL call
+  VTune:     gpu-offload -group-by task  →  Task Time + CPU Time per API call
+
+  Function                                            FT Calls   FT Total(ns)   FT Avg(ns)   VT TaskT(ns)   VT CpuT(ns)  VT Calls
+  --------------------------------------------------------------------------------
+  clFinish                                                 128      312234562      2439332      298401000      25040000       128
+  zeEventHostSynchronize                                   117      571546892      4885016              -             -         -
+  GEMM                                                     128      264474427      2066206              -             -         -
+  clBuildProgram                                             1         311259       311259      190116000     185296000         1
+  clEnqueueWriteBuffer                                     256       22196247        86704       59509000      55088000       256
+  clEnqueueReadBuffer                                      128       17569733       137263       58034000      45072000       128
+  clEnqueueNDRangeKernel                                   128        8134427        63550       11294000      15024000       128
+  clCreateBuffer                                           384        1127949         2937         979000             -       384
+  clCreateContext                                            1         320438       320438         364000             -         1
+  clReleaseMemObject                                       384         313715          816         281000             -       384
+  clSetKernelArg                                           512         472518          922              -             -         -
+  clReleaseEvent                                           128         354755         2771              -             -         -
+  clCreateKernel                                             1          22179        22179         156000             -         1
+  zeEventPoolCreate                                          1         131809       131809              -             -         -
+  clCreateCommandQueueWithProperties                         1          23515        23515          86000             -         1
+  clGetKernelInfo                                          128          89993          703              -             -         -
+  zeEventHostReset                                         117          88050          752              -             -         -
+  clGetEventProfilingInfo                                  256          77447          302              -             -         -
+  zeEventCreate                                              1          44755        44755              -             -         -
+  zeEventPoolDestroy                                         1          40489        40489              -             -         -
+  clCreateProgramWithSource                                  1          14326        14326          11000             -         1
+  clReleaseProgram                                           1          21324        21324              -             -         -
+  clGetDeviceIDs                                             4          18982         4745              -             -         -
+  zeDriverGet                                               12          10309          859              -             -         -
+  zeDeviceGetProperties                                      3           8526         2842              -             -         -
+  zeDeviceGet                                               10           7069          706              -             -         -
+  clGetDeviceInfo                                            4           4077         1019              -             -         -
+  clReleaseKernel                                            1           3333         3333              -             -         -
+  zeContextCreate                                            1           2388         2388              -             -         -
+  zeDeviceGetSubDevices                                      5           2032          406              -             -         -
+  zeEventDestroy                                             1           1993         1993              -             -         -
+  clReleaseCommandQueue                                      1           1429         1429              -             -         -
+  zeDriverGetApiVersion                                      1           1364         1364              -             -         -
+  clReleaseContext                                           1            528          528              -             -         -
+
+================================================================================
+② DEVICE TIMELINE  (per-event: append / submit / start / end)
+================================================================================
+
+  finetrace --device-timeline:
+
+  (no timeline events in finetrace output)
+
+  VTune (gpu-offload) device timeline:
+  → VTune does not export per-event append/submit timestamps to CSV.
+    Open the gpu-offload result dir in VTune GUI for the full timeline:
+    vtune-gui <compare_results/cl_gemm/vtune/gpu-offload>
+
+================================================================================
+③ DEVICE TIMING  (per-kernel aggregate: calls / time / avg)
+================================================================================
+
+  finetrace: --device-timing  →  total/avg/min/max per kernel
+  VTune:     gpu-offload -group-by computing-task  →  Total/Avg Time + Instance Count
+
+  Kernel                                              FT Calls   FT Total(ns)   FT Avg(ns)   VT Total(ns)   VT Avg(ns)  VT Calls
+  --------------------------------------------------------------------------------
+  GEMM                                                     128      264474427      2066206      264141000      2063999       128
+  clEnqueueWriteBuffer                                     256       22196247        86704       21423000        84000       256
+  clEnqueueReadBuffer                                      128       17569733       137263       16457000       128999       128
+
+================================================================================
+④ GPU HARDWARE METRICS  (per-kernel, aggregated)
+================================================================================
+
+  finetrace: --aggregation (ComputeBasic via L0 Metrics API)
+  VTune:     gpu-hotspots -group-by computing-task
+
+  ┌─ Kernel: GEMM
+  │  finetrace key: GEMM
+  │  VTune key:     GEMM
+  │
+  │  Metric                                             finetrace               VTune  Notes
+  │  ------------------------------------------------------------------------------------------
+  │  KernelTime[ns]                                       5168956        262448000 ns  Kernel exec time
+  │  GpuTime[ns]                                          2559999        262448000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                         0              442247  Compute threads launched
+  │  XveActive[%]                                               0                42.6  XVE active (any pipeline)
+  │  XveStall[%]                                                0                52.6  XVE stalled
+  │  FpuActive[%]                                               0                 5.4  FPU/ALU0 active
+  │  EmActive[%]                                                0                31.3  EM/ALU1 active
+  │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
+  │  XveThreadOccupancy[%]                                      0               100.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                                 256           51.473419  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                                768            0.830802  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0          3253472776  SLM/Send instructions
+
+  ┌─ Kernel: clEnqueueReadBuffer
+  │  finetrace key: clEnqueueReadBuffer
+  │  VTune key:     clEnqueueReadBuffer
+  │
+  │  Metric                                             finetrace               VTune  Notes
+  │  ------------------------------------------------------------------------------------------
+  │  KernelTime[ns]                                        168012         16233000 ns  Kernel exec time
+  │  GpuTime[ns]                                           853333         16233000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                         0               30826  Compute threads launched
+  │  XveActive[%]                                               0                 0.5  XVE active (any pipeline)
+  │  XveStall[%]                                                0                61.8  XVE stalled
+  │  FpuActive[%]                                               0                 0.0  FPU/ALU0 active
+  │  EmActive[%]                                                0                 0.3  EM/ALU1 active
+  │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
+  │  XveThreadOccupancy[%]                                      0                 0.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                                   0            1.747460  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                                256            1.435662  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0             1426882  SLM/Send instructions
+
+  ┌─ Kernel: clEnqueueWriteBuffer
+  │  finetrace key: clEnqueueWriteBuffer
+  │  VTune key:     clEnqueueWriteBuffer
+  │
+  │  Metric                                             finetrace               VTune  Notes
+  │  ------------------------------------------------------------------------------------------
+  │  KernelTime[ns]                                        101036         21269000 ns  Kernel exec time
+  │  GpuTime[ns]                                           853333         21269000 ns  GPU time (same column in VTune)
+  │  CsThreads[threads]                                         0               30619  Compute threads launched
+  │  XveActive[%]                                               0                 0.4  XVE active (any pipeline)
+  │  XveStall[%]                                                0                45.8  XVE stalled
+  │  FpuActive[%]                                               0                 0.0  FPU/ALU0 active
+  │  EmActive[%]                                                0                 0.2  EM/ALU1 active
+  │  XmxActive[%]                                               0                 0.0  XMX (matrix) active
+  │  XveThreadOccupancy[%]                                      0                 0.0  Thread occupancy
+  │  GtiReadThroughput[bytes]                                   0            1.340415  GTI/L3 read BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  GtiWriteThroughput[bytes]                                256            1.166692  GTI/L3 write BW (FT=bytes, VT=GB/s) ⚠ units differ
+  │  SlmReads[messages]                                         0             1304188  SLM/Send instructions
+
+  VTune additional info (no finetrace equivalent):
+    GEMM:
+      Work Size:Global                              512 x 512
+      Work Size:Local                               512 x 2
+      Computing Task:SIMD Width                     32
+      GPU Memory Bandwidth, GB/sec:Read             1.045318
+      GPU Memory Bandwidth, GB/sec:Write            0.157853
+    clEnqueueReadBuffer:
+      Transfer Size:Device-to-Host                  134217728
+      GPU Memory Bandwidth, GB/sec:Read             1.857938
+      GPU Memory Bandwidth, GB/sec:Write            1.484723
+    clEnqueueWriteBuffer:
+      Transfer Size:Host-to-Device                  268435456
+      GPU Memory Bandwidth, GB/sec:Read             1.426221
+      GPU Memory Bandwidth, GB/sec:Write            0.984134
+
+
+================================================================================
+⑤ COVERAGE SUMMARY
+================================================================================
+
+  Category                                       finetrace                  VTune
+  --------------------------------------------------------------------------------
+  Host API calls (names + timing)                ✓ 37 API functions         ✓ 11 API tasks
+  Host API per-call logging (args + retval)      ✓ --call-logging           ✗ not available
+  Device timeline (append/submit/start/end ns)   ✓ 0 events                 ⚡ GUI only (timeline not in CSV)
+  Device kernel timing (aggregate per kernel)    ✓ 3 kernels                ✓ 3 kernels
+  GPU hardware metrics (per-kernel aggregated)   ✓ 3 kernels (ComputeBasic)  ✓ 3 kernels
+  Chrome JSON trace export                       ✓ --chrome-* flags         ✓ via VTune GUI
+  Multi-tile / sub-device breakdown              ✓ --kernels-per-tile       ✓ implicit in computing-task
+  OpenCL + Level Zero unified                    ✓ both backends            ✓ both backends

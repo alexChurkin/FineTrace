@@ -279,6 +279,102 @@ cmake --install build
 
 ---
 
+## VTune Comparison (`compare_runner.py`)
+
+Cross-validates finetrace output against Intel® VTune™ Profiler on the same workloads.
+Runs both tools back-to-back on every sample and produces a side-by-side report.
+
+### What is compared
+
+| Section | finetrace flags | VTune analysis |
+|---|---|---|
+| ① Host API calls | `--host-timing --call-logging` | `gpu-offload -group-by task` |
+| ② Device timeline | `--device-timeline` | GUI only (no CSV export from VTune) |
+| ③ Device timing | `--device-timing` | `gpu-offload -group-by computing-task` |
+| ④ GPU hardware metrics | `--aggregation` | `gpu-hotspots -group-by computing-task` |
+
+### Prerequisites
+
+```sh
+# 1. Build finetrace
+./script_build_finetrace.sh
+
+# 2. Build samples
+./script_build_samples.sh
+
+# 3. Install VTune (if not present)
+sudo apt install intel-oneapi-vtune
+source /opt/intel/oneapi/vtune/latest/env/vars.sh
+```
+
+Required kernel knobs — `compare_runner.py` sets these automatically via `sudo tee`:
+
+```sh
+echo 0 | sudo tee /proc/sys/dev/i915/perf_stream_paranoid   # L0 Metrics API
+echo 1 | sudo tee /proc/sys/kernel/perf_event_paranoid       # VTune CPU sampling
+echo 0 | sudo tee /proc/sys/kernel/kptr_restrict             # VTune symbol resolution
+```
+
+### Running
+
+```sh
+# Compare all samples (ze_gemm, cl_gemm, bench_gaussian, bench_bfs, bench_nw, bench_b+tree)
+python3 compare_runner.py
+
+# Specific samples only
+python3 compare_runner.py --samples ze_gemm cl_gemm bench_gaussian
+
+# Force re-collection even if results already exist
+python3 compare_runner.py --samples ze_gemm --force
+
+# Override VTune path
+python3 compare_runner.py --vtune /opt/intel/oneapi/vtune/2026.0/bin64/vtune
+
+# Skip VTune, run finetrace only
+python3 compare_runner.py --no-vtune
+
+# List samples and their build status
+python3 compare_runner.py --list
+```
+
+### Output
+
+```
+compare_results/
+  ze_gemm/
+    comparison.txt          ← human-readable side-by-side report  ← start here
+    finetrace/
+      raw.txt               ← full finetrace output (all flags)
+    vtune/
+      reports/
+        host_api.csv        ← VTune host task timing
+        device_timing.csv   ← VTune GPU computing-task timing
+        device_metrics.csv  ← VTune GPU hardware metrics per kernel
+        summary_offload.txt ← VTune gpu-offload summary
+        summary_hotspots.txt← VTune gpu-hotspots summary
+      gpu-offload/          ← raw VTune result dir (not tracked in git)
+      gpu-hotspots/         ← raw VTune result dir (not tracked in git)
+  cl_gemm/  ...
+  bench_gaussian/  ...
+```
+
+Open `compare_results/<sample>/comparison.txt` for the report.
+To inspect the VTune timeline visually: `vtune-gui compare_results/<sample>/vtune/gpu-offload`.
+
+### Known limitations
+
+- **Device timeline** (②): VTune does not export per-event append/submit timestamps to CSV.
+  Finetrace provides full `append → submit → start → end` ns timestamps; VTune shows the
+  timeline only in its GUI.
+- **OpenCL GPU metrics** (④): finetrace's `--aggregation` uses the L0 Metrics API and does
+  not collect hardware counters for OpenCL kernels (`cl_gemm`, Rodinia). VTune collects these
+  correctly via `gpu-hotspots`. For OpenCL metric verification use VTune's `device_metrics.csv`.
+- **Host API coverage**: finetrace intercepts every call via tracing hooks (40+ functions);
+  VTune uses statistical sampling and only surfaces calls that spend measurable CPU time
+  (typically 10 functions). Call counts match where both tools see the function.
+
+---
+
 ## Overhead Benchmarking
 
 The `script_run_samples.sh` script measures wall-clock overhead across multiple tracing configurations:

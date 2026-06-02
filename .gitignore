@@ -20,3 +20,13 @@ result.*.bin
 data.*.raw
 data.*.bin
 data.*.query
+
+# VTune comparison: raw binary result dirs (~10-50 MB each, regenerable via compare_runner.py --force)
+# What IS tracked: comparison.txt, finetrace/raw.txt, vtune/reports/*.csv, vtune/reports/*.txt
+compare_results/*/vtune/gpu-offload/
+compare_results/*/vtune/gpu-hotspots/
+
+# Rodinia in-tree build artefacts (make builds in source tree, no build/ subdir)
+samples/cl_rodinia_benchmarks/**/*.o
+samples/cl_rodinia_benchmarks/**/*.out
+samples/cl_rodinia_benchmarks/**/timing.o
